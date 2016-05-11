@@ -1,1 +1,1 @@
-# GWPTB
+# Green WordPress Telegram Bot
