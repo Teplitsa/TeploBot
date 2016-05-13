@@ -42,7 +42,7 @@ class Gwptb_Self {
 	protected function request_api_json($method = 'getMe', $params = array()){
 		global $wpdb;
 		
-		$action = ($method == 'getMe') ? 'request' : 'response';
+		$action = (in_array($method, array('getMe', 'setWebhook'))) ? 'request' : 'response';
 		
 		$log_data = array(
 			'action' => $action,
@@ -82,9 +82,11 @@ class Gwptb_Self {
 	protected function request_api_multipart($method = 'getMe', $params = array()){		
 		global $wpdb;
 		
+		$action = (in_array($method, array('getMe', 'setWebhook'))) ? 'request' : 'response';
+		
 		$log_data = array(
-			'object' => 'request_'.$method,
-			'data' => array('params' => $params, 'error' => '', 'result' => '')
+			'action' => $action,
+			'method' => $method			
 		);
 		
 		$boundary = wp_generate_password( 24 );
@@ -94,6 +96,7 @@ class Gwptb_Self {
 		$payload = '';
 		if(!empty($params)) {			
 			foreach($params as $key => $value) {
+				
 				if(file_exists($value)){
 					$payload .= '--' . $boundary;
 					$payload .= "\r\n";
@@ -124,20 +127,18 @@ class Gwptb_Self {
 		$response = $this->validate_api_response($response);
 		
 		//prepare log data		
-		if(is_wp_error($response)){
-			$log_data['status'] = 'error';
-			$log_data['data']['error'] =  $response->get_error_message();						
+		if(is_wp_error($response)){			
+			$log_data['error'] =  $response->get_error_message();						
 		}
-		else {
-			$log_data['status'] = 'success';			
-			$log_data['data']['result'] = $response;	
+		else {			
+			$log_content = $this->extract_response_for_log($response, $method);	
+			$log_data = array_merge($log_data, $log_content);
 		}
 		
 		//obtain log entry ID
-		$log_id = ($this->log_action($log_data)) ? $wpdb->insert_id : false;
-		
-		//return standard array of results
-		return  array('log_id' => $log_id, 'response' => $response);
+		$log_data['id'] = ($this->log_action($log_data)) ? $wpdb->insert_id : 0;
+				
+		return $log_data;
 	}
 	
 		
@@ -219,7 +220,10 @@ class Gwptb_Self {
 				
 			//error 
 		}
-		
+		elseif($method == 'setWebhook') {
+			
+			//write something on correct
+		}
 		
 		return $log;
 	}
@@ -262,6 +266,38 @@ class Gwptb_Self {
 	}
 	
 	/**
+	 * Set or remove webhook
+	 **/
+	public function set_webhook($remove = false){
+		
+		$params = array();
+		if($remove){
+			$params['url'] = '';
+		}
+		else {
+			$params['url'] = home_url('gwptb/update', 'https'); //support for custom slug in future
+			$cert_path = get_option('gwptb_cert_path');
+			if($cert_path)
+				$params['certificate'] = $cert_path;
+		}
+		
+		//api request		
+		$upd = $this->request_api_multipart('setWebhook', $params);
+		
+		//record option
+		if(empty($upd['error'])){
+			update_option('gwptb_webhook', 1);  
+		}
+		else {
+			update_option('gwptb_webhook', 0);  
+		}
+		
+		return $upd;
+	}
+	
+	
+	
+	/**
 	 * Get update stack by polling 
 	 **/
 	public function get_update(){
@@ -299,30 +335,7 @@ class Gwptb_Self {
 		return $upd_id;
 	}
 	
-	/**
-	 * Set or remove webhook
-	 **/
-	public function set_webhook($remove = false){
-		
-		$params = array();
-		if($remove){
-			$params['url'] = '';
-		}
-		else {
-			$params['url'] = home_url('gwptb/update', 'https'); //support for custom slug in future
-			$cert_path = get_option('gwptb_cert_path');
-			if($cert_path)
-				$params['certificate'] = $cert_path;
-		}
-		
-		//api request		
-		$update = $this->request_api_multipart('setWebhook', $params);
-		
-		//additional log ???
-				
-		//return results 
-		return $update;
-	}
+	
 	
 	/**
 	 * Process update stack

@@ -32,6 +32,7 @@
 	}
 }
 
+/** settings block */
 .gwptb-page-section.settings {
 	@include clearfix;
 	
@@ -59,6 +60,21 @@
 	}
 }
 
+/* connection test **/
+.gwptb-conncetion-setup {
+	
+	.button {
+		.for-green { display: none; }
+		&.green {
+			.for-init { display: none; }
+			.for-green { display: inline; }
+			background: $green;
+		}
+	}
+	
+}
+
+/* data table */
 .gwptb-conncetion-data {
 	table {
 		width: 100%;

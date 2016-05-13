@@ -25,7 +25,8 @@ class Gwptb_Core {
     }       
 	
 	static function on_activation() {
-		update_option('gwptb_permalinks_flushed', 0);  
+		update_option('gwptb_permalinks_flushed', 0);
+		update_option('gwptb_version', GWPTB_VERSION);  
 		self::create_table();
 	}
 	
@@ -163,8 +164,7 @@ class Gwptb_Core {
 			//test for options
 			$path = get_option('gwptb_cert_path');
 			if(!file_exists($path)){
-				echo 'Invalid certificate path';
-				die();
+				echo 'Invalid certificate path';				
 			}
 			
 			$bot = Gwptb_Self::get_instance();

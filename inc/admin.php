@@ -18,6 +18,7 @@ class Gwptb_Admin {
 		
 		//Ajax
 		add_action("wp_ajax_gwptb_test_token", array($this, 'test_token_screen'));
+		add_action("wp_ajax_gwptb_set_hook", array($this, 'set_hook_screen'));
 	}
 	
 	
@@ -67,7 +68,7 @@ class Gwptb_Admin {
             wp_die(__('Sorry, but you do not have permissions to access this page.', 'gwptb'));
         }
 		
-		$token = gwptb_get_option('bot_token');
+		$token = get_option('gwptb_bot_token');
 		$stage = (isset($_GET['stage'])) ? trim($_GET['stage']) : 'default';
 		
 		//button
@@ -136,7 +137,10 @@ class Gwptb_Admin {
 		$del_nonce = wp_create_nonce('gwptb_del_hook');
 	?>
 	<div class="gwptb-conncetion-setup">
-		<a id="gwptb_set_hook" href='#' class='button button-primary' data-nonce="<?php echo $set_nonce;?>"><?php _e('Test connection', 'gwptb');?></a>
+		<a id="gwptb_set_hook" href='#' class='button button-primary<?php if($set_hook) { echo ' green'; };?>' data-nonce="<?php echo $set_nonce;?>"><span class='for-init'><?php _e('Set connection', 'gwptb');?></span><span class='for-green'><?php _e('Your Bot is connected', 'gwptb');?></span></a>
+		
+		<a id="gwptb_del_hook" href='#' class='button button-secondary<?php if(!$set_hook) { echo ' hidden'; };?>' data-nonce="<?php echo $set_nonce;?>"><?php _e('Remove connection', 'gwptb');?></a>
+		
 		<div class="gwptb-test-response">
 			<div id="gwptb_set_hook-response"></div>
 			<div id="gwptb_del_hook-response"></div>
@@ -181,8 +185,9 @@ class Gwptb_Admin {
 	
 	
 	/** == Ajax for testing functions **/	
-	function test_token_screen() {
+	public function test_token_screen() {
 		
+		$msg = '';
 		$result = array('type' => 'ok', 'data' => '');
 		
 		if(!wp_verify_nonce($_REQUEST['nonce'], "gwptb_test_token")) {		
@@ -209,6 +214,24 @@ class Gwptb_Admin {
 		die();
 	}
 	
+	public function set_hook_screen() {
+		
+		$msg = '';
+		$result = array('type' => 'ok', 'data' => '');
+		
+		if(!wp_verify_nonce($_REQUEST['nonce'], "gwptb_set_hook")) {		
+			die('nonce error');
+		}
+		
+		//make sethook request
+		$bot = Gwptb_Self::get_instance();
+		$test = $bot->set_webhook();
+		
+		//build response html
+		$result['data'] = "<p>{$msg}</p>";		
+		echo json_encode($result);
+		die();
+	}
 
 	/** == Settings  fields == **/
 	function settings_init(  ) { 
