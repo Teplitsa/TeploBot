@@ -1,1 +1,0 @@
-# Green WP Telegram Bot
