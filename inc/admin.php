@@ -119,11 +119,15 @@ class Gwptb_Admin {
 					submit_button();
 				?>
 				</form>
+				
+				<?php if(!empty($token)) { ?>
 				<div class="settings-side">
 					<?php $nonce = wp_create_nonce('gwptb_test_token'); ?>
 					<a id="gwptb_test_token" href='#' class='button button-secondary' data-nonce="<?php echo $nonce;?>"><?php _e('Test token', 'gwptb');?></a>
 					<div id="gwptb_test_token-response" class="gwptb-test-response"></div>
 				</div>
+				<?php } ?>
+				
 			</div>
 		<?php } ?>
 		
