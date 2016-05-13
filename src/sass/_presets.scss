@@ -1,0 +1,18 @@
+//variables
+
+$break:   767px; //medium
+
+
+//Mixins
+@mixin for($media) {
+	@if $media == large-screens {
+		@media screen and (min-width: $break) { @content; }
+	}	
+}
+
+
+@mixin upto($media) {
+	@if $media == large-screens {
+		@media screen and (max-width: $break - 1) { @content; }
+	}	
+}

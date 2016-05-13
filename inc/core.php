@@ -4,8 +4,7 @@ if(!defined('ABSPATH')) die; // Die if accessed directly
 class Gwptb_Core {
 	
 	private static $instance = NULL; //instance store
-	private $options = NULL;
-		
+			
 	private function __construct() {
 				
 		add_action('init', array($this,'custom_query_vars') );
@@ -27,7 +26,7 @@ class Gwptb_Core {
 	
 	static function on_activation() {
 		update_option('gwptb_permalinks_flushed', 0);  
-		//self::create_table();
+		self::create_table();
 	}
 	
 	static function on_deactivation() {
@@ -45,11 +44,17 @@ class Gwptb_Core {
 			$sql = "CREATE TABLE $table_name (
 				id bigint(20) NOT NULL AUTO_INCREMENT,
 				time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-				object tinytext NOT NULL,
-				status varchar(255) NOT NULL,
-				data text DEFAULT '' NOT NULL,
-				tlgrm_id bigint(20) DEFAULT 0 NOT NULL,
-				connected_id bigint(20) DEFAULT 0 NOT NULL,
+				action varchar(255) NOT NULL,
+				method varchar(255) NOT NULL,
+				update_id bigint(20) DEFAULT 0 NOT NULL,
+				user_id bigint(20) DEFAULT 0 NOT NULL,
+				username varchar(255) DEFAULT '' NOT NULL,
+				user_fname text DEFAULT '' NOT NULL,
+				user_lname text DEFAULT '' NOT NULL,				
+				message_id bigint(20) DEFAULT 0 NOT NULL,
+				chat_id bigint(20) DEFAULT 0 NOT NULL,
+				content text DEFAULT '' NOT NULL,
+				error text DEFAULT '' NOT NULL,
 				UNIQUE KEY id (id)
 			) $charset_collate;";		
 
@@ -64,34 +69,7 @@ class Gwptb_Core {
 		return $wpdb->prefix . 'gwptb_log';
 	}
 	
-	/** options **/
-	public function get_option_value($key){
 		
-		$value = '';
-		
-		if(empty($key))
-			return $value;
-		
-		if(NULL === $this->options){
-			$this->options = get_option('gwptb_settings');
-		}
-		
-		if(isset($this->options[$key]))
-			$value = $this->options[$key];
-			
-		return $value;
-	}
-	
-	public function get_options(){
-		
-		if(NULL == $this->options){
-			$this->options = get_option('gwptb_settings', array());
-		}
-		
-		return $this->options;
-	}
-	
-	
 	/** service page */	
 	public function custom_query_vars(){
         global $wp;
@@ -183,7 +161,7 @@ class Gwptb_Core {
 		elseif($action == 'set_webhook'){
 			
 			//test for options
-			$path = gwptb_get_option('cert_path');
+			$path = get_option('gwptb_cert_path');
 			if(!file_exists($path)){
 				echo 'Invalid certificate path';
 				die();

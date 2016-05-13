@@ -66,6 +66,7 @@ load_plugin_textdomain('gwptb', false, '/'.basename(GWPTB_PLUGIN_DIR).'/lang');
 require_once(plugin_dir_path(__FILE__).'inc/core.php');
 require_once(plugin_dir_path(__FILE__).'inc/functions.php');
 require_once(plugin_dir_path(__FILE__).'inc/class-gwptb.php');
+require_once(plugin_dir_path(__FILE__).'inc/class-cssjs.php');
 $tplb = Gwptb_Core::get_instance();
 
 if(is_admin()){

@@ -13,7 +13,7 @@ class Gwptb_Self {
 	private function __construct() {
 		
 		//set token
-		$token = gwptb_get_option('bot_token');
+		$token = get_option('gwptb_bot_token');
 		if(!$token && defined('BOT_TOKEN'))
 			$token = BOT_TOKEN;
 			
@@ -42,9 +42,11 @@ class Gwptb_Self {
 	protected function request_api_json($method = 'getMe', $params = array()){
 		global $wpdb;
 		
+		$action = ($method == 'getMe') ? 'request' : 'response';
+		
 		$log_data = array(
-			'object' => 'request_'.$method,
-			'data' => array('params' => $params, 'error' => '', 'result' => '')
+			'action' => $action,
+			'method' => $method			
 		);
 		
 		$request_args = array('headers' => array("Content-Type" => "application/json"));
@@ -58,20 +60,18 @@ class Gwptb_Self {
 		$response = $this->validate_api_response($response);
 		
 		//prepare log data		
-		if(is_wp_error($response)){
-			$log_data['status'] = 'error';
-			$log_data['data']['error'] =  $response->get_error_message();						
+		if(is_wp_error($response)){			
+			$log_data['error'] =  $response->get_error_message();						
 		}
-		else {
-			$log_data['status'] = 'success';			
-			$log_data['data']['result'] = $response;	
+		else {			
+			$log_content = $this->extract_response_for_log($response, $method);	
+			$log_data = array_merge($log_data, $log_content);
 		}
 		
 		//obtain log entry ID
-		$log_id = ($this->log_action($log_data)) ? $wpdb->insert_id : false;
-		
-		//return standard array of results
-		return  array('log_id' => $log_id, 'response' => $response);
+		$log_data['id'] = ($this->log_action($log_data)) ? $wpdb->insert_id : 0;
+				
+		return $log_data;
 	}
 	
 	/**
@@ -161,7 +161,14 @@ class Gwptb_Self {
 			
 		$body = json_decode($body);
 		if(!isset($body->ok) || !$body->ok){ //no OK status in body
-			$resp_error = new WP_Error('invalid_content', __('Invalid content in response', 'gwptb'), $body);
+			if($body->description){
+				$msg = sprintf(__('Invalid content in response: %s', 'gwptb'), $body->description);
+			}
+			else{
+				$msg = __('Invalid content in response', 'gwptb');
+			}
+			
+			$resp_error = new WP_Error('invalid_content', $msg, $body);
 			return $resp_error;
 		}
 		
@@ -174,19 +181,49 @@ class Gwptb_Self {
 		
 		$defaults = array(
 			'time'   		=> current_time('mysql'), 
-			'object' 		=> '',
-			'status' 		=> '',
-			'data'   		=> array(),
-			'tlgrm_id' 		=> 0,
-			'connected_id'	=> 0
+			'action' 		=> '',
+			'method' 		=> '',
+			'update_id'		=> 0,
+			'user_id'		=> 0,
+			'username'		=> '',
+			'user_fname'	=> '',
+			'user_lname'	=> '',
+			'message_id'	=> 0,
+			'chat_id'		=> 0,
+			'content'		=> '',
+			'error'			=> '',
 		);
 		
 		$data = wp_parse_args($data, $defaults);
-		$data['data'] = maybe_serialize($data['data']);
-		
+				
 		$table_name = Gwptb_Core::get_log_tablename();
-		return $wpdb->insert($table_name, $data, array('%s', '%s', '%s', '%s', '%d', '%d'));
+		return $wpdb->insert($table_name, $data, array('%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d', '%d', '%s', '%s',));
 	}
+	
+	//extract info for log from response
+	protected function extract_response_for_log($response, $method){
+		
+		$log = array();
+		if($method == 'getMe'){
+			//correct response
+			if(isset($response->id)){
+				$log['user_id'] = (int)$response->id;
+				$log['content'] = __('Bot detected', 'gwptb');
+			}	
+			
+			if(isset($response->first_name))
+				$log['user_fname'] = $response->first_name; //add sanitisation
+				
+			if(isset($response->username))
+				$log['username'] = $response->username;//add sanitisation
+				
+			//error 
+		}
+		
+		
+		return $log;
+	}
+	
 	
 	//shortcut to log received updates array
 	protected function log_received_update($update){
@@ -273,7 +310,7 @@ class Gwptb_Self {
 		}
 		else {
 			$params['url'] = home_url('gwptb/update', 'https'); //support for custom slug in future
-			$cert_path = gwptb_get_option('cert_path');
+			$cert_path = get_option('gwptb_cert_path');
 			if($cert_path)
 				$params['certificate'] = $cert_path;
 		}

@@ -1,0 +1,79 @@
+/** Settings styles **/
+
+.gwptb-test-response {
+	min-height: 100px;
+}
+
+.gwptb-dashboard {
+	margin-bottom: 24px;
+}
+
+#gwptb-widgets {
+	@include clearfix;
+		
+	#postbox-container-1 {
+		width: 100%;		
+	}
+	
+	#postbox-container-2 {
+		width: 100%;
+		margin: 24px 0 0;
+	}
+	
+	@include for(large-screens){
+		#postbox-container-1 {
+			width: 60%;		
+		}
+		
+		#postbox-container-2 {
+			width: 35%;
+			margin: 0 0 0 3%;
+		}
+	}
+}
+
+.gwptb-page-section.settings {
+	@include clearfix;
+	
+	form {
+		display: block;		
+	}
+	
+	.settings-side {
+		margin-top: 24px;
+	}
+	
+	@include for(large-screens){
+		
+		form {
+			width: 60%;
+			float: left;
+		}
+		
+		.settings-side {
+			float: left;
+			width: 35%;
+			margin: 0 0 0 3%;
+			@include calc('margin-top', '3.82em + 20px');
+		}
+	}
+}
+
+.gwptb-conncetion-data {
+	table {
+		width: 100%;
+		@include for(large-screens){
+			width: 50%;
+		}
+	}
+	
+	th {
+		text-align: left;
+		padding: 4px 0;
+		width: 160px;
+	}
+	
+	td {
+		padding: 4px 0 4px 16px;
+	}
+}

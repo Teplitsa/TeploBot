@@ -15,6 +15,9 @@ class Gwptb_Admin {
 		
 		//Settings init
 		add_action( 'admin_init', array($this, 'settings_init'));
+		
+		//Ajax
+		add_action("wp_ajax_gwptb_test_token", array($this, 'test_token_screen'));
 	}
 	
 	
@@ -50,14 +53,14 @@ class Gwptb_Admin {
         add_menu_page(__('Green WP Telegram Bot', 'gwptb'), __('GWPTB', 'gwptb'), 'manage_options', 'gwptb', array($this, 'dashboard_screen'), 'dashicons-nametag');
 
         // Dashboard
-        add_submenu_page('gwptb', __('Green WP Telegram Bot', 'gwptb'), __('Dashboard', 'gwptb'), 'manage_options', 'gwptb', array($this, 'dashboard_screen'));
+        add_submenu_page('gwptb', __('Green WP Telegram Bot', 'gwptb'), __('Settings', 'gwptb'), 'manage_options', 'gwptb', array($this, 'dashboard_screen'));
 		
 		//Log
         add_submenu_page('gwptb', __('GWPTB Log', 'gwptb'), __('Log', 'gwptb'), 'manage_options', 'gwptb_log', array($this, 'log_screen'));
 	}
 	
 	
-	/**== Menu pages ==**/
+	/** == Menu pages == **/
 	public function dashboard_screen() {
 
 		if( !current_user_can('manage_options') ) {
@@ -76,6 +79,10 @@ class Gwptb_Admin {
 			$btn_url = add_query_arg(array('page' => 'gwptb'), admin_url('admin.php'));			
 			$btn = "<a href='{$btn_url}' class='page-title-action'>".__('Settings', 'gwptb')."</a>";
 		}
+		
+		
+		do_action('gwptb_dashboard_actions'); // Collapsible
+		add_meta_box('gwptb_setup', __('Connection Setup', 'gwptb'), array($this, 'setup_metabox_screen'), 'toplevel_page_gwptb', 'normal');
 	?>	
 		<div class="wrap">
             <h2><?php _e('Green WP Telegram Bot', 'gwptb');?> <?php echo $btn;?></h2>
@@ -85,42 +92,83 @@ class Gwptb_Admin {
 			<div class="gwptb-page-section howto">
 				How to create a bot - instructions 
 			</div>
+			
 		<?php  } elseif(!empty($token) && ($stage == 'default')){ ?>
 			<div class="gwptb-page-section connection">
-				<div class="card pressthis">
-					<h2>Set up notifications</h2>
-				</div>
+				<div class="metabox-holder" id="gwptb-widgets">
+					<div class="postbox-container" id="postbox-container-1">
+						<?php do_meta_boxes('toplevel_page_gwptb', 'normal', null);?>
+					</div>
 				
-				<div class="">
-					<a id="gwptb_test_token-trigger" href='#' class='button button-secondary'><?php _e('Test token', 'gwptb');?></a>
+					<div class="postbox-container" id="postbox-container-2">
+						<!-- branding and links -->
+					</div>
+				</div>
+			</div>
+		<?php } ?>	
+		
+		<!-- settings -->
+		<?php if($stage == 'default') { ?>
+			<div class="gwptb-page-section settings">
+				<form action='options.php' method='post'>
+				<?php
+					settings_fields( 'gwptb_settings' );
+					do_settings_sections( 'gwptb_settings' );
+					submit_button();
+				?>
+				</form>
+				<div class="settings-side">
+					<?php $nonce = wp_create_nonce('gwptb_test_token'); ?>
+					<a id="gwptb_test_token" href='#' class='button button-secondary' data-nonce="<?php echo $nonce;?>"><?php _e('Test token', 'gwptb');?></a>
 					<div id="gwptb_test_token-response" class="gwptb-test-response"></div>
 				</div>
 			</div>
 		<?php } ?>
-			
-		<?php if($stage == 'default') { ?>
-			<div class="gwptb-page-section settings"><form action='options.php' method='post'>
-            <?php
-				settings_fields( 'gwptbSettings' );
-				do_settings_sections( 'gwptbSettings' );
-				submit_button();
-			?>
-			</form></div>
-		<?php } ?>
-		
-		
 		
 		</div><!-- close .wrap -->
 	<?php
 	}
 	
+	public function setup_metabox_screen(){
+		$set_hook = get_option('gwptb_webhook', 0);
+		
+		$set_nonce = wp_create_nonce('gwptb_set_hook');
+		$del_nonce = wp_create_nonce('gwptb_del_hook');
+	?>
+	<div class="gwptb-conncetion-setup">
+		<a id="gwptb_set_hook" href='#' class='button button-primary' data-nonce="<?php echo $set_nonce;?>"><?php _e('Test connection', 'gwptb');?></a>
+		<div class="gwptb-test-response">
+			<div id="gwptb_set_hook-response"></div>
+			<div id="gwptb_del_hook-response"></div>
+		</div>
+	</div>
 	
+	<div class="gwptb-conncetion-data">
+		<table >
+			<tbody>
+				<tr>
+					<th><?php _e('Bot Link', 'gwptb');?></th>
+					<td>link</td>
+				</tr>
+				<tr>
+					<th><?php _e('Received messages', 'gwptb');?></th>
+					<td>xx</td>
+				</tr>
+				<tr>
+					<th><?php _e('Send search results', 'gwptb');?></th>
+					<td>xx</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<?php 
+	}
 	
 	
 	public function log_screen() {
 
 		if( !current_user_can('manage_options') ) {
-            wp_die(__('You do not have permissions to access this page.', 'leyka'));
+            wp_die(__('You do not have permissions to access this page.', 'gwptb'));
         }
 	?>
 		<div class="wrap">
@@ -131,32 +179,63 @@ class Gwptb_Admin {
 	<?php
 	}
 	
+	
+	/** == Ajax for testing functions **/	
+	function test_token_screen() {
+		
+		$result = array('type' => 'ok', 'data' => '');
+		
+		if(!wp_verify_nonce($_REQUEST['nonce'], "gwptb_test_token")) {		
+			die('nonce error');
+		}   
+		
+		//make getme request
+		$bot = Gwptb_Self::get_instance();
+		$test = $bot->self_test(); //log array
+		
+		//build response html
+		if(isset($test['user_id']) && !empty($test['user_id'])){
+			$msg = sprintf(__('Your token is connected with Bot: %s (@%s).', 'gwptb'), $test['user_fname'], $test['username']);
+		}
+		elseif(isset($test['error']) && !empty($test['error'])){
+			$msg = sprintf(__('Your token is invalid. Error message: %s.', 'gwptb'), '<i>'.$test['error'].'</i>');
+		}
+		else {
+			die('unexpectecd error');
+		}
+		
+		$result['data'] = "<p>{$msg}</p>";		
+		echo json_encode($result);
+		die();
+	}
+	
 
 	/** == Settings  fields == **/
 	function settings_init(  ) { 
 	
-		register_setting( 'gwptbSettings', 'gwptb_settings' );
+		register_setting( 'gwptb_settings', 'gwptb_bot_token');
+		register_setting( 'gwptb_settings', 'gwptb_cert_path' );
 	
 		add_settings_section(
 			'gwptb_access_section', 
 			__( 'Access settings', 'gwptb' ), 
 			array($this, 'access_section_callback'), 
-			'gwptbSettings'
+			'gwptb_settings'
 		);
 	
 		add_settings_field( 
-			'bot_token', 
+			'gwptb_bot_token', 
 			__( 'Bot Token', 'gwptb' ), 
 			array($this, 'bot_token_render'), 
-			'gwptbSettings', 
+			'gwptb_settings', 
 			'gwptb_access_section' 
 		);
 	
 		add_settings_field( 
-			'cert_path', 
+			'gwptb_cert_path', 
 			__( 'Path to certificate file', 'gwptb' ), 
 			array($this, 'cert_path_render'), 
-			'gwptbSettings', 
+			'gwptb_settings', 
 			'gwptb_access_section' 
 		);
 	
@@ -164,20 +243,20 @@ class Gwptb_Admin {
 
 
 	function bot_token_render(  ) { 		
-		$tplb = Gwptb_Core::get_instance();
-		$value = $tplb->get_option_value('bot_token'); 
+		
+		$value = get_option('gwptb_bot_token'); 
 	?>
-		<input type='text' name='gwptb_settings[bot_token]' value='<?php echo $value; ?>' class="large-text">
+		<input type='text' name='gwptb_bot_token' value='<?php echo $value; ?>' class="large-text">
 	<?php	
 	}
 	
 	
 	function cert_path_render(  ) { 
-		$tplb = Gwptb_Core::get_instance();
-		$value = $tplb->get_option_value('cert_path');
+		
+		$value = get_option('gwptb_cert_path'); 
 	?>
-		<input type='text' name='gwptb_settings[cert_path]' value='<?php echo $value; ?>' class="large-text">
-		<p class="description"><?php _e('Specify to use self-signed certificate', 'gwptb');?></p>
+		<input type='text' name='gwptb_cert_path' value='<?php echo $value; ?>' class="large-text">
+		<p class="description"><?php _e('For self-signed certificates - specify the path to it\'s public key file', 'gwptb');?></p>
 	<?php	
 	}
 

@@ -92,8 +92,4 @@ function gwptb_formtat_posts_list($posts){
 	return $out;
 }
 
-function gwptb_get_option($key){
-	
-	$tplb = $tplb = Gwptb_Core::get_instance();
-	return $tplb->get_option_value($key);
-}
+
