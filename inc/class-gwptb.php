@@ -130,6 +130,11 @@ class Gwptb_Self {
 		if(is_wp_error($response)){			
 			$log_data['error'] =  $response->get_error_message();						
 		}
+		elseif($method == 'setWebhook'){
+			if((bool)$response) {
+				$log_data['content'] = (empty($params['url'])) ? __('Connection removed', 'gwptb') : __('Connection set', 'gwptb');
+			}
+		}
 		else {			
 			$log_content = $this->extract_response_for_log($response, $method);	
 			$log_data = array_merge($log_data, $log_content);
@@ -220,10 +225,7 @@ class Gwptb_Self {
 				
 			//error 
 		}
-		elseif($method == 'setWebhook') {
-			
-			//write something on correct
-		}
+		
 		
 		return $log;
 	}
@@ -285,7 +287,7 @@ class Gwptb_Self {
 		$upd = $this->request_api_multipart('setWebhook', $params);
 		
 		//record option
-		if(empty($upd['error'])){
+		if(empty($upd['error']) && !$remove){
 			update_option('gwptb_webhook', 1);  
 		}
 		else {
