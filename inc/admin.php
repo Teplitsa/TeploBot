@@ -70,6 +70,7 @@ class Gwptb_Admin {
 		
 		$token = get_option('gwptb_bot_token');
 		$stage = (isset($_GET['stage'])) ? trim($_GET['stage']) : 'default';
+		$btn = '';
 		
 		//button
 		if(!empty($token) && ($stage == 'default')){
