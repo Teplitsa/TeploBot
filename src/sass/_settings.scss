@@ -60,15 +60,52 @@
 	}
 }
 
+/** connection sections **/
+.gwptb-page-section.connection {
+	.postbox  h2 {		
+		& > span {
+			position: relative;
+			display: block;			
+		}
+		
+		.postbot-title-link {
+			font-size: 0.8em;
+			line-height: inherit;
+			margin-left: 8px;
+		}
+		
+		@include for(large-screens){
+			.postbot-title-link {
+				position: absolute;
+				right: 30px;
+				top: 2px;
+			}
+		}
+	}
+}
+
 /* connection test **/
 .gwptb-conncetion-setup {
 	
 	.button {
+		margin-right: 8px;
 		.for-green { display: none; }
-		&.green {
+		&.green {			
 			.for-init { display: none; }
 			.for-green { display: inline; }
+			
 			background: $green;
+			border: 1px solid darken($green, 3%);
+			box-shadow: none;
+			text-shadow: none;
+			border-radius: 0;
+			font-size: 1.2em;
+			line-height: 1.2em;
+			height: auto;
+			padding: 0.65em 1.5em;
+			min-width: 40%;
+			text-align: center;
+			cursor: default;
 		}
 	}
 	
