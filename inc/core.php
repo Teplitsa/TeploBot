@@ -54,7 +54,9 @@ class Gwptb_Core {
 				user_lname text DEFAULT '' NOT NULL,				
 				message_id bigint(20) DEFAULT 0 NOT NULL,
 				chat_id bigint(20) DEFAULT 0 NOT NULL,
+				chatname varchar(255) DEFAULT '' NOT NULL,
 				content text DEFAULT '' NOT NULL,
+				attachment text DEFAULT '',
 				error text DEFAULT '' NOT NULL,
 				UNIQUE KEY id (id)
 			) $charset_collate;";		
@@ -111,11 +113,12 @@ class Gwptb_Core {
 		global $wpdb;
 				
 		//record post
-		$update = file_get_contents('php://input');
+		$update = file_get_contents('php://input'); 
 		$update = ($update) ? json_decode($update) : new WP_Error('invalid_update', __('Invalid update received by webhook', 'gwptb'));
 			
-		$bot = Gwptb_Self::get_instance(); 
+		$bot = Gwptb_Self::get_instance();
 		$bot->process_update($update);
+		
 		
 		echo 'Thank you!';
 	}

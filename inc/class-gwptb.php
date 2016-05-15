@@ -119,10 +119,13 @@ class Gwptb_Self {
 		}
 		
 		$request_args['body'] = $payload;
-		
+		var_dump($params);
+		echo"<br><br>";
+		var_dump($request_args);
+		echo"<br><br>";
 		//make remore API request			
 		$response = wp_remote_post($this->api_url.$method, $request_args);
-		
+		var_dump($response);
 		//parse response and find body content or error
 		$response = $this->validate_api_response($response);
 		
@@ -197,6 +200,7 @@ class Gwptb_Self {
 			'user_lname'	=> '',
 			'message_id'	=> 0,
 			'chat_id'		=> 0,
+			'chatname'		=> '',
 			'content'		=> '',
 			'error'			=> '',
 		);
@@ -234,20 +238,58 @@ class Gwptb_Self {
 	
 	//shortcut to log received update object 
 	protected function log_received_update($update){
+		global $wpdb;
 		
 		$log_data = array(
 			'action' => 'update',
 			'update_id' => (isset($update->update_id)) ? (int)$update->update_id : 0
 		);
+		$original_object = '';
 		
 		if(is_wp_error($update)){ //error
 			$log_data['method'] = 'error';
-			$log_data['error'] = $update->get_message();
+			$log_data['error'] = $update->get_error_message();
 			
 		}
 		elseif(isset($update->message)){ //message
+			$original_object = $update->message;
+			
 			$log_data['method'] = 'message';			
-			$log_data['content'] = maybe_serialize($update->message);
+			$log_data['message_id'] = (isset($update->message->message_id)) ? (int)$update->message->message_id : 0;
+			
+			//other cases of user ??
+			if(isset($update->message->from)){
+				$log_data['user_id'] = (isset($update->message->from->id)) ? (int)$update->message->from->id : 0;
+				$log_data['username'] = (isset($update->message->from->username)) ? (int)$update->message->from->username : '';
+				$log_data['user_fname'] = (isset($update->message->from->first_name)) ? (int)$update->message->from->first_name : '';
+				$log_data['user_lname'] = (isset($update->message->from->last_name)) ? (int)$update->message->from->last_name : '';
+			}
+			
+			//chat
+			if(isset($update->message->chat)){
+				$log_data['chat_id'] = (isset($update->message->chat->id)) ? (int)$update->message->chat->id : 0;
+				$log_data['chatname'] = '';
+				
+				if(isset($update->message->chat->title))
+					$log_data['chatname'] = $update->message->chat->title;
+					
+				if(isset($update->message->chat->username))
+					$log_data['chatname'] = $update->message->chat->username;
+				
+				if(empty($log_data['user_fname']) && isset($update->message->chat->first_name))
+					$log_data['user_fname'] = $update->message->chat->first_name;
+					
+				if(empty($log_data['user_lname']) && isset($update->message->chat->last_name))
+					$log_data['user_lname'] = $update->message->chat->last_name;
+			}
+			
+			//content
+			if(isset($update->message->text))
+				$log_data['content'] = $update->message->text;
+			
+			if(isset($update->message->entities))
+				$log_data['attachment'] = maybe_serialize($update->message->entities);
+			
 		}
 		elseif(isset($update->callback_query)) { //msg update request
 			$log_data['method'] = 'callback_query';
@@ -256,7 +298,7 @@ class Gwptb_Self {
 		
 		//obtain log entry ID
 		$log_data['id'] = ($this->log_action($log_data)) ? $wpdb->insert_id : 0;
-				
+		
 		return $log_data;
 	}
 	
@@ -282,7 +324,7 @@ class Gwptb_Self {
 			$params['url'] = '';
 		}
 		else {
-			$params['url'] = home_url('gwptb/update', 'https'); //support for custom slug in future
+			$params['url'] = home_url('gwptb/update/', 'https'); //support for custom slug in future
 			$cert_path = get_option('gwptb_cert_path');
 			if($cert_path)
 				$params['certificate'] = $cert_path;
@@ -308,21 +350,63 @@ class Gwptb_Self {
 	 * @update object/WP_Error - received update or Error object
 	 **/
 	public function process_update($update){
-		global $wpdb;
-		
+				
 		//log received update
 		$upd_data = $this->log_received_update($update);
 				
 		//reply
-			
+		if($upd_data['method'] == 'message')
+			$this->reply_message($upd_data);
 		
 		//end
 	}
 	
 	
+	/** == Reactions: handles for different types of query == **/
+	protected function reply_message($upd_data){
+		global $wpdb;
+		
+		//prepare reply
+		$reply = $this->get_message_replay($upd_data);
+				
+		//send reply
+		$send = $this->request_api_json('sendMessage', $reply);		
+	}
 	
+	protected function get_message_replay($upd_data){
+		
+		$reply = array(); 	
+		if(isset($upd_data['chat_id'])){
+			$reply['chat_id'] = (int)$upd_data['chat_id'];
+		}
+		
+		if(isset($upd_data['message_id'])){
+			//$reply['reply_to_message_id'] = (int)$message->message_id; //do we need it??
+		}
+				
+		//$reply_text = $this->get_replay_text_args($message);
+		$reply_text = array('text' => "I have spent a lifetime in the mirrors of exile busy absorbing my reflection (c)");
+		$reply = array_merge($reply, $reply_text);
+		
+		return $reply;
+	}
 	
-	
+	protected function get_replay_text_args($upd_data){
+		
+		$command = $this->detect_command($message); 
+		$commands = self::get_supported_commands(); 
+		$result = array();
+		
+		if(isset($commands[$command]) && is_callable($commands[$command])){
+			$result = call_user_func($commands[$command], $message);
+		}
+		else {
+			//no commands - return some default text
+			$result['text'] = "I have spent a lifetime in the mirrors of exile busy absorbing my reflection (c)";
+		}
+		
+		return $result;
+	}
 	
 	
 	
@@ -416,46 +500,7 @@ class Gwptb_Self {
 	}
 	
 	
-	/** == Reactions: handles for different types of query == **/
-	protected function reply_message($update_msg){
-		global $wpdb;
-		
-		//prepare reply
-		$reply = $this->get_message_replay($update_msg->message);
-				
-		//send reply
-		$send = $this->request_api_json('sendMessage', $reply);
-			
-		//log replay
-		$log_data = array(
-			'object' => 'replay_message',
-			'status' => (!is_wp_error($send['response'])) ? 'send_success' : 'send_error',
-			'data' => $send['response'],
-			'tlgrm_id' => $update_msg->update_id,
-			'connected_id' => $send['log_id']
-		);
-		
-		$log_data['id'] = ($this->log_action($log_data)) ? $wpdb->inserd_id : false;
-		
-		return $log_data;
-	}
-	
-	protected function get_message_replay($message){
-		
-		$reply = array(); 	
-		if(isset($message->chat->id)){
-			$reply['chat_id'] = (int)$message->chat->id;
-		}
-		
-		if(isset($message->message_id)){
-			//$reply['reply_to_message_id'] = (int)$message->message_id; //do we need it??
-		}
-				
-		$reply_text = $this->get_replay_text_args($message);
-		$reply = array_merge($reply, $reply_text);
-		
-		return $reply;
-	}
+	/* reactions */
 	
 	
 	protected function update_message($update_query){
@@ -530,22 +575,7 @@ class Gwptb_Self {
 		return $command;
 	}
 	
-	protected function get_replay_text_args($message){
-		
-		$command = $this->detect_command($message); 
-		$commands = self::get_supported_commands(); 
-		$result = array();
-		
-		if(isset($commands[$command]) && is_callable($commands[$command])){
-			$result = call_user_func($commands[$command], $message);
-		}
-		else {
-			//no commands - return some default text
-			$result['text'] = "I have spent a lifetime in the mirrors of exile busy absorbing my reflection (c)";
-		}
-		
-		return $result;
-	}
+	
 	
 	protected function get_update_text_args($data) {
 		
