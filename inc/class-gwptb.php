@@ -181,6 +181,7 @@ class Gwptb_Self {
 		return $body->result;
 	}
 	
+	
 	/** == Log == **/
 	protected function log_action($data){
 		global $wpdb;
@@ -231,28 +232,11 @@ class Gwptb_Self {
 	}
 	
 	
-	//shortcut to log received updates array
+	//shortcut to log received update object 
 	protected function log_received_update($update){
-		global $wpdb;
 		
-		if(!is_wp_error($update['response']) && !empty($update['response'])){
-			$log_id = (isset($update['log_id'])) ? (int)$update['log_id'] : 0;
-			
-			foreach($update['response'] as $i => $upd){
-			
-				$log_data = array(
-					'object' 		=> 'update',
-					'status' 		=> 'received',
-					'data' 			=> $upd,
-					'tlgrm_id' 		=> $upd->update_id,
-					'connected_id'	=> $log_id
-				);
-				
-				$update['response'][$i]->log_id = ($this->log_action($log_data)) ? $wpdb->insert_id : 0;				
-			}
-		}
 		
-		return $update;
+		
 	}
 	
 	
@@ -298,7 +282,37 @@ class Gwptb_Self {
 	}
 	
 	
+	/**
+	 * Process update stack
+	 * @update object/array - stack of pre-formatted updates (after logging)
+	 **/
+	public function process_update($update){
+		global $wpdb;
+				
+		
+		//log received update
+		$log_data = array(
+			'action' => 'update',
+			'method' => 'webhook',
+			'update_id' => (isset($update->$update)) ? (int)$update->$update : 0
+		);
+		
+		//reply
+			
+		
+		//end
+	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/** old **/
 	/**
 	 * Get update stack by polling 
 	 **/
@@ -339,38 +353,7 @@ class Gwptb_Self {
 	
 	
 	
-	/**
-	 * Process update stack
-	 * @update object/array - stack of pre-formatted updates (after logging)
-	 **/
-	public function process_update($update){
-		global $wpdb;
-		
-		$result =  null;
-		
-		if(is_array($update) && isset($update['response'])){
-			//this is formatted update after polling
-			$result = $this->process_formatted_update($update);
-		}
-		elseif(is_object($update) && isset($update->update_id)){
-			//log received update - return formatted results
-			$update = $this->log_received_update(array('response' => array($update)));
-			$result = $this->process_formatted_update($update);
-		}
-		else{
-			//some incorrect update type - log error
-			$log_data = array(
-				'object' => 'incorrect_update',
-				'status' => 'error',
-				'data' => $update
-			);
-			
-			$log_data['id'] = ($this->log_action($log_data)) ? $wpdb->insert_id : false;
-			$result = $log_data;
-		}
-		
-		return $result;
-	}
+	
 	
 	
 	protected function process_formatted_update($update){
@@ -498,6 +481,7 @@ class Gwptb_Self {
 		
 		return $reply;
 	}
+	
 	
 	/** == Commands support **/
 	public static function get_supported_commands(){
