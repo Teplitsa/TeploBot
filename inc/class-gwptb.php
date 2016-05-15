@@ -235,8 +235,29 @@ class Gwptb_Self {
 	//shortcut to log received update object 
 	protected function log_received_update($update){
 		
+		$log_data = array(
+			'action' => 'update',
+			'update_id' => (isset($update->update_id)) ? (int)$update->update_id : 0
+		);
 		
+		if(is_wp_error($update)){ //error
+			$log_data['method'] = 'error';
+			$log_data['error'] = $update->get_message();
+			
+		}
+		elseif(isset($update->message)){ //message
+			$log_data['method'] = 'message';			
+			$log_data['content'] = maybe_serialize($update->message);
+		}
+		elseif(isset($update->callback_query)) { //msg update request
+			$log_data['method'] = 'callback_query';
+			//to-do
+		}
 		
+		//obtain log entry ID
+		$log_data['id'] = ($this->log_action($log_data)) ? $wpdb->insert_id : 0;
+				
+		return $log_data;
 	}
 	
 	
@@ -284,19 +305,14 @@ class Gwptb_Self {
 	
 	/**
 	 * Process update stack
-	 * @update object/array - stack of pre-formatted updates (after logging)
+	 * @update object/WP_Error - received update or Error object
 	 **/
 	public function process_update($update){
 		global $wpdb;
-				
 		
 		//log received update
-		$log_data = array(
-			'action' => 'update',
-			'method' => 'webhook',
-			'update_id' => (isset($update->$update)) ? (int)$update->$update : 0
-		);
-		
+		$upd_data = $this->log_received_update($update);
+				
 		//reply
 			
 		
