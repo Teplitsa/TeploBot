@@ -225,9 +225,9 @@ class Gwptb_Self {
 		$data['attachment'] = apply_filters('gwptb_sanitize_rich_text', $data['attachment']);
 		
 		$data['update_id'] = (int)$data['update_id'];
-		$data['user_id'] = (int)$data['update_id'];
-		$data['message_id'] = (int)$data['update_id'];
-		$data['chat_id'] = (int)$data['update_id'];
+		$data['user_id'] = (int)$data['user_id'];
+		$data['message_id'] = (int)$data['message_id'];
+		$data['chat_id'] = (int)$data['chat_id'];
 		
 		$table_name = Gwptb_Core::get_log_tablename();
 		return $wpdb->insert($table_name, $data, array('%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d', '%d', '%s', '%s',));
