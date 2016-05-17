@@ -119,13 +119,15 @@ class Gwptb_Self {
 		}
 		
 		$request_args['body'] = $payload;
-		var_dump($params);
-		echo"<br><br>";
-		var_dump($request_args);
-		echo"<br><br>";
+		//var_dump($params);
+		//echo"<br><br>";
+		//var_dump($request_args);
+		//echo"<br><br>";
+		
 		//make remore API request			
 		$response = wp_remote_post($this->api_url.$method, $request_args);
-		var_dump($response);
+		
+		//var_dump($response);
 		//parse response and find body content or error
 		$response = $this->validate_api_response($response);
 		
@@ -202,11 +204,30 @@ class Gwptb_Self {
 			'chat_id'		=> 0,
 			'chatname'		=> '',
 			'content'		=> '',
+			'attachment'	=> '',
 			'error'			=> '',
 		);
 		
 		$data = wp_parse_args($data, $defaults);
-				
+		
+		//sanitize
+		$data['action'] = apply_filters('gwptb_sanitize_latin', $data['action']);
+		$data['method'] = apply_filters('gwptb_sanitize_latin', $data['method']);
+		$data['username'] = apply_filters('gwptb_sanitize_latin', $data['username']);
+		
+		$data['user_fname'] = apply_filters('gwptb_sanitize_text', $data['user_fname']);
+		$data['user_lname'] = apply_filters('gwptb_sanitize_text', $data['user_lname']);
+		$data['chatname'] = apply_filters('gwptb_sanitize_text', $data['chatname']);
+		
+		$data['content'] = apply_filters('gwptb_sanitize_rich_text', $data['content']);
+		$data['error'] = apply_filters('gwptb_sanitize_rich_text', $data['error']);
+		$data['attachment'] = apply_filters('gwptb_sanitize_rich_text', $data['attachment']);
+		
+		$data['update_id'] = (int)$data['update_id'];
+		$data['user_id'] = (int)$data['update_id'];
+		$data['message_id'] = (int)$data['update_id'];
+		$data['chat_id'] = (int)$data['update_id'];
+		
 		$table_name = Gwptb_Core::get_log_tablename();
 		return $wpdb->insert($table_name, $data, array('%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d', '%d', '%s', '%s',));
 	}
@@ -230,8 +251,7 @@ class Gwptb_Self {
 				
 			//error 
 		}
-		
-		
+				
 		return $log;
 	}
 	
@@ -293,6 +313,7 @@ class Gwptb_Self {
 		}
 		elseif(isset($update->callback_query)) { //msg update request
 			$log_data['method'] = 'callback_query';
+			
 			//to-do
 		}
 		
@@ -355,14 +376,20 @@ class Gwptb_Self {
 		$upd_data = $this->log_received_update($update);
 				
 		//reply
-		if($upd_data['method'] == 'message')
+		if($upd_data['method'] == 'message'){
 			$this->reply_message($upd_data);
+		}
+		elseif($upd_data['method'] == 'callback_query'){
+			
+		}
 		
 		//end
 	}
 	
 	
 	/** == Reactions: handles for different types of query == **/
+	
+	/* replay on message **/
 	protected function reply_message($upd_data){
 		global $wpdb;
 		
@@ -370,12 +397,13 @@ class Gwptb_Self {
 		$reply = $this->get_message_replay($upd_data);
 				
 		//send reply
-		$send = $this->request_api_json('sendMessage', $reply);		
+		$this->request_api_json('sendMessage', $reply);		
 	}
 	
 	protected function get_message_replay($upd_data){
 		
-		$reply = array(); 	
+		$reply = array();
+		
 		if(isset($upd_data['chat_id'])){
 			$reply['chat_id'] = (int)$upd_data['chat_id'];
 		}
@@ -384,8 +412,8 @@ class Gwptb_Self {
 			//$reply['reply_to_message_id'] = (int)$message->message_id; //do we need it??
 		}
 				
-		//$reply_text = $this->get_replay_text_args($message);
-		$reply_text = array('text' => "I have spent a lifetime in the mirrors of exile busy absorbing my reflection (c)");
+		$reply_text = $this->get_replay_text_args($message);
+		
 		$reply = array_merge($reply, $reply_text);
 		
 		return $reply;
@@ -393,20 +421,94 @@ class Gwptb_Self {
 	
 	protected function get_replay_text_args($upd_data){
 		
-		$command = $this->detect_command($message); 
+		$command = $this->detect_command($upd_data); 
 		$commands = self::get_supported_commands(); 
 		$result = array();
 		
 		if(isset($commands[$command]) && is_callable($commands[$command])){
-			$result = call_user_func($commands[$command], $message);
+			$result = call_user_func($commands[$command], $upd_data);
 		}
 		else {
-			//no commands - return some default text
-			$result['text'] = "I have spent a lifetime in the mirrors of exile busy absorbing my reflection (c)";
+			//no commands - return search results
+			$result = gwptb_search_command_response($upd_data);
 		}
 		
 		return $result;
 	}
+	
+	
+	/** update message **/
+	protected function update_message($upd_data){
+				
+		//prepare update
+		$reply = $this->get_message_update($upd_data);
+		
+		//send update
+		$send = $this->request_api_json('editMessageText', $reply);		
+	}
+	
+	protected function get_message_update($upd_data){
+		
+		$reply = array(); 	
+		if(isset($upd_data['chat->id'])){
+			$reply['chat_id'] = (int)$upd_data['chat->id'];
+		}
+		
+		if(isset($upd_data['message_id'])){
+			$reply['message_id'] = $upd_data['message_id'];
+		}
+				
+		$reply_text = $this->get_update_text_args($upd_data['content']);
+		$reply = array_merge($reply, $reply_text);
+		
+		return $reply;
+	}
+	
+	protected function get_update_text_args($data) {
+		
+		parse_str($data, $a);
+		$result = array();
+		
+		
+		if(isset($a['s']) && isset($a['paged']))
+			$result = gwptb_search_command_response($a['s'], (int)$a['paged']);
+		else
+			$result['text'] =  __('Unfortunately your request didn\'t match anything.', 'gwptb');
+			
+		return $result;
+	}
+	
+	/** == Commands support **/
+	public static function get_supported_commands(){
+        
+        if (empty(self :: $commands)){
+			self :: $commands = apply_filters('gwptb_supported_commnds_list', array(
+				'help'		=> 'gwptb_help_command_response',
+				'start'		=> 'gwptb_start_command_response',
+				'search'	=> 'gwptb_search_command_response',
+			));
+		}
+		
+		return self :: $commands;
+    }
+	
+	protected function detect_command($message){
+		
+		$command = false;
+		if(!isset($message->entities))
+			return $command; //no entities at all
+				
+		foreach($message->entities as $ent){
+			if($ent->type != 'bot_command')
+				continue;
+			
+			$command = substr($message->text, $ent->offset, $ent->length);
+			$command = trim(str_replace('/', '', $command));
+		}
+		
+		return $command;
+	}
+	
 	
 	
 	
@@ -452,10 +554,6 @@ class Gwptb_Self {
 	}
 	
 	
-	
-	
-	
-	
 	protected function process_formatted_update($update){
 		global $wpdb;
 		
@@ -497,98 +595,6 @@ class Gwptb_Self {
 		$log_data['id'] = ($this->log_action($log_data)) ? $wpdb->insert_id : false;
 				
 		return $log_data;
-	}
-	
-	
-	/* reactions */
-	
-	
-	protected function update_message($update_query){
-		global $wpdb;
-		
-		//prepare update
-		$reply = $this->get_message_update($update_query->callback_query);
-		
-		//send update
-		$send = $this->request_api_json('editMessageText', $reply);
-		
-		//log update
-		$log_data = array(
-			'object' => 'update_message',
-			'status' => (!is_wp_error($send['response'])) ? 'send_success' : 'send_error',
-			'data' => $send['response'],
-			'tlgrm_id' => $update_query->update_id,
-			'connected_id' => $send['log_id']
-		);
-		
-		$log_data['id'] = ($this->log_action($log_data)) ? $wpdb->inserd_id : false;
-		
-		return $log_data;
-	}
-	
-	protected function get_message_update($callback_query){
-		
-		$reply = array(); 	
-		if(isset($callback_query->message->chat->id)){
-			$reply['chat_id'] = (int)$callback_query->message->chat->id;
-		}
-		
-		if(isset($callback_query->message->message_id)){
-			$reply['message_id'] = (int)$callback_query->message->message_id;
-		}
-				
-		$reply_text = $this->get_update_text_args($callback_query->data);
-		$reply = array_merge($reply, $reply_text);
-		
-		return $reply;
-	}
-	
-	
-	/** == Commands support **/
-	public static function get_supported_commands(){
-        
-        if (empty(self :: $commands)){
-			self :: $commands = apply_filters('gwptb_supported_commnds_list', array(
-				'help'		=> 'gwptb_help_command_response',
-				'start'		=> 'gwptb_start_command_response',
-				'search'	=> 'gwptb_search_command_response',
-			));
-		}
-		
-		return self :: $commands;
-    }
-	
-	protected function detect_command($message){
-		
-		$command = false;
-		if(!isset($message->entities))
-			return $command; //no entities at all
-				
-		foreach($message->entities as $ent){
-			if($ent->type != 'bot_command')
-				continue;
-			
-			$command = substr($message->text, $ent->offset, $ent->length);
-			$command = trim(str_replace('/', '', $command));
-		}
-		
-		return $command;
-	}
-	
-	
-	
-	protected function get_update_text_args($data) {
-		
-		parse_str($data, $a);
-		$result = array();
-		
-		
-		if(isset($a['s']) && isset($a['paged']))
-			$result = gwptb_search_command_response($a['s'], (int)$a['paged']);
-		else
-			$result['text'] =  __('Unfortunately your request didn\'t match anything.', 'gwptb');
-			
-		return $result;
 	}
 	
 } //class

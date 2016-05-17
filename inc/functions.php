@@ -5,12 +5,12 @@ if(!defined('ABSPATH')) die; // Die if accessed directly
 
 
 /** == Commands == **/
-function gwptb_help_command_response($message){
+function gwptb_help_command_response($upd_data){
 	
 	$result = array();	
 	
 	//get help text from options	
-	$default = __('I can help you to find something useful at %%home%%. Type /search _your term_ to perform a search.', 'gwptb');
+	$default = __('I can help you to find something useful at %%home%%. Send me _your term_ to perform a search.', 'gwptb');
 	$result['text'] = get_option('gwptb_help_text', $default);
 	$result['text'] = str_replace('%%home%%', "[".home_url()."](".home_url().")", $result['text']);
 	$result['parse_mode'] = 'Markdown';
@@ -18,12 +18,12 @@ function gwptb_help_command_response($message){
 	return $result;
 }
 
-function gwptb_start_command_response($message){
+function gwptb_start_command_response($upd_data){
 	
 	$result = array();	
 	
 	//get help text from options	
-	$default = __('Hello, %%uername%%. Let\'s find something useful. Type /search to perform a search, type /help to get help.', 'gwptb');
+	$default = __('Hello, %%uername%%. Let\'s find something useful. Send me _your term_ to perform a search, type /help to get help.', 'gwptb');
 	$result['text'] = get_option('gwptb_start_text', $default);
 	
 	$username = (isset($message->from->first_name)) ? $message->from->first_name : $message->from->username;
@@ -34,21 +34,21 @@ function gwptb_start_command_response($message){
 	return $result;	
 }
 
-function gwptb_search_command_response($data, $paged = 1){
+function gwptb_search_command_response($upd_data){
 	
 	$result = array();
 	$args = array(
 		'post_type' => array('post'), //this should be option
-		'posts_per_page' => 5,		
+		'posts_per_page' => 5,		//this too
 	);
 	
 	//get search term from data
-	if(is_string($data) && !empty($data)){
+	if(is_string($data['content']) && !empty($data['content'])){
 		$search = $data;
 	}
-	elseif(isset($data->text)) {		
-		$search = trim(str_replace('/search', '', $data->text));		
-	}
+	//elseif(isset($data->text)) {		
+	//	$search = trim(str_replace('/search', '', $data->text));		
+	//}
 	
 	
 	if(!empty($search))
