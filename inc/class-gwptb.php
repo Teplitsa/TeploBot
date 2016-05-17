@@ -191,6 +191,7 @@ class Gwptb_Self {
 	protected function log_action($data){
 		global $wpdb;
 		
+		//preapre defaults
 		$defaults = array(
 			'time'   		=> current_time('mysql'), 
 			'action' 		=> '',
@@ -232,7 +233,8 @@ class Gwptb_Self {
 		return $wpdb->insert($table_name, $data, array('%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d', '%d', '%s', '%s',));
 	}
 	
-	//extract info for log from response
+	/* extract info for log from response */
+	// extracting logic should be separated in a more abstract way 
 	protected function extract_response_for_log($response, $method){
 		
 		$log = array();
@@ -251,12 +253,16 @@ class Gwptb_Self {
 				
 			//error 
 		}
-				
+		elseif($method == 'sendMessage'){
+			
+			$log['content'] = maybe_serialize($response);	
+		}
 		return $log;
 	}
 	
 	
-	//shortcut to log received update object 
+	/* log received update object */
+	// extracting logic should be separated in a more abstract way 
 	protected function log_received_update($update){
 		global $wpdb;
 		
@@ -264,16 +270,14 @@ class Gwptb_Self {
 			'action' => 'update',
 			'update_id' => (isset($update->update_id)) ? (int)$update->update_id : 0
 		);
-		$original_object = '';
-		
+				
 		if(is_wp_error($update)){ //error
 			$log_data['method'] = 'error';
 			$log_data['error'] = $update->get_error_message();
 			
 		}
 		elseif(isset($update->message)){ //message
-			$original_object = $update->message;
-			
+						
 			$log_data['method'] = 'message';			
 			$log_data['message_id'] = (isset($update->message->message_id)) ? (int)$update->message->message_id : 0;
 			
@@ -312,9 +316,41 @@ class Gwptb_Self {
 			
 		}
 		elseif(isset($update->callback_query)) { //msg update request
-			$log_data['method'] = 'callback_query';
 			
-			//to-do
+			$log_data['method'] = 'callback_query';			
+			$log_data['message_id'] = (isset($update->callback_query->message->message_id)) ? (int)$update->callback_query->message->message_id : 0;
+			
+			
+			//chat
+			if(isset($update->callback_query->message->chat)){
+				$log_data['chat_id'] = (isset($update->callback_query->message->chat->id)) ? (int)$update->callback_query->message->chat->id : 0;
+				$log_data['chatname'] = '';
+				
+				//this should take type into consideration
+				if(isset($update->callback_query->message->chat->title))
+					$log_data['chatname'] = $update->callback_query->message->chat->title;
+					
+				if(isset($update->message->chat->username))
+					$log_data['chatname'] = $update->callback_query->message->chat->username;
+					
+				if(isset($update->message->chat->username))
+					$log_data['username'] = $update->callback_query->message->chat->username;
+				
+				if(empty($log_data['user_fname']) && isset($update->message->chat->first_name))
+					$log_data['user_fname'] = $update->callback_query->message->chat->first_name;
+					
+				if(empty($log_data['user_lname']) && isset($update->message->chat->last_name))
+					$log_data['user_lname'] = $update->callback_query->message->chat->last_name;
+			}
+			
+			//content
+			if(isset($update->callback_query->data) && !empty($update->callback_query->data)){
+				$log_data['content'] = maybe_serialize($update->callback_query->data);
+			}
+			else{
+				$log_data['error'] = __('Empty update query', 'gwptb');
+			}
+			
 		}
 		
 		//obtain log entry ID
@@ -380,7 +416,7 @@ class Gwptb_Self {
 			$this->reply_message($upd_data);
 		}
 		elseif($upd_data['method'] == 'callback_query'){
-			
+			$this->update_message($upd_data);
 		}
 		
 		//end
@@ -412,7 +448,7 @@ class Gwptb_Self {
 			//$reply['reply_to_message_id'] = (int)$message->message_id; //do we need it??
 		}
 				
-		$reply_text = $this->get_replay_text_args($message);
+		$reply_text = $this->get_replay_text_args($upd_data);
 		
 		$reply = array_merge($reply, $reply_text);
 		
@@ -421,14 +457,15 @@ class Gwptb_Self {
 	
 	protected function get_replay_text_args($upd_data){
 		
-		$command = $this->detect_command($upd_data); 
+		$command = $this->detect_command($upd_data);
 		$commands = self::get_supported_commands(); 
 		$result = array();
+		
 		
 		if(isset($commands[$command]) && is_callable($commands[$command])){
 			$result = call_user_func($commands[$command], $upd_data);
 		}
-		else {
+		else {			
 			//no commands - return search results
 			$result = gwptb_search_command_response($upd_data);
 		}
@@ -437,46 +474,47 @@ class Gwptb_Self {
 	}
 	
 	
-	/** update message **/
+	/** update message by button **/
 	protected function update_message($upd_data){
 				
 		//prepare update
 		$reply = $this->get_message_update($upd_data);
 		
 		//send update
-		$send = $this->request_api_json('editMessageText', $reply);		
+		$this->request_api_json('editMessageText', $reply);		
 	}
 	
 	protected function get_message_update($upd_data){
 		
-		$reply = array(); 	
-		if(isset($upd_data['chat->id'])){
-			$reply['chat_id'] = (int)$upd_data['chat->id'];
+		$reply = array();
+		
+		if(isset($upd_data['chat_id'])){
+			$reply['chat_id'] = (int)$upd_data['chat_id'];
 		}
 		
 		if(isset($upd_data['message_id'])){
 			$reply['message_id'] = $upd_data['message_id'];
 		}
 				
-		$reply_text = $this->get_update_text_args($upd_data['content']);
+		$reply_text = $this->get_update_text_args($upd_data);
 		$reply = array_merge($reply, $reply_text);
 		
 		return $reply;
 	}
 	
-	protected function get_update_text_args($data) {
+	protected function get_update_text_args($upd_data) {
 		
-		parse_str($data, $a);
-		$result = array();
+		$result = array(); 	
+		
+		//find out type of update. only search support for now
+		if(false !== strpos($upd_data['content'], 's=')){
+			$result = gwptb_search_command_response($upd_data);
+		}
 		
 		
-		if(isset($a['s']) && isset($a['paged']))
-			$result = gwptb_search_command_response($a['s'], (int)$a['paged']);
-		else
-			$result['text'] =  __('Unfortunately your request didn\'t match anything.', 'gwptb');
-			
 		return $result;
 	}
+	
 	
 	/** == Commands support **/
 	public static function get_supported_commands(){
@@ -492,17 +530,18 @@ class Gwptb_Self {
 		return self :: $commands;
     }
 	
-	protected function detect_command($message){
+	protected function detect_command($upd_data){
 		
 		$command = false;
-		if(!isset($message->entities))
+		if(!isset($upd_data['attachment']) || empty($upd_data['attachment']))
 			return $command; //no entities at all
 				
-		foreach($message->entities as $ent){
+		$entities = maybe_unserialize($upd_data['attachment']); 
+		foreach((array)$entities as $ent){
 			if($ent->type != 'bot_command')
 				continue;
 			
-			$command = substr($message->text, $ent->offset, $ent->length);
+			$command = substr($upd_data['content'], $ent->offset, $ent->length);
 			$command = trim(str_replace('/', '', $command));
 		}
 		
@@ -510,91 +549,5 @@ class Gwptb_Self {
 	}
 	
 	
-	
-	
-	
-	
-	/** old **/
-	/**
-	 * Get update stack by polling 
-	 **/
-	public function get_update(){
-		
-		//detect the latest logged update
-		$latest_upd_id = $this->get_latest_update_id();
-		$params = array();
-		
-		if($latest_upd_id > 0) //we need next update
-			$params['offset'] = $latest_upd_id + 1;  //+1
-		
-		//api request		
-		$update = $this->request_api_json('getUpdates', $params);
-		
-		//log results - it could be bunch of updates
-		$update = $this->log_received_update($update);
-		
-		//return formatted results with log IDs for each update
-		return $update;
-	}
-		
-	/**
-	 * Find latest registered update ID (assigned by Telegram)
-	 **/
-	protected function get_latest_update_id(){
-		global $wpdb;
-		
-		$table_name = Gwptb_Core::get_log_tablename();
-		$row = $wpdb->get_row("SELECT * FROM $table_name WHERE object = 'update' AND status = 'received' ORDER BY tlgrm_id DESC LIMIT 1" );
-		
-		$upd_id = 0; 
-		if($row)
-			$upd_id = (int)$row->tlgrm_id;
-				
-		return $upd_id;
-	}
-	
-	
-	protected function process_formatted_update($update){
-		global $wpdb;
-		
-		//log data for whole request process entry		
-		$log_data = array(
-			'object' => 'update_processed',
-			'status' => '',
-			'data' => array(),
-			'connected_id' => (isset($update['log_id'])) ? (int)$update['log_id'] : 0
-		);
-		
-		if(!is_wp_error($update['response']) && !empty($update['response'])){
-			$results = array();
-			
-			foreach($update['response'] as $i => $upd){
-				//test for type of response
-				if(isset($upd->message)){
-					$results[$i] = $this->reply_message($upd);					
-				}
-				elseif(isset($upd->callback_query)){
-					$results[$i] = $this->update_message($upd);	
-				}
-				
-				//others types
-			}
-			
-			$log_data['status'] = 'success';
-			$log_data['data'] = $results;
-		}
-		elseif(!is_wp_error($update['response']) && empty($update['response'])){
-			$log_data['status'] = 'empty_update';
-			$log_data['data'] = $update['response'];
-		}
-		else {
-			$log_data['status'] = 'error';
-			$log_data['data'] = $update['response']->get_message();
-		}
-		
-		$log_data['id'] = ($this->log_action($log_data)) ? $wpdb->insert_id : false;
-				
-		return $log_data;
-	}
 	
 } //class

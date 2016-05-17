@@ -26,9 +26,10 @@ function gwptb_start_command_response($upd_data){
 	$default = __('Hello, %%uername%%. Let\'s find something useful. Send me _your term_ to perform a search, type /help to get help.', 'gwptb');
 	$result['text'] = get_option('gwptb_start_text', $default);
 	
-	$username = (isset($message->from->first_name)) ? $message->from->first_name : $message->from->username;
+	$username = (!empty($upd_data['user_fname'])) ? $upd_data['user_fname'] : $upd_data['username'];
+	//still may be empty??
 	
-	$result['text'] = str_replace('%%uername%%', "_".$username."_", $result['text']);
+	$result['text'] = str_replace('%%uername%%', $username, $result['text']);
 	$result['parse_mode'] = 'Markdown';
 		
 	return $result;	
@@ -37,39 +38,63 @@ function gwptb_start_command_response($upd_data){
 function gwptb_search_command_response($upd_data){
 	
 	$result = array();
+	
+	$per_page = 5; //this will be option
 	$args = array(
-		'post_type' => array('post'), //this should be option
-		'posts_per_page' => 5,		//this too
+		'post_type' 		=> array('post'), //this should be option
+		'posts_per_page'	=> $per_page,		//this too
+		's' 				=> '',
+		'paged' 			=> 1
 	);
 	
-	//get search term from data
-	if(is_string($data['content']) && !empty($data['content'])){
-		$search = $data;
+	//get search term from $upd_data - it may be update data
+	if(false !== strpos($upd_data['content'], 's=')){ //update
+		
+		parse_str($upd_data['content'], $a);
+		
+		if(isset($a['s']) && isset($a['paged'])){
+			$args['s'] = apply_filters('gwptb_search_term', $a['s']);
+			$args['paged'] = (int)$a['paged'];
+		}
+	}	
+	else { //init search
+		$args['s'] = apply_filters('gwptb_search_term', $upd_data['content']);
 	}
-	//elseif(isset($data->text)) {		
-	//	$search = trim(str_replace('/search', '', $data->text));		
-	//}
 	
+	if(empty($args['s'])) {
+		//don't perform empty search
+		$result['text'] = __('Unfortunately your request didn\'t match anything.', 'gwptb');
+		return $result;
+	}
 	
-	if(!empty($search))
-		$args['s'] = $search;
-	
-	if((int)$paged > 1)
-		$args['paged'] = (int)$paged;
-	
-	
+	$paged = $args['paged'];	
 	$query = new WP_Query($args);
+	
 	if($query->have_posts()){
 		
-		$result['text'] = sprintf(__('Found results: %s / displaying %d - %d', 'gwptb'), $query->found_posts, ($paged*5 - 5) + 1, $paged*5).chr(10).chr(10);		
+		if($query->found_posts > $per_page){
+			$result['text'] = sprintf(__('Found results: %s / displaying %d - %d', 'gwptb'), $query->found_posts, ($paged*$per_page - $per_page) + 1, $paged*$per_page).chr(10).chr(10);
+		}
+		else {
+			$result['text'] = sprintf(__('Found results: %s', 'gwptb'), $query->found_posts.chr(10).chr(10));
+		}
+						
 		$result['text'] .= gwptb_formtat_posts_list($query->posts);		
 		$result['parse_mode'] = 'HTML';
 		
-		if($query->found_posts > 5){
-			$paged++;
-			$keys = array(
-				'inline_keyboard' => array(array(array('text' => 'Next', 'callback_data' => 's='.$search.'&paged='.$paged)))
-			);	
+		
+		if($query->found_posts > $per_page){
+			//next/prev			
+			$keys = array('inline_keyboard' => array());
+			
+			if($paged > 1){
+				$keys['inline_keyboard'][0][] = array('text' => __('Previous', 'gwptb'), 'callback_data' => 's='.$args['s'].'&paged='.($paged-1));				
+			}
+			
+			if($paged < ceil($query->found_posts/$per_page)) {
+				$keys['inline_keyboard'][0][] = array('text' => __('Next', 'gwptb'), 'callback_data' => 's='.$args['s'].'&paged='.($paged+1));		
+			}
+			
 			$result['reply_markup'] = json_encode($keys);
 		}
 	}
