@@ -21,8 +21,8 @@ jQuery(document).ready(function($){
 			},				
 			success: function(response) {
 
-				if (response.type == 'ok') {					
-					$(response.data).appendTo(result);					
+				if (response.type == 'ok') {
+					$(result).empty().html(response.data);			
 					$(result).removeClass('loading');					
 				}
 			}
@@ -62,7 +62,6 @@ jQuery(document).ready(function($){
 						target.addClass('green');
 						$('#gwptb_del_hook').removeClass('hidden');
 					}
-					
 				}
 			});
 		}
