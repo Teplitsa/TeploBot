@@ -33,22 +33,20 @@ class Gwptb_Self {
 	
 	
 	/** == API request == **/
-		
+	
 	/**
 	 *	Make Telegram Bot API request
-	 *	@method string Telegram API method
-	 *	@params array - request params according to Telegram API
+	 *	
+	 *	@param string $method Telegram API method to use
+	 *	@param array  $params Request params according to Telegram API
+	 *	@param int    $update_id Connected update ID (optional)
+	 *
+	 *	@return array Returns array of parsed response data after recording them into log
 	 **/
-	protected function request_api_json($method = 'getMe', $params = array()){
+	protected function request_api_json($method = 'getMe', $params = array(), $update_id = 0){
 		global $wpdb;
 		
-		$action = (in_array($method, array('getMe', 'setWebhook'))) ? 'request' : 'response';
-		
-		$log_data = array(
-			'action' => $action,
-			'method' => $method			
-		);
-		
+			
 		$request_args = array('headers' => array("Content-Type" => "application/json"));
 		if(!empty($params))
 			$request_args['body'] = json_encode($params);
@@ -59,35 +57,22 @@ class Gwptb_Self {
 		//parse response and find body content or error
 		$response = $this->validate_api_response($response);
 		
-		//prepare log data		
-		if(is_wp_error($response)){			
-			$log_data['error'] =  $response->get_error_message();						
-		}
-		else {			
-			$log_content = $this->extract_response_for_log($response, $method);	
-			$log_data = array_merge($log_data, $log_content);
-		}
-		
-		//obtain log entry ID
-		$log_data['id'] = ($this->log_action($log_data)) ? $wpdb->insert_id : 0;
-				
-		return $log_data;
+		//log data		
+		return $this->log_reseived_response($response, $method, $update_id);
 	}
 	
 	/**
 	 *	Make Telegram Bot API request to upload files
-	 *	@method string Telegram API method
-	 *	@params array - request params according to Telegram API
+	 *
+	 *	@param string $method Telegram API method to use
+	 *	@param array  $params Request params according to Telegram API
+	 *	@param int    $update_id Connected update ID (optional)
+	 *
+	 *	@return array Returns array of parsed response data after recording them into log
 	 **/
-	protected function request_api_multipart($method = 'getMe', $params = array()){		
+	protected function request_api_multipart($method = 'getMe', $params = array(), $update_id = 0){		
 		global $wpdb;
 		
-		$action = (in_array($method, array('getMe', 'setWebhook'))) ? 'request' : 'response';
-		
-		$log_data = array(
-			'action' => $action,
-			'method' => $method			
-		);
 		
 		$boundary = wp_generate_password( 24 );
 		$request_args = array('headers' => array("Content-Type" => "multipart/form-data; boundary=".$boundary));
@@ -119,11 +104,7 @@ class Gwptb_Self {
 		}
 		
 		$request_args['body'] = $payload;
-		//var_dump($params);
-		//echo"<br><br>";
-		//var_dump($request_args);
-		//echo"<br><br>";
-		
+				
 		//make remore API request			
 		$response = wp_remote_post($this->api_url.$method, $request_args);
 		
@@ -131,30 +112,16 @@ class Gwptb_Self {
 		//parse response and find body content or error
 		$response = $this->validate_api_response($response);
 		
-		//prepare log data		
-		if(is_wp_error($response)){			
-			$log_data['error'] =  $response->get_error_message();						
-		}
-		elseif($method == 'setWebhook'){
-			if((bool)$response) {
-				$log_data['content'] = (empty($params['url'])) ? __('Connection removed', 'gwptb') : __('Connection set', 'gwptb');
-			}
-		}
-		else {			
-			$log_content = $this->extract_response_for_log($response, $method);	
-			$log_data = array_merge($log_data, $log_content);
-		}
-		
-		//obtain log entry ID
-		$log_data['id'] = ($this->log_action($log_data)) ? $wpdb->insert_id : 0;
-				
-		return $log_data;
+		//log data		
+		return $this->log_reseived_response($response, $method, $update_id);		
 	}
 	
 		
 	/**
-	 * Get correct body of response or error
-	 * @response object/array - raw result of remote request as it come to us
+	 * Get correct body of WP remote response
+	 * 
+	 * @param object/array $response Raw result of remote request as it come to us	 * 
+	 * @return object Content of response body on success or WP_Error object in case of incorrect results
 	 **/
 	protected function validate_api_response($response) {
 		
@@ -188,6 +155,13 @@ class Gwptb_Self {
 	
 	
 	/** == Log == **/
+	
+	/**
+	 * Log arbitrary action
+	 *
+	 * @param array $data Array of data to write	 *
+	 * @return mixed Return false if log failed or 1 on success
+	 **/
 	protected function log_action($data){
 		global $wpdb;
 		
@@ -233,35 +207,81 @@ class Gwptb_Self {
 		return $wpdb->insert($table_name, $data, array('%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d', '%d', '%s', '%s',));
 	}
 	
-	/* extract info for log from response */
+	/**
+	 *  Extract info for log from response
+	 *
+	 *	@param obj $response Response object to work
+	 *	@param string $method API method used
+	 *	@param int $update_id Connected update ID
+	 *
+	 *	@return array Return array of extracted data after write them into log with lod_id
+	 */
+	
 	// extracting logic should be separated in a more abstract way 
-	protected function extract_response_for_log($response, $method){
+	protected function log_reseived_response($response, $method, $update_id = 0){
+				
+		$log_data = array('method' => $method);
+		$log_data['action'] = (in_array($method, array('getMe', 'setWebhook'))) ? 'request' : 'response';
+		$log_data['update_id'] = ($update_id > 0) ? (int)$update_id : 0;
+				
 		
-		$log = array();
-		if($method == 'getMe'){
+		if(is_wp_error($response)){			
+			$log_data['error'] =  $response->get_error_message();						
+		}
+		elseif($method == 'setWebhook'){
+			if((bool)$response) {
+				$log_data['content'] = (empty($params['url'])) ? __('Connection removed', 'gwptb') : __('Connection set', 'gwptb');
+			}
+		}
+		elseif($method == 'getMe'){
+			
 			//correct response
 			if(isset($response->id)){
-				$log['user_id'] = (int)$response->id;
-				$log['content'] = __('Bot detected', 'gwptb');
+				$log_data['user_id'] = (int)$response->id;
+				$log_data['content'] = __('Bot detected', 'gwptb');
 			}	
 			
 			if(isset($response->first_name))
-				$log['user_fname'] = $response->first_name; //add sanitisation
+				$log_data['user_fname'] = $response->first_name; //add sanitisation
 				
 			if(isset($response->username))
-				$log['username'] = $response->username;//add sanitisation
+				$log_data['username'] = $response->username;//add sanitisation
 				
 			//error 
 		}
-		elseif($method == 'sendMessage'){
+		elseif($method == 'sendMessage' || $method == 'editMessageText'){
 			
-			$log['content'] = maybe_serialize($response);	
+			if(isset($response->message_id))
+				$log_data['message_id'] = (int)$response->message_id;
+				
+			if(isset($response->chat)){
+				$chat_data = $this->extract_chat_data_for_log($response->chat);
+				$log_data = array_merge($log_data, $chat_data);
+			}
+			
+			if(empty($log_data['user_id']) && in_array($response->chat->type, array('private'))){
+				//in some case user_id == chat_id - test for them all
+				$log_data['user_id'] = (int)$response->chat->id;
+			}
+			
+			$log_data['content'] = $response->text;
+			$log_data['attachment'] = maybe_serialize($response->entities);
+			//error 
 		}
-		return $log;
+		
+		//obtain log entry ID
+		$log_data['id'] = ($this->log_action($log_data)) ? $wpdb->insert_id : 0;
+		
+		return $log_data;
 	}
 	
 	
-	/* log received update object */
+	/**
+	 * Log update object - detect update type and format it's data
+	 *
+	 * @param object $update Update object as we received it from Telegram
+	 * @return array Return array of extracted data after write them into log with lod_id
+	 **/
 	// extracting logic should be separated in a more abstract way 
 	protected function log_received_update($update){
 		global $wpdb;
@@ -283,28 +303,14 @@ class Gwptb_Self {
 			
 			//other cases of user ??
 			if(isset($update->message->from)){
-				$log_data['user_id'] = (isset($update->message->from->id)) ? (int)$update->message->from->id : 0;
-				$log_data['username'] = (isset($update->message->from->username)) ? (int)$update->message->from->username : '';
-				$log_data['user_fname'] = (isset($update->message->from->first_name)) ? (int)$update->message->from->first_name : '';
-				$log_data['user_lname'] = (isset($update->message->from->last_name)) ? (int)$update->message->from->last_name : '';
+				$from_data = $this->extract_user_data_for_log($update->message->from);
+				$log_data = array_merge($log_data, $from_data);
 			}
 			
 			//chat
 			if(isset($update->message->chat)){
-				$log_data['chat_id'] = (isset($update->message->chat->id)) ? (int)$update->message->chat->id : 0;
-				$log_data['chatname'] = '';
-				
-				if(isset($update->message->chat->title))
-					$log_data['chatname'] = $update->message->chat->title;
-					
-				if(isset($update->message->chat->username))
-					$log_data['chatname'] = $update->message->chat->username;
-				
-				if(empty($log_data['user_fname']) && isset($update->message->chat->first_name))
-					$log_data['user_fname'] = $update->message->chat->first_name;
-					
-				if(empty($log_data['user_lname']) && isset($update->message->chat->last_name))
-					$log_data['user_lname'] = $update->message->chat->last_name;
+				$chat_data = $this->extract_chat_data_for_log($update->message->chat);
+				$log_data = array_merge($log_data, $chat_data);
 			}
 			
 			//content
@@ -316,32 +322,9 @@ class Gwptb_Self {
 			
 		}
 		elseif(isset($update->callback_query)) { //msg update request
-			
+						
 			$log_data['method'] = 'callback_query';			
 			$log_data['message_id'] = (isset($update->callback_query->message->message_id)) ? (int)$update->callback_query->message->message_id : 0;
-			
-			
-			//chat
-			if(isset($update->callback_query->message->chat)){
-				$log_data['chat_id'] = (isset($update->callback_query->message->chat->id)) ? (int)$update->callback_query->message->chat->id : 0;
-				$log_data['chatname'] = '';
-				
-				//this should take type into consideration
-				if(isset($update->callback_query->message->chat->title))
-					$log_data['chatname'] = $update->callback_query->message->chat->title;
-					
-				if(isset($update->message->chat->username))
-					$log_data['chatname'] = $update->callback_query->message->chat->username;
-					
-				if(isset($update->message->chat->username))
-					$log_data['username'] = $update->callback_query->message->chat->username;
-				
-				if(empty($log_data['user_fname']) && isset($update->message->chat->first_name))
-					$log_data['user_fname'] = $update->callback_query->message->chat->first_name;
-					
-				if(empty($log_data['user_lname']) && isset($update->message->chat->last_name))
-					$log_data['user_lname'] = $update->callback_query->message->chat->last_name;
-			}
 			
 			//content
 			if(isset($update->callback_query->data) && !empty($update->callback_query->data)){
@@ -351,6 +334,11 @@ class Gwptb_Self {
 				$log_data['error'] = __('Empty update query', 'gwptb');
 			}
 			
+			//chat
+			if(isset($update->callback_query->message->chat)){
+				$chat_data = $this->extract_chat_data_for_log($update->callback_query->message->chat);
+				$log_data = array_merge($log_data, $chat_data);
+			}
 		}
 		
 		//obtain log entry ID
@@ -359,6 +347,57 @@ class Gwptb_Self {
 		return $log_data;
 	}
 	
+	/** == Skeleton for parsing Telegram objects == **/
+	
+	/**
+	 * 	Extract Chat object	
+	 *  
+	 *  @param object $chat Object represented Telegram chat object
+	 *  @return array Returns array of formatted data
+	 **/
+	public function extract_chat_data_for_log($chat){
+		
+		$log_data = array();
+		
+		$log_data['chat_id'] = (isset($chat->id)) ? (int)$chat->id : 0;
+		$log_data['chatname'] = '';
+		
+		//this should take type into consideration
+		if(isset($chat->title))
+			$log_data['chatname'] = $chat->title;
+			
+		if(isset($chat->username))
+			$log_data['chatname'] = $chat->username;
+			
+		if(isset($chat->username))
+			$log_data['username'] = $chat->username;
+		
+		if(isset($chat->first_name))
+			$log_data['user_fname'] = $chat->first_name;
+			
+		if(isset($chat->last_name))
+			$log_data['user_lname'] = $chat->last_name;
+		
+		return $log_data;
+	}
+	
+	/**
+	 * 	Extract User object	
+	 *  
+	 *  @param object $user Object represented Telegram user object
+	 *   @return array Returns array of formatted data
+	 **/
+	public function extract_user_data_for_log($user){
+		
+		$log_data = array();
+		
+		$log_data['user_id'] = (isset($user->id)) ? (int)$user->id : 0;
+		$log_data['username'] = (isset($user->username)) ? $user->username : '';
+		$log_data['user_fname'] = (isset($user->first_name)) ? $user->first_name : '';
+		$log_data['user_lname'] = (isset($user->last_name)) ? $user->last_name : '';
+		
+		return $log_data;
+	}
 	
 	
 	/** == Communications: wrappers for api request methods == **/
@@ -404,7 +443,7 @@ class Gwptb_Self {
 	
 	/**
 	 * Process update stack
-	 * @update object/WP_Error - received update or Error object
+	 * @param object $update Object that represent received update or WP_Error if update invalid
 	 **/
 	public function process_update($update){
 				
@@ -425,7 +464,11 @@ class Gwptb_Self {
 	
 	/** == Reactions: handles for different types of query == **/
 	
-	/* replay on message **/
+	/**
+	 * Replay on message
+	 *
+	 * @param array $upd_data Preformed update data (after logging)
+	 **/
 	protected function reply_message($upd_data){
 		global $wpdb;
 		
@@ -433,7 +476,7 @@ class Gwptb_Self {
 		$reply = $this->get_message_replay($upd_data);
 				
 		//send reply
-		$this->request_api_json('sendMessage', $reply);		
+		$this->request_api_json('sendMessage', $reply, (int)$upd_data['update_id']);		
 	}
 	
 	protected function get_message_replay($upd_data){
@@ -473,15 +516,18 @@ class Gwptb_Self {
 		return $result;
 	}
 	
-	
-	/** update message by button **/
+	/**
+	 * Update message (by next/prev buttons)
+	 *
+	 * @param array $upd_data Preformed update data (after logging)
+	 **/	
 	protected function update_message($upd_data){
 				
 		//prepare update
 		$reply = $this->get_message_update($upd_data);
 		
 		//send update
-		$this->request_api_json('editMessageText', $reply);		
+		$this->request_api_json('editMessageText', $reply, (int)$upd_data['update_id']);		
 	}
 	
 	protected function get_message_update($upd_data){

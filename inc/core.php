@@ -127,7 +127,7 @@ class Gwptb_Core {
 	 * as for now just print everything on the screen
 	 **/
 	public function service_process(){
-		
+				
 		$action = (isset($_GET['action'])) ? trim($_GET['action']) : '';
 		
 		if(empty($action))
