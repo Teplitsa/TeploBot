@@ -8,6 +8,7 @@ class Gwptb_Self {
 	
 	protected $token = '';
 	protected $api_url = '';
+	protected $self_id = null;
 	
 	
 	private function __construct() {
@@ -597,5 +598,24 @@ class Gwptb_Self {
 	}
 	
 	
+	/** == Self-ID == **/
+	protected function get_self_id() {
+		global $wpdb;
+				
+		if(null === $this->self_id){
+			$table_name = Gwptb_Core::get_log_tablename();
+			$row = $wpdb->get_row("SELECT * FROM {$table_name} WHERE method = 'getMe' ORDER BY id DESC LIMIT 1");
+			if(isset($row->username) && !empty($row->username)){
+				$this->self_id['username'] = $row->username;
+				$this->self_id['name'] = (!empty($row->user_fname)) ? $row->user_fname : '';
+			}
+		}
+		
+		return $this->self_id;
+	}
+	
+	public function get_self_link(){
+		
+	}
 	
 } //class

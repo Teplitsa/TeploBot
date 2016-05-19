@@ -97,12 +97,12 @@ class Gwptb_Admin {
             <h2><?php _e('Green WP Telegram Bot', 'gwptb');?><?php echo $btn;?></h2>
 		
 		<!-- intro section -->
-		<?php if(empty($token) || $stage == 'howto') { ?>
-			<div class="gwptb-page-section howto">
-				How to create a bot - instructions 
-			</div>
-			
-		<?php  } elseif(!empty($token) && ($stage == 'default')){ ?>
+		<?php
+			if(empty($token) || $stage == 'howto') {
+				$this->print_help_section();
+				
+			} elseif(!empty($token) && ($stage == 'default')){
+		?>
 			<div class="gwptb-page-section connection">
 				<div class="metabox-holder" id="gwptb-widgets">
 					<div class="postbox-container" id="postbox-container-1">
@@ -139,6 +139,21 @@ class Gwptb_Admin {
 		<?php } ?>
 		
 		</div><!-- close .wrap -->
+	<?php
+	}
+	
+	protected function print_help_section(){
+		
+		$locale = get_locale();
+		$path = GWPTB_PLUGIN_DIR.'assets/html/create-bot-'.$locale.'.html';
+		if(!file_exists($path))
+			$path = GWPTB_PLUGIN_DIR.'assets/html/сreate-bot.html';
+		
+		$html = file_get_contents($path);		
+	?>
+		<div class="gwptb-page-section help-section">
+			<?php if($html){ echo $html; } ?>			
+		</div>
 	<?php
 	}
 	

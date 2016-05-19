@@ -32,6 +32,11 @@
 	}
 }
 
+/** help **/
+.gwptb-page-section.help-section {
+	max-width: 840px;
+}
+
 /** settings block */
 .gwptb-page-section.settings {
 	@include clearfix;
@@ -129,4 +134,14 @@
 	td {
 		padding: 4px 0 4px 16px;
 	}
+}
+
+
+/* Log table */
+.gwptb-log-content {
+	font-size: 0.9em;
+}
+.gwptb-log-error {
+	font-size: 0.9em;
+	color: red;
 }
