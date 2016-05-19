@@ -347,6 +347,8 @@ class Gwptb_Self {
 		return $log_data;
 	}
 	
+	
+	
 	/** == Skeleton for parsing Telegram objects == **/
 	
 	/**

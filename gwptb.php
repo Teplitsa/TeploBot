@@ -70,6 +70,7 @@ require_once(plugin_dir_path(__FILE__).'inc/class-cssjs.php');
 $tplb = Gwptb_Core::get_instance();
 
 if(is_admin()){
+	require_once(plugin_dir_path(__FILE__).'inc/class-admin-list-table.php');
 	require_once(plugin_dir_path(__FILE__).'inc/admin.php');
 	$gwptb_admin = Gwptb_Admin::get_instance();
 }

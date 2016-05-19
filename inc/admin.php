@@ -182,11 +182,15 @@ class Gwptb_Admin {
 		if( !current_user_can('manage_options') ) {
             wp_die(__('You do not have permissions to access this page.', 'gwptb'));
         }
+		
+		$list_table = new Gwptb_Log_List_Table();
 	?>
 		<div class="wrap">
-            <h2><?php _e('GWPTB Log', 'gwptb');?></h2>
-            
-			log table
+            <h2><?php _e('GWPTB Log', 'gwptb');?></h2>            
+			<?php
+				$list_table->prepare_items();
+				$list_table->display();
+			?>
 		</div><!-- close .wrap -->
 	<?php
 	}
