@@ -8,7 +8,7 @@ if(!class_exists('WP_List_Table')) {
 /** Class to present Log table **/
 class Gwptb_Log_List_Table extends WP_List_Table  {
 	
-	protected $log_per_page = 20;
+	protected $log_per_page = 30;
 	
 	
 	/** constructor **/
@@ -29,21 +29,50 @@ class Gwptb_Log_List_Table extends WP_List_Table  {
 	public function prepare_items() {
 		global $wpdb;
 		
-		//get params about paging and sorting
-		$orderby = 'time';
-		$order = 'DESC';
-		$offset = 0;
-		$per_page = $this->log_per_page;
-		
+		//inits
 		$table_name = Gwptb_Core::get_log_tablename();
-		$sql = "SELECT * FROM {$table_name} ORDER BY {$orderby} {$order} LIMIT {$offset},{$per_page}";
 		
+		//order
+		$orderby = array();		
+		$orderby_raw = (isset($_REQUEST['orderby'])) ? trim($_REQUEST['orderby']) : 'time';
+		$order = (isset($_REQUEST['order'])) ? trim($_REQUEST['order']) : 'desc';
 		
-		//here we should get log items
+		if(!in_array($orderby_raw, array_keys($this->get_sortable_columns()))){
+			$orderby_raw = 'time';
+		}
+		
+		$order = ($order == 'asc') ? 'ASC' : 'DESC';
+		$orderby[] = "$orderby_raw $order";
+		$orderby[] = 'id DESC';
+		$orderby = implode(', ', $orderby);
+		
+		//paging args	
+		$per_page = $this->get_items_per_page('gwptb_log_per_page', $this->log_per_page);
+		$offset = 0;
+		if(isset($_REQUEST['paged']) && (int)$_REQUEST['paged'] > 1){
+			$offset = ((int)$_REQUEST['paged'] - 1)*$per_page;
+		}		
+			
+		//finally sql
+		$sql = "SELECT * FROM {$table_name} ORDER BY {$orderby} LIMIT {$offset},{$per_page}";
+				
+		//get items
 		$this->items = $wpdb->get_results($sql);
+		
+		//paging
+		$this->set_pagination_args( array(
+			'total_items' => $this->count_total_items(),
+			'per_page' => $per_page
+		) );
 	}
 	
-	
+	/* count total items in log */
+	protected function count_total_items(){
+		global $wpdb;
+		
+		$table_name = Gwptb_Core::get_log_tablename();		
+		return $wpdb->get_var("SELECT COUNT(id) FROM {$table_name}");
+	}
 	
 	/** table */
 	public function get_columns() {
@@ -54,26 +83,68 @@ class Gwptb_Log_List_Table extends WP_List_Table  {
 			'method'	=> __( 'Method', 'gwptb' ),
 			'user'		=> __( 'User', 'gwptb' ),
 			'content'	=> __( 'Content', 'gwptb' ),
-			'logdata'	=> __( 'Full item', 'gwptb')
+			//'logdata'	=> __( 'Full item', 'gwptb') popup with full data
 		);
 	}
 	
 	protected function get_sortable_columns() {
 		return array(
-			'date'   => 'date',
+			'time'   => 'time',
 			'action' => 'action',
 			'method' => 'method',
 		);
 	}
 	
-	protected function column_date( $item ) {
+	protected function column_time( $item ) {
 		
-		echo 'date';
+		if(isset($item->time))
+			echo date_i18n('d.m.Y H:i', strtotime($item->time));
+	}
+	
+	protected function column_user( $item ) {
+		
+	$user = array();
+		
+		if(isset($item->user_fname) && !empty($item->user_fname))
+			$user[] = apply_filters('gwptb_admin_text', $item->user_fname);
+		
+		if(isset($item->user_lname) && !empty($item->user_lname))
+			$user[] = apply_filters('gwptb_admin_text', $item->user_lname);
+			
+		if(isset($item->username) && !empty($item->username)){
+			$user[] = (empty($user)) ? apply_filters('gwptb_admin_text', '@'.$item->username) : apply_filters('gwptb_admin_text', '(@'.$item->username.')');
+		}
+		
+		echo implode(' ', $user);
+	}
+	
+	protected function column_content( $item ) {
+				
+		if(isset($item->error) && !empty($item->error)){
+			echo "<div class='gwptb-log-error'>";
+			echo apply_filters('gwptb_admin_rich_text', $item->error);
+			echo "</div>";
+		}
+		elseif(isset($item->content) && !empty($item->content)) {
+			
+			$c = (mb_strlen($item->content) > 140) ? mb_substr($item->content, 0, 140).'...' : $item->content;
+			
+			echo "<div class='gwptb-log-content'>";
+			echo apply_filters('gwptb_admin_rich_text', $c);
+			echo "</div>";
+		}
 	}
 	
 	protected function column_default( $item, $column_name ) {
 		
-		echo 'smth';
+		if(in_array($column_name, array('action', 'method')) && isset($item->$column_name)){
+			echo apply_filters('gwptb_admin_text', $item->$column_name);
+			
+		}
+		else {
+			do_action( 'gwptb_log_table_custom_colyumn', $column_name, $item );
+			
+		}		
 	}
 	
 	

@@ -1,6 +1,8 @@
 <?php
 if(!defined('ABSPATH')) die; // Die if accessed directly
 
+
+
 class Gwptb_Admin {
 	
 	private static $instance = NULL; //instance store
@@ -59,6 +61,8 @@ class Gwptb_Admin {
 		
 		//Log
         add_submenu_page('gwptb', __('GWPTB Log', 'gwptb'), __('Log', 'gwptb'), 'manage_options', 'gwptb_log', array($this, 'log_screen'));
+		
+			
 	}
 	
 	
@@ -178,19 +182,26 @@ class Gwptb_Admin {
 	
 	
 	public function log_screen() {
-
+				
 		if( !current_user_can('manage_options') ) {
             wp_die(__('You do not have permissions to access this page.', 'gwptb'));
         }
 		
-		$list_table = new Gwptb_Log_List_Table();
 	?>
 		<div class="wrap">
             <h2><?php _e('GWPTB Log', 'gwptb');?></h2>            
 			<?php
-				$list_table->prepare_items();
-				$list_table->display();
+				$list_table = gwpt_get_list_table();				
+				$list_table->prepare_items(); 
+				
+				$list_table->views();
 			?>
+			<form id="gwptb-log-filter" method="get">
+			<?php
+				//$list_table->search_box(__('Search', 'gwptb'), 'log_item');
+				$list_table->display();
+			?>		
+			</form>
 		</div><!-- close .wrap -->
 	<?php
 	}
@@ -290,7 +301,7 @@ class Gwptb_Admin {
 
 	/** == Settings  fields == **/
 	function settings_init(  ) { 
-	
+				
 		register_setting( 'gwptb_settings', 'gwptb_bot_token');
 		register_setting( 'gwptb_settings', 'gwptb_cert_path' );
 	
@@ -316,7 +327,9 @@ class Gwptb_Admin {
 			'gwptb_settings', 
 			'gwptb_access_section' 
 		);
-	
+		
+		
+		$list_table = gwpt_get_list_table();
 	}
 
 
@@ -350,3 +363,19 @@ class Gwptb_Admin {
 	
 	
 } //class
+
+/**
+ * 	List table instance should be global
+ * 	(☉_☉) ಥ_ಥ (☉_☉)
+ **/
+
+$gwpt_list_table = null;
+function gwpt_get_list_table(){
+	global $gwpt_list_table;
+	
+	if(null === $gwpt_list_table){
+		$gwpt_list_table = new Gwptb_Log_List_Table();
+	}
+	
+	return $gwpt_list_table;
+}

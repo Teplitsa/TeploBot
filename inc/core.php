@@ -188,4 +188,19 @@ class Gwptb_Core {
 	}
 	
 	
+	/** == Filters == **/
+	function add_formatting_filters(){
+		
+		/* Output
+		gwptb_admin_text
+		gwptb_admin_rich_text
+		*/
+		
+		/* Input 
+		gwptb_sanitize_latin
+		gwptb_sanitize_text
+		gwptb_sanitize_rich_text
+		*/
+	}
+	
 } //class
