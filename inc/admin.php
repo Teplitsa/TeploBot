@@ -176,7 +176,7 @@ class Gwptb_Admin {
 		$hook = get_option('gwptb_webhook', 0);
 	?>
 	<div class="gwptb-conncetion-setup">
-		<form action="admin.php" method="get">
+		<form id="gwptb-connection" action="admin.php" method="get">
 			<input type="hidden" name="page" value="gwptb">
 			<?php wp_nonce_field('connection_setup', '_gwptbnonce'); ?>
 			
@@ -195,10 +195,13 @@ class Gwptb_Admin {
 			<!-- messages -->
 			<?php if(isset($show_data['msg']) && !empty($show_data['msg'])){ ?>	
 				<div class="gwptb-connection-response">
-					<div class="<?php echo esc_attr($show_data['msg']['css']);?>"><?php echo esc_attr($show_data['msg']['txt']);?></div>
+					<div class="<?php echo esc_attr($show_data['msg']['css']);?>"><p><?php echo $show_data['msg']['txt'];?></p></div>
 				</div>
 			<?php } ?>
-			
+		</form>
+		<form id="gwptb-update-bot" action="admin.php" method="get">
+			<input type="hidden" name="page" value="gwptb">
+			<?php wp_nonce_field('connection_setup', '_gwptbnonce'); ?>
 			<?php if($hook) { ?>
 				<input type="hidden" name="action" value="update_bot_data">
 				<button type="submit" class="button button-secondary"><?php _e('Update bot data', 'gwptb');?></button>
@@ -257,22 +260,22 @@ class Gwptb_Admin {
 		
 			//build reply
 			if(isset($test['content']) && !empty($test['content'])){			
-				$msg['txt'] = "<p>".$test['content']."</p>";
+				$msg['txt'] = $test['content'];
 				$msg['css'] .= ' success';
 				
 				$hook = ($action == 'set_webhook') ? 1 : 0;
 				update_option('gwptb_webhook', $hook);
 			}
 			elseif(isset($test['error']) && !empty($test['error'])){
-				$msg['txt'] = "<p>".sprintf(__('Connection is invalid. Error message: %s.', 'gwptb'), '<i>'.$test['error'].'</i>')."</p>";
-				$msg['css'] .= ' error';				
+				$msg['txt'] = sprintf(__('Connection is invalid. Error message: %s.', 'gwptb'), '<i>'.$test['error'].'</i>');
+				$msg['css'] .= ' fail';				
 			}
 			else {
-				$msg['txt'] = "<p>".__('Processing failed - try again later.', 'gwptb')."</p>";
-				$msg['css'] .= ' error';
+				$msg['txt'] = __('Processing failed - try again later.', 'gwptb');
+				$msg['css'] .= ' fail';
 			}
 		
-			$result = $msg;
+			$result['msg'] = $msg;
 			
 			//create entry for bot in log in case there where no prev communications
 			$bot->self_test();
