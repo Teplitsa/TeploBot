@@ -156,7 +156,7 @@ class Gwptb_Admin {
 		$html = file_get_contents($path);		
 	?>
 		<div class="gwptb-page-section help-section">
-			<?php if($html){ echo $html; } ?>			
+			<div class="card"><?php if($html){ echo $html; } ?></div>	
 		</div>
 	<?php
 	}
