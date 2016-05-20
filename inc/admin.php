@@ -108,7 +108,7 @@ class Gwptb_Admin {
 		
 	?>	
 		<div class="wrap">
-            <h2><?php _e('Green WP Telegram Bot', 'gwptb');?><?php echo $btn;?></h2>
+            <h2><?php _e('Green WP Telegram Bot', 'gwptb');?></h2>
 		
 		<!-- metabox -->		
 		<div class="gwptb-page-section connection">
