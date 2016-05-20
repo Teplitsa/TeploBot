@@ -4,7 +4,7 @@ Plugin Name: Green WP Telegram Bot
 Description: Simple Telegram Bot for your site with green effect
 Version: 1.0
 Author: Teplitsa
-Author URI: http://te-st.ru/
+Author URI: https://te-st.ru/
 Text Domain: gwptb
 Domain Path: /lang
 Contributors:	
@@ -67,6 +67,7 @@ require_once(plugin_dir_path(__FILE__).'inc/core.php');
 require_once(plugin_dir_path(__FILE__).'inc/functions.php');
 require_once(plugin_dir_path(__FILE__).'inc/class-gwptb.php');
 require_once(plugin_dir_path(__FILE__).'inc/class-cssjs.php');
+require_once(plugin_dir_path(__FILE__).'inc/class-stat.php');
 $tplb = Gwptb_Core::get_instance();
 
 if(is_admin()){
@@ -80,9 +81,3 @@ if(is_admin()){
 register_activation_hook( __FILE__, array( 'Gwptb_Core', 'on_activation' ));
 register_deactivation_hook(__FILE__, array( 'Gwptb_Core', 'on_deactivation' ));
 
-
-/** Strings to be translated **/
-$strings = array(
-	__('Simple Telegram Bot for your site with green effect', 'gwptb'),
-	__('Teplitsa', 'gwptb')
-);

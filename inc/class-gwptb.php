@@ -182,6 +182,7 @@ class Gwptb_Self {
 			'content'		=> '',
 			'attachment'	=> '',
 			'error'			=> '',
+			'count'			=> 0,
 		);
 		
 		$data = wp_parse_args($data, $defaults);
@@ -203,9 +204,10 @@ class Gwptb_Self {
 		$data['user_id'] = (int)$data['user_id'];
 		$data['message_id'] = (int)$data['message_id'];
 		$data['chat_id'] = (int)$data['chat_id'];
+		$data['count'] = (int)$data['count'];
 		
 		$table_name = Gwptb_Core::get_log_tablename();
-		return $wpdb->insert($table_name, $data, array('%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d', '%d', '%s', '%s',));
+		return $wpdb->insert($table_name, $data, array('%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d', '%d', '%s', '%s',));		
 	}
 	
 	/**
@@ -267,7 +269,18 @@ class Gwptb_Self {
 			
 			$log_data['content'] = $response->text;
 			$log_data['attachment'] = maybe_serialize($response->entities);
-			//error 
+			
+			if(isset($response->entities) && !empty($response->entities)){
+				$count = 0;
+				foreach($response->entities as $e){
+					if($e->type = 'text_link')
+						$count++;
+				}
+				
+				$log_data['count'] = $count;
+			}
+			
+			//error ?
 		}
 		
 		//obtain log entry ID
@@ -603,6 +616,12 @@ class Gwptb_Self {
 		global $wpdb;
 				
 		if(null === $this->self_id){
+			//test for connection set
+			$connection = get_option('gwptb_webhook', 0);
+			if(!$connection)
+				return $this->self_id;
+			
+			//get name from DB
 			$table_name = Gwptb_Core::get_log_tablename();
 			$row = $wpdb->get_row("SELECT * FROM {$table_name} WHERE method = 'getMe' ORDER BY id DESC LIMIT 1");
 			if(isset($row->username) && !empty($row->username)){
@@ -616,6 +635,20 @@ class Gwptb_Self {
 	
 	public function get_self_link(){
 		
+		$self = $this->get_self_id();
+		$link = '';
+		
+		if(!$self){
+			return __('Set connection and test token for the bot', 'gwptb');			 
+		}
+		
+		$txt = (isset($self['name']) && !empty($self['name'])) ? apply_filters('gwptb_admin_text', $self['name']) : __('Set connection and test token for the bot', 'gwptb');
+		$url = (isset($self['username']) && !empty($self['username'])) ? esc_url('https://telegram.me/'.$self['username']) : '';
+		
+		if(empty($url))
+			return $txt;
+		
+		return "<a href='{$url}' target='_blank'>{$txt}</a>";
 	}
 	
 } //class

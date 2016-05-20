@@ -28,6 +28,10 @@ class Gwptb_Core {
 		update_option('gwptb_permalinks_flushed', 0);
 		update_option('gwptb_version', GWPTB_VERSION);  
 		self::create_table();
+		
+		//stats
+		$stat = GWPTB_Stats::get_instance();
+		$stat->update_stats();
 	}
 	
 	static function on_deactivation() {
@@ -58,6 +62,7 @@ class Gwptb_Core {
 				content text DEFAULT '' NOT NULL,
 				attachment text DEFAULT '',
 				error text DEFAULT '' NOT NULL,
+				count text bigint(20) DEFAULT 0
 				UNIQUE KEY id (id)
 			) $charset_collate;";		
 

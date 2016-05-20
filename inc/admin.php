@@ -162,6 +162,15 @@ class Gwptb_Admin {
 		
 		$set_nonce = wp_create_nonce('gwptb_set_hook');
 		$del_nonce = wp_create_nonce('gwptb_del_hook');
+		
+		$bot = Gwptb_Self::get_instance();
+		
+		$stat = GWPTB_Stats::get_instance();
+		if(isset($_GET['update_stats']) && (int)$_GET['update_stats'] == 1){			
+			$stat->update_stats();
+		}
+		
+		$stat_data = $stat->get_stats();
 	?>
 	<div class="gwptb-conncetion-setup">
 		<a id="gwptb_set_hook" href='#' class='button button-primary<?php if($set_hook) { echo ' green'; };?>' data-nonce="<?php echo $set_nonce;?>"><span class='for-init'><?php _e('Set connection', 'gwptb');?></span><span class='for-green'><?php _e('Your Bot is connected', 'gwptb');?></span></a>
@@ -174,32 +183,34 @@ class Gwptb_Admin {
 		</div>
 	</div>
 	
-	<div class="gwptb-conncetion-data">
-		<table >
-			<tbody>
-				<tr>
-					<th><?php _e('Bot Link', 'gwptb');?></th>
-					<td>link</td>
-				</tr>
-				<tr>
-					<th><?php _e('Received messages', 'gwptb');?></th>
-					<td>xx</td>
-				</tr>
-				<tr>
-					<th><?php _e('Send search results', 'gwptb');?></th>
-					<td>xx</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<?php 
+	<?php if($set_hook) { ?>
+		<div class="gwptb-conncetion-data">
+			<table >
+				<tbody>
+					<tr>
+						<th><?php _e('Bot Link', 'gwptb');?></th>
+						<td><?php echo $bot->get_self_link();?></td>
+					</tr>
+					<tr>
+						<th><?php _e('Received messages', 'gwptb');?></th>
+						<td><?php echo (isset($stat_data['updates_total'])) ? (int)$stat_data['updates_total'] : 0; ?></td>
+					</tr>
+					<tr>
+						<th><?php _e('Send links', 'gwptb');?></th>
+						<td><?php echo (isset($stat_data['returns_total'])) ? (int)$stat_data['returns_total'] : 0; ?></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	<?php
+		}
 	}
 	
 	
 	public function log_screen() {
 				
 		if( !current_user_can('manage_options') ) {
-            wp_die(__('You do not have permissions to access this page.', 'gwptb'));
+            wp_die(__('Sorry, but you do not have permissions to access this page.', 'gwptb'));
         }
 		
 	?>
