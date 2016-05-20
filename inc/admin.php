@@ -406,18 +406,18 @@ class Gwptb_Admin {
 	}
 	
 	public function start_text_render(){
-		$value = get_option('start_text_render'); 
+		$value = get_option('start_text_render', __('Hello, %%uername%%. Let\'s find something useful. Send me _your term_ to perform a search, type /help to get help.', 'gwptb')); 
 	?>
 		<textarea name='start_text_render'class="large-text"><?php echo $value; ?></textarea>
-		<p class="description"><?php _e('Text for greeting showing for user in the first time', 'gwptb');?></p>
+		<p class="description"><?php _e('Welcom text for first-time user %%uername%% will be replaced with actual name', 'gwptb');?></p>
 	<?php	
 	}
 	
 	public function help_text_render(){
-		$value = get_option('gwptb_help_text'); 
+		$value = get_option('gwptb_help_text', __('I can help you to find something useful at %%home%%. Send me _your term_ to perform a search.', 'gwptb')); 
 	?>
 		<textarea name='gwptb_help_text'class="large-text"><?php echo $value; ?></textarea>
-		<p class="description"><?php _e('Text showing as a response to /help command', 'gwptb');?></p>
+		<p class="description"><?php _e('Text showing as a response to /help command, %%home%% will be replaced with link to homepage', 'gwptb');?></p>
 	<?php	
 	}
 	
