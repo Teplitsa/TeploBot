@@ -67,14 +67,18 @@ class Gwptb_Admin {
 	
 	
 	/** == Menu pages == **/
+	
 	public function dashboard_screen() {
 
 		if( !current_user_can('manage_options') ) {
             wp_die(__('Sorry, but you do not have permissions to access this page.', 'gwptb'));
         }
 		
-		$token = get_option('gwptb_bot_token');
+		$set_hook = get_option('gwptb_webhook', 0);
+		$token = get_option('gwptb_bot_token', '');
 		$stage = (isset($_GET['stage'])) ? trim($_GET['stage']) : 'default';
+				
+		//header elements
 		$btn = '';
 		$postbox_title = "<span class='postbot-title-txt'>".__('Connection Setup', 'gwptb')."</span>";
 		
@@ -89,8 +93,8 @@ class Gwptb_Admin {
 		}
 		
 		
-		
-		do_action('gwptb_dashboard_actions'); // Collapsible
+		//connection metablox init
+		do_action('gwptb_dashboard_actions'); // Collapsible		
 		add_meta_box('gwptb_setup', $postbox_title, array($this, 'setup_metabox_screen'), 'toplevel_page_gwptb', 'normal');
 	?>	
 		<div class="wrap">
@@ -158,47 +162,72 @@ class Gwptb_Admin {
 	}
 	
 	public function setup_metabox_screen(){
-		$set_hook = get_option('gwptb_webhook', 0);
 		
-		$set_nonce = wp_create_nonce('gwptb_set_hook');
-		$del_nonce = wp_create_nonce('gwptb_del_hook');
+		//current action
+		$action = (isset($_GET['action'])) ? trim($_GET['action']) : 'default';
+		if($action != 'default')
+			check_admin_referer('connection_setup', '_gwptbnonce');
 		
-		$bot = Gwptb_Self::get_instance();
+		//process action and return some display args	
+		$show_data = $this->do_setup_metabox_action($action);			
 		
-		$stat = GWPTB_Stats::get_instance();
-		if(isset($_GET['update_stats']) && (int)$_GET['update_stats'] == 1){			
-			$stat->update_stats();
-		}
 		
-		$stat_data = $stat->get_stats();
+		//get hook state after action
+		$hook = get_option('gwptb_webhook', 0);
 	?>
 	<div class="gwptb-conncetion-setup">
-		<a id="gwptb_set_hook" href='#' class='button button-primary<?php if($set_hook) { echo ' green'; };?>' data-nonce="<?php echo $set_nonce;?>"><span class='for-init'><?php _e('Set connection', 'gwptb');?></span><span class='for-green'><?php _e('Your Bot is connected', 'gwptb');?></span></a>
-		
-		<a id="gwptb_del_hook" href='#' class='button button-secondary<?php if(!$set_hook) { echo ' hidden'; };?>' data-nonce="<?php echo $del_nonce;?>"><?php _e('Remove connection', 'gwptb');?></a>
-		
-		<div class="gwptb-test-response">
-			<div id="gwptb_set_hook-response"></div>
-			<div id="gwptb_del_hook-response"></div>
-		</div>
+		<form action="admin.php" method="get">
+			<input type="hidden" name="page" value="gwptb">
+			<?php wp_nonce_field('connection_setup', '_gwptbnonce'); ?>
+			
+			<!-- set connection button -->
+			<?php if($hook) { ?>				
+				<div class="button button-primary green"><?php _e('Your Bot is connected', 'gwptb');?></div>
+				<button type="submit" class="button button-secondary"><?php _e('Remove connection', 'gwptb');?></button>
+				<input type="hidden" name="action" value="del_webhook">
+				
+			<?php } else { ?>
+				<input type="hidden" name="action" value="set_webhook">
+				<button type="submit" class="button button-primary"><?php _e('Set connection', 'gwptb');?></button>
+				
+			<?php }?>
+			
+			<!-- messages -->
+			<?php if(isset($show_data['msg']) && !empty($show_data['msg'])){ ?>	
+				<div class="gwptb-connection-response">
+					<div class="<?php echo esc_attr($show_data['msg']['css']);?>"><?php echo esc_attr($show_data['msg']['txt']);?></div>
+				</div>
+			<?php } ?>
+			
+			<?php if($hook) { ?>
+				<input type="hidden" name="action" value="update_bot_data">
+				<button type="submit" class="button button-secondary"><?php _e('Update bot data', 'gwptb');?></button>
+			<?php } ?>
+		</form>
 	</div>
 	
-	<?php if($set_hook) { ?>
-		<div class="gwptb-conncetion-data">
+	<?php if($hook) { ?>
+		<div class="gwptb-connection-data">
 			<table >
 				<tbody>
+					<!-- bot link -->
 					<tr>
 						<th><?php _e('Bot Link', 'gwptb');?></th>
+						<?php $bot = Gwptb_Self::get_instance(); ?>
 						<td><?php echo $bot->get_self_link();?></td>
 					</tr>
+					
+					<!-- counts -->
+					<?php if(isset($show_data['updates_total']) && (int)$show_data['updates_total'] > 0) { ?>
 					<tr>
 						<th><?php _e('Received messages', 'gwptb');?></th>
-						<td><?php echo (isset($stat_data['updates_total'])) ? (int)$stat_data['updates_total'] : 0; ?></td>
+						<td><?php echo (int)$show_data['updates_total']; ?></td>
 					</tr>
 					<tr>
 						<th><?php _e('Send links', 'gwptb');?></th>
-						<td><?php echo (isset($stat_data['returns_total'])) ? (int)$stat_data['returns_total'] : 0; ?></td>
+						<td><?php echo (isset($show_data['returns_total'])) ? (int)$show_data['returns_total'] : 0; ?></td>
 					</tr>
+					<?php } ?>
 				</tbody>
 			</table>
 		</div>
@@ -206,13 +235,61 @@ class Gwptb_Admin {
 		}
 	}
 	
+	protected function do_setup_metabox_action($action){
+		
+		$result = array();
+		$stat = GWPTB_Stats::get_instance();
+		
+		if($action == 'update_bot_data'){
+			
+			$stat->update_stats();
+			$bot = Gwptb_Self::get_instance();
+			$bot->self_test();
+		}
+		elseif($action == 'set_webhook' || $action == 'del_webhook') {
+			
+			$msg = array('css' => 'gwptb-message', 'txt' => '');			
+		
+			//make sethook request
+			$remove = ($action == 'del_webhook') ? true : false;
+			$bot = Gwptb_Self::get_instance();
+			$test = $bot->set_webhook($remove);
+		
+			//build reply
+			if(isset($test['content']) && !empty($test['content'])){			
+				$msg['txt'] = "<p>".$test['content']."</p>";
+				$msg['css'] .= ' success';
+				
+				$hook = ($action == 'set_webhook') ? 1 : 0;
+				update_option('gwptb_webhook', $hook);
+			}
+			elseif(isset($test['error']) && !empty($test['error'])){
+				$msg['txt'] = "<p>".sprintf(__('Connection is invalid. Error message: %s.', 'gwptb'), '<i>'.$test['error'].'</i>')."</p>";
+				$msg['css'] .= ' error';				
+			}
+			else {
+				$msg['txt'] = "<p>".__('Processing failed - try again later.', 'gwptb')."</p>";
+				$msg['css'] .= ' error';
+			}
+		
+			$result = $msg;
+			
+			//create entry for bot in log in case there where no prev communications
+			$bot->self_test();
+		}
+				
+		//always get stat data to display
+		$result = array_merge($result, $stat->get_stats());
+		
+		return $result;
+	}
 	
+	/** display log table **/
 	public function log_screen() {
 				
 		if( !current_user_can('manage_options') ) {
             wp_die(__('Sorry, but you do not have permissions to access this page.', 'gwptb'));
-        }
-		
+        }		
 	?>
 		<div class="wrap">
             <h2><?php _e('GWPTB Log', 'gwptb');?></h2>            
@@ -382,17 +459,27 @@ class Gwptb_Admin {
 		);
 		
 		
-		
+		//init table here otherwise columns will not be bind correctly to screen
 		$list_table = gwpt_get_list_table();
 	}
 
 
 	public function bot_token_render() { 		
 		
+		$set_hook = get_option('gwptb_webhook', 0);
 		$value = get_option('gwptb_bot_token'); 
+		if($set_hook > 0){
+			//token cann't be change until hook removeв
+		?>
+			<p><code><?php echo $value;?></code></p>
+			<p class="description"><?php _e('Your bot connected to Telegram. Token cann\'t be updated until connection removed.', 'gwptb');?></p>
+		<?php
+		}
+		else {
 	?>
 		<input type='text' name='gwptb_bot_token' value='<?php echo $value; ?>' class="large-text">
-	<?php	
+	<?php
+		}
 	}
 	
 	
