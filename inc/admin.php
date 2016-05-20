@@ -45,7 +45,7 @@ class Gwptb_Admin {
 	
 	public function add_settings_link($links) {
 
-		$links[] = '<a href="'.admin_url('admin.php?page=gwptb_settings').'">'.__( 'Settings', 'gwptb').'</a>';
+		$links[] = '<a href="'.admin_url('admin.php?page=gwptb').'">'.__( 'Settings', 'gwptb').'</a>';
 
 		return $links;
 	}

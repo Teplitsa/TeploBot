@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Green WP Telegram Bot\n"
 "POT-Creation-Date: 2016-05-20 08:05+0300\n"
-"PO-Revision-Date: 2016-05-20 08:07+0300\n"
+"PO-Revision-Date: 2016-05-20 08:26+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language: ru_RU\n"
@@ -88,7 +88,7 @@ msgstr "Отправлено ссылок"
 #: inc/admin.php:252
 #, php-format
 msgid "Your token is connected with Bot: %s (@%s)."
-msgstr "Ваш клюс (токен) связан с ботом: %s (@%s)."
+msgstr "Ваш ключ (токен) связан с ботом: %s (@%s)."
 
 #: inc/admin.php:255
 #, php-format
