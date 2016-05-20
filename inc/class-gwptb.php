@@ -56,7 +56,7 @@ class Gwptb_Self {
 		$response = wp_remote_post($this->api_url.$method, $request_args);
 		
 		//parse response and find body content or error
-		$response = $this->validate_api_response($response);
+		$response = $this->validate_api_response($response, $params);
 		
 		//log data		
 		return $this->log_reseived_response($response, $method, $update_id);
@@ -111,7 +111,7 @@ class Gwptb_Self {
 		
 		//var_dump($response);
 		//parse response and find body content or error
-		$response = $this->validate_api_response($response);
+		$response = $this->validate_api_response($response, $params);
 		
 		//log data		
 		return $this->log_reseived_response($response, $method, $update_id);		
@@ -124,7 +124,7 @@ class Gwptb_Self {
 	 * @param object/array $response Raw result of remote request as it come to us	 * 
 	 * @return object Content of response body on success or WP_Error object in case of incorrect results
 	 **/
-	protected function validate_api_response($response) {
+	protected function validate_api_response($response, $params) {
 		
 		$resp_error = null;
 		if(is_wp_error($response)){ //error of request
@@ -151,7 +151,18 @@ class Gwptb_Self {
 			return $resp_error;
 		}
 		
-		return $body->result;
+		if(!is_object($body->result)){
+			$res = new stdClass();
+			$res->result = $body->result;			
+		}
+		else{
+			$res = $body->result;
+		}
+		
+		$res->description = (isset($body->description)) ? $body->description : '';
+		$res->request_params = $params;
+		
+		return $res;
 	}
 	
 	
@@ -213,7 +224,7 @@ class Gwptb_Self {
 	/**
 	 *  Extract info for log from response
 	 *
-	 *	@param obj $response Response object to work
+	 *	@param obj $response Response object to work on
 	 *	@param string $method API method used
 	 *	@param int $update_id Connected update ID
 	 *
@@ -222,7 +233,8 @@ class Gwptb_Self {
 	
 	// extracting logic should be separated in a more abstract way 
 	protected function log_reseived_response($response, $method, $update_id = 0){
-				
+		global $wpdb;
+		
 		$log_data = array('method' => $method);
 		$log_data['action'] = (in_array($method, array('getMe', 'setWebhook'))) ? 'request' : 'response';
 		$log_data['update_id'] = ($update_id > 0) ? (int)$update_id : 0;
@@ -231,9 +243,13 @@ class Gwptb_Self {
 		if(is_wp_error($response)){			
 			$log_data['error'] =  $response->get_error_message();						
 		}
-		elseif($method == 'setWebhook'){
-			if((bool)$response) {
-				$log_data['content'] = (empty($params['url'])) ? __('Connection removed', 'gwptb') : __('Connection set', 'gwptb');
+		elseif($method == 'setWebhook'){ 
+			if((bool)$response->result) {
+				$msg = (empty($response->request_params['url'])) ? __('Connection removed', 'gwptb') : __('Connection set', 'gwptb');
+				if(!empty($response->description))
+					$msg .= '. '.$response->description;
+					
+				$log_data['content'] = $msg;
 			}
 		}
 		elseif($method == 'getMe'){
