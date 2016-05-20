@@ -327,9 +327,12 @@ class Gwptb_Admin {
 
 	/** == Settings  fields == **/
 	function settings_init(  ) { 
-				
-		register_setting( 'gwptb_settings', 'gwptb_bot_token');
+		
+		//sanitize callback	
+		register_setting( 'gwptb_settings', 'gwptb_bot_toke' );
 		register_setting( 'gwptb_settings', 'gwptb_cert_path' );
+		register_setting( 'gwptb_settings', 'gwptb_start_text');
+		register_setting( 'gwptb_settings', 'gwptb_help_text' );
 	
 		add_settings_section(
 			'gwptb_access_section', 
@@ -354,12 +357,37 @@ class Gwptb_Admin {
 			'gwptb_access_section' 
 		);
 		
+		//default tests
+		add_settings_section(
+			'gwptb_response_section', 
+			__( 'Response settings', 'gwptb' ), 
+			array($this, 'response_section_callback'), 
+			'gwptb_settings'
+		);
+		
+		add_settings_field( 
+			'gwptb_start_text', 
+			__( 'Start text for bot', 'gwptb' ), 
+			array($this, 'start_text_render'), 
+			'gwptb_settings', 
+			'gwptb_response_section' 
+		);
+		
+		add_settings_field( 
+			'gwptb_help_text', 
+			__( 'Help text for bot', 'gwptb' ), 
+			array($this, 'help_text_render'), 
+			'gwptb_settings', 
+			'gwptb_response_section' 
+		);
+		
+		
 		
 		$list_table = gwpt_get_list_table();
 	}
 
 
-	function bot_token_render(  ) { 		
+	public function bot_token_render() { 		
 		
 		$value = get_option('gwptb_bot_token'); 
 	?>
@@ -368,7 +396,7 @@ class Gwptb_Admin {
 	}
 	
 	
-	function cert_path_render(  ) { 
+	public function cert_path_render() { 
 		
 		$value = get_option('gwptb_cert_path'); 
 	?>
@@ -376,14 +404,32 @@ class Gwptb_Admin {
 		<p class="description"><?php _e('For self-signed certificates - specify the path to it\'s public key file', 'gwptb');?></p>
 	<?php	
 	}
+	
+	public function start_text_render(){
+		$value = get_option('start_text_render'); 
+	?>
+		<textarea name='start_text_render'class="large-text"><?php echo $value; ?></textarea>
+		<p class="description"><?php _e('Text for greeting showing for user in the first time', 'gwptb');?></p>
+	<?php	
+	}
+	
+	public function help_text_render(){
+		$value = get_option('gwptb_help_text'); 
+	?>
+		<textarea name='gwptb_help_text'class="large-text"><?php echo $value; ?></textarea>
+		<p class="description"><?php _e('Text showing as a response to /help command', 'gwptb');?></p>
+	<?php	
+	}
+	
 
-
-	function access_section_callback(  ) { 	
+	public function access_section_callback(  ) { 	
 		//description or help information	
 	}
 
 
-
+	public function response_section_callback(  ) { 	
+		//description or help information	
+	}
 
 
 	
