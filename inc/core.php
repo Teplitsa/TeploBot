@@ -62,7 +62,7 @@ class Gwptb_Core {
 				content text DEFAULT '' NOT NULL,
 				attachment text DEFAULT '',
 				error text DEFAULT '' NOT NULL,
-				count text bigint(20) DEFAULT 0
+				count bigint(20) DEFAULT 0,
 				UNIQUE KEY id (id)
 			) $charset_collate;";		
 
