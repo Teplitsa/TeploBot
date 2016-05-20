@@ -77,48 +77,57 @@ class Gwptb_Admin {
 		$set_hook = get_option('gwptb_webhook', 0);
 		$token = get_option('gwptb_bot_token', '');
 		$stage = (isset($_GET['stage'])) ? trim($_GET['stage']) : 'default';
-				
-		//header elements
-		$btn = '';
-		$postbox_title = "<span class='postbot-title-txt'>".__('Connection Setup', 'gwptb')."</span>";
+		$postbox_title = '';
 		
-		//links
-		if(!empty($token) && ($stage == 'default')){
-			$btn_url = add_query_arg(array('page' => 'gwptb', 'stage' => 'howto'), admin_url('admin.php'));			
+		//metabox headers
+		if(empty($token) || $stage == 'howto') {			
+			$postbox_title = "<span class='postbot-title-txt'>".__('How to create a bot', 'gwptb')."</span>";
+			
+			if($stage == 'howto') {
+				$btn_url = add_query_arg(array('page' => 'gwptb'), admin_url('admin.php'));
+				$postbox_title = $postbox_title."<a href='{$btn_url}' class='postbot-title-link'>".__('Settings', 'gwptb')."</a>";
+			}
+		}
+		elseif(!empty($token) && ($stage == 'default')){
+			
+			$postbox_title = "<span class='postbot-title-txt'>".__('Connection Setup', 'gwptb')."</span>";
+			$btn_url = add_query_arg(array('page' => 'gwptb', 'stage' => 'howto'), admin_url('admin.php'));
 			$postbox_title = $postbox_title."<a href='{$btn_url}' class='postbot-title-link'>".__('How to create a bot', 'gwptb')."</a>";
 		}
-		elseif(!empty($token) && ($stage != 'default')) {
-			$btn_url = add_query_arg(array('page' => 'gwptb'), admin_url('admin.php'));			
-			$btn = "<a href='{$btn_url}' class='page-title-action'>".__('Settings', 'gwptb')."</a>";
+					
+		
+		//metaboxes init
+		do_action('gwptb_dashboard_actions'); // Collapsible
+		
+		if(empty($token) || $stage == 'howto') {			
+			add_meta_box('gwptb_howto', $postbox_title, array($this, 'howto_metabox_screen'), 'toplevel_page_gwptb', 'normal');
+		}
+		elseif(!empty($token) && ($stage == 'default')){			
+			add_meta_box('gwptb_setup', $postbox_title, array($this, 'setup_metabox_screen'), 'toplevel_page_gwptb', 'normal');
 		}
 		
-		
-		//connection metablox init
-		do_action('gwptb_dashboard_actions'); // Collapsible		
-		add_meta_box('gwptb_setup', $postbox_title, array($this, 'setup_metabox_screen'), 'toplevel_page_gwptb', 'normal');
 	?>	
 		<div class="wrap">
             <h2><?php _e('Green WP Telegram Bot', 'gwptb');?><?php echo $btn;?></h2>
 		
-		<!-- intro section -->
-		<?php
-			if(empty($token) || $stage == 'howto') {
-				$this->print_help_section();
-				
-			} elseif(!empty($token) && ($stage == 'default')){
-		?>
-			<div class="gwptb-page-section connection">
-				<div class="metabox-holder" id="gwptb-widgets">
-					<div class="postbox-container" id="postbox-container-1">
-						<?php do_meta_boxes('toplevel_page_gwptb', 'normal', null);?>
-					</div>
-				
-					<div class="postbox-container" id="postbox-container-2">
+		<!-- metabox -->		
+		<div class="gwptb-page-section connection">
+			<div class="metabox-holder" id="gwptb-widgets">
+				<div class="postbox-container" id="postbox-container-1">
+					<?php do_meta_boxes('toplevel_page_gwptb', 'normal', null);?>
+				</div>
+			
+				<div class="postbox-container" id="postbox-container-2">
+					<?php if(empty($token) || $stage == 'howto') { ?>
+						screenshot
+						
+					<?php } elseif(!empty($token) && ($stage == 'default')){ ?>
 						<!-- branding and links -->
-					</div>
+					<?php } ?>		
 				</div>
 			</div>
-		<?php } ?>	
+		</div>
+		
 		
 		<!-- settings -->
 		<?php if($stage == 'default') { ?>
@@ -145,8 +154,8 @@ class Gwptb_Admin {
 		</div><!-- close .wrap -->
 	<?php
 	}
-	
-	protected function print_help_section(){
+		
+	public function howto_metabox_screen() {
 		
 		$locale = get_locale();
 		$path = GWPTB_PLUGIN_DIR.'assets/html/create-bot-'.$locale.'.html';
@@ -155,9 +164,7 @@ class Gwptb_Admin {
 		
 		$html = file_get_contents($path);		
 	?>
-		<div class="gwptb-page-section help-section">
-			<div class="card"><?php if($html){ echo $html; } ?></div>	
-		</div>
+		<div class="gwptb-help-info"><?php if($html){ echo $html; } ?></div>		
 	<?php
 	}
 	
