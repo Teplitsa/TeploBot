@@ -14,7 +14,7 @@ function gwptb_help_command_response($upd_data){
 	$result['text'] = get_option('gwptb_help_text', $default);
 	$result['text'] = str_replace('%%home%%', "[".home_url()."](".home_url().")", $result['text']);
 	
-	$result['text'] = apply_filters('gwptb_output_text', $result['text']);
+	$result['text'] = apply_filters('gwptb_output_markdown', $result['text']);
 	$result['parse_mode'] = 'Markdown';
 		
 	return $result;
@@ -32,7 +32,7 @@ function gwptb_start_command_response($upd_data){
 	//still may be empty??
 	
 	$result['text'] = str_replace('%%username%%', $username, $result['text']);
-	$result['text'] = apply_filters('gwptb_output_text', $result['text']);
+	$result['text'] = apply_filters('gwptb_output_markdown', $result['text']);
 	
 	$result['parse_mode'] = 'Markdown';
 		
@@ -67,7 +67,7 @@ function gwptb_search_command_response($upd_data){
 	
 	if(empty($args['s'])) {
 		//don't perform empty search
-		$result['text'] = __('Unfortunately your request didn\'t match anything.', 'gwptb');
+		$result['text'] = apply_filters('gwptb_output_markdown', __('Unfortunately your request didn\'t match anything.', 'gwptb'));
 		return $result;
 	}
 	
@@ -84,7 +84,9 @@ function gwptb_search_command_response($upd_data){
 			$result['text'] = sprintf(__('Found results: %s', 'gwptb'), $query->found_posts.chr(10).chr(10));
 		}
 						
-		$result['text'] .= gwptb_formtat_posts_list($query->posts);		
+		$result['text'] .= gwptb_formtat_posts_list($query->posts);
+		$result['text'] = apply_filters('gwptb_output_html', $result['text']);
+		
 		$result['parse_mode'] = 'HTML';
 		
 		
@@ -105,6 +107,7 @@ function gwptb_search_command_response($upd_data){
 	}
 	else {
 		$result['text'] = __('Unfortunately your request didn\'t match anything.', 'gwptb');
+		$result['text'] = apply_filters('gwptb_output_markdown', $result['text']);
 	}
 	
 	return $result;
@@ -116,7 +119,7 @@ function gwptb_formtat_posts_list($posts){
 	$out = '';
 	
 	foreach($posts as $p){
-		$out .= "<a href='".get_permalink($p)."'>".get_the_title($p)."</a>".chr(10).chr(10);		
+		$out .= "<a href='".get_permalink($p)."'>".esc_html(get_the_title($p))."</a>".chr(10).chr(10);		
 	} 
 	
 	return $out;

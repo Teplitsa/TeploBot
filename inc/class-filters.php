@@ -7,9 +7,15 @@ class GWPTB_Filters {
 	
 	private function __construct() {
 				
-		//add default filters
+		//add input filter
 		add_filter('gwptb_input_latin', array('GWPTB_Filters', 'sanitize_email'));
 		add_filter('gwptb_input_text', array('GWPTB_Filters', 'sanitize_string'));
+		
+		//search term
+		add_filter('gwptb_search_term', array('GWPTB_Filters','sanitize_search_term'));
+		
+		//output filter (for tlgrm)
+		add_filter('gwptb_output_html', array('GWPTB_Filters','print_html'));
 	}
 	
 	
@@ -51,7 +57,34 @@ class GWPTB_Filters {
 		return filter_var($input, FILTER_SANITIZE_URL);
 	}
 	
+	public static function sanitize_search_term($input){
+		
+		$input = preg_replace("/&#?[a-z0-9]{2,8};/i","",$input);
+		$input = preg_replace('/[^a-zA-ZА-Яа-я0-9-ёЁ\s]/u','',$input);
+				
+		return $input;
+	}
+	
 	/** == Output == **/
+	public static function print_html($output){
+		
+		$allowed_html = array(
+			'a' => array(
+				'href' => array()				
+			),
+			'b' => array(),
+			'i' => array(),
+			'em' => array(),
+			'strong' => array(),
+			'code' => array(),
+			'pre' => array()
+		);
+		
+		$output = wp_kses($output, $allowed_html);
+		
+		return $output;
+	}
+	
 	
 	
 	/** == Special filters == **/
