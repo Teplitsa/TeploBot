@@ -103,9 +103,12 @@ class Gwptb_Core {
 			do_action('gwptb_service');
 			die();
 		}
-		elseif('update' ==  $qv) {
-			do_action('gwptb_update');
-			die();
+		else {
+			$token = get_option('gwptb_bot_token');
+			if(!empty($token) && $qv == $token){
+				do_action('gwptb_update');
+				die();
+			}			
 		}
 	}
 	
