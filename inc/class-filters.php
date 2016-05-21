@@ -60,6 +60,8 @@ class GWPTB_Filters {
 		
 		if(isset($ent->url))
 			$ent->type = self::sanitize_url($ent->type);
+			
+		return $ent;
 	}
 	
 } //class
