@@ -8,7 +8,8 @@ class GWPTB_Filters {
 	private function __construct() {
 				
 		//add default filters
-		add_filter('gwptb_sanitize_latin', array('GWPTB_Filters', 'media_upload_callback'));
+		add_filter('gwptb_sanitize_latin', array('GWPTB_Filters', 'sanitize_email'));
+		add_filter('gwptb_sanitize_rich_text', array('GWPTB_Filters', 'sanitize_text'));
 	}
 	
 	
@@ -30,9 +31,36 @@ class GWPTB_Filters {
 	}
 	
 	
+	public static function sanitize_text($input){
+		//Strip tags, strip special characters
+		
+		return filter_var($input, FILTER_SANITIZE_STRING);
+	}
+	
+	public static function sanitize_url($input){
+		//Remove all characters except letters, digits and $-_.+!*'(),{}|\\^~[]`<>#%";/?:@&=. 
+		
+		return filter_var($input, FILTER_SANITIZE_URL);
+	}
 	
 	/** == Output == **/
 	
+	
+	/** == Special filters == **/
+	public static function sanitize_message_entity($ent){
+		
+		if(isset($ent->type))
+			$ent->type = self::sanitize_email($ent->type);
+		
+		if(isset($ent->offset))
+			$ent->offset = (int)$ent->offset;
+			
+		if(isset($ent->length))
+			$ent->length = (int)$ent->length;
+		
+		if(isset($ent->url))
+			$ent->type = self::sanitize_url($ent->type);
+	}
 	
 } //class
 

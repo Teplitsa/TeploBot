@@ -208,17 +208,17 @@ class Gwptb_Self {
 		$data = wp_parse_args($data, $defaults);
 		
 		//sanitize
-		$data['action'] = apply_filters('gwptb_sanitize_latin', $data['action']);
-		$data['method'] = apply_filters('gwptb_sanitize_latin', $data['method']);
-		$data['username'] = apply_filters('gwptb_sanitize_latin', $data['username']);
+		$data['action'] = apply_filters('gwptb_input_latin', $data['action']);
+		$data['method'] = apply_filters('gwptb_input_latin', $data['method']);
+		$data['username'] = apply_filters('gwptb_input_latin', $data['username']);
 		
-		$data['user_fname'] = apply_filters('gwptb_sanitize_text', $data['user_fname']);
-		$data['user_lname'] = apply_filters('gwptb_sanitize_text', $data['user_lname']);
-		$data['chatname'] = apply_filters('gwptb_sanitize_text', $data['chatname']);
+		$data['user_fname'] = apply_filters('gwptb_input_text', $data['user_fname']);
+		$data['user_lname'] = apply_filters('gwptb_input_text', $data['user_lname']);
+		$data['chatname'] = apply_filters('gwptb_input_text', $data['chatname']);
 		
-		$data['content'] = apply_filters('gwptb_sanitize_rich_text', $data['content']);
-		$data['error'] = apply_filters('gwptb_sanitize_rich_text', $data['error']);
-		$data['attachment'] = apply_filters('gwptb_sanitize_rich_text', $data['attachment']); // ??
+		$data['content'] = apply_filters('gwptb_input_text', $data['content']);
+		$data['error'] = apply_filters('gwptb_input_text', $data['error']);
+		$data['attachment'] = $data['attachment']; // ??
 		
 		$data['update_id'] = (int)$data['update_id'];
 		$data['user_id'] = (int)$data['user_id'];
@@ -293,12 +293,14 @@ class Gwptb_Self {
 			}
 			
 			$log_data['content'] = $response->text;
-			$log_data['attachment'] = maybe_serialize($response->entities);
+			
+			$ents = (array)$response->entities;
+			$log_data['attachment'] = maybe_serialize(array_map(array('GWPTB_Filters', 'sanitize_message_entity'), (array)$response->entities));
 			
 			if(isset($response->entities) && !empty($response->entities)){
 				$count = 0;
 				foreach($response->entities as $e){
-					if($e->type = 'text_link')
+					if($e->type == 'text_link')
 						$count++;
 				}
 				
@@ -313,6 +315,7 @@ class Gwptb_Self {
 		
 		return $log_data;
 	}
+	
 	
 	
 	/**
@@ -357,7 +360,7 @@ class Gwptb_Self {
 				$log_data['content'] = $update->message->text;
 			
 			if(isset($update->message->entities))
-				$log_data['attachment'] = maybe_serialize($update->message->entities);
+				$log_data['attachment'] = maybe_serialize(array_map(array('GWPTB_Filters', 'sanitize_message_entity'), (array)$update->message->entities));
 			
 		}
 		elseif(isset($update->callback_query)) { //msg update request
@@ -367,7 +370,7 @@ class Gwptb_Self {
 			
 			//content
 			if(isset($update->callback_query->data) && !empty($update->callback_query->data)){
-				$log_data['content'] = maybe_serialize($update->callback_query->data);
+				$log_data['content'] = $update->callback_query->data;
 			}
 			else{
 				$log_data['error'] = __('Empty update query', 'gwptb');
