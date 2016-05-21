@@ -362,7 +362,7 @@ class Gwptb_Admin {
 		
 		//sanitize callback	
 		register_setting( 'gwptb_settings', 'gwptb_bot_token' );
-		register_setting( 'gwptb_settings', 'gwptb_cert_path' );
+		register_setting( 'gwptb_settings', 'gwptb_cert_key' );
 		register_setting( 'gwptb_settings', 'gwptb_start_text');
 		register_setting( 'gwptb_settings', 'gwptb_help_text' );
 	
