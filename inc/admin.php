@@ -62,7 +62,6 @@ class Gwptb_Admin {
 		//Log
         add_submenu_page('gwptb', __('GWPTB Log', 'gwptb'), __('Log', 'gwptb'), 'manage_options', 'gwptb_log', array($this, 'log_screen'));
 		
-			
 	}
 	
 	
@@ -94,7 +93,6 @@ class Gwptb_Admin {
 			$btn_url = add_query_arg(array('page' => 'gwptb', 'stage' => 'howto'), admin_url('admin.php'));
 			$postbox_title = $postbox_title."<a href='{$btn_url}' class='postbot-title-link'>".__('How to create a bot', 'gwptb')."</a>";
 		}
-					
 		
 		//metaboxes init
 		do_action('gwptb_dashboard_actions'); // Collapsible
@@ -188,32 +186,30 @@ class Gwptb_Admin {
 			<?php wp_nonce_field('connection_setup', '_gwptbnonce'); ?>
 			
 			<!-- set connection button -->
+			<div class="gwptb-cs-button-row">
 			<?php if($hook) { ?>				
-				<div class="button button-primary green"><?php _e('Your Bot is connected', 'gwptb');?></div>
-				<button type="submit" class="button button-secondary"><?php _e('Remove connection', 'gwptb');?></button>
+				<div class="btn-col-green">
+					<div class="button-green"><?php _e('Your Bot is connected', 'gwptb');?></div>
+				</div>
+				<div class="btn-col-grey">
+					<button type="submit" class="button-grey"><?php _e('Remove connection', 'gwptb');?></button>
+				</div>
 				<input type="hidden" name="action" value="del_webhook">
 				
 			<?php } else { ?>
 				<input type="hidden" name="action" value="set_webhook">
-				<button type="submit" class="button button-primary"><?php _e('Set connection', 'gwptb');?></button>
-				
+				<button type="submit" class="button button-primary"><?php _e('Set connection', 'gwptb');?></button>				
 			<?php }?>
+			</div>
 			
 			<!-- messages -->
 			<?php if(isset($show_data['msg']) && !empty($show_data['msg'])){ ?>	
-				<div class="gwptb-connection-response">
+				<div class="gwptb-cs-response">
 					<div class="<?php echo esc_attr($show_data['msg']['css']);?>"><p><?php echo $show_data['msg']['txt'];?></p></div>
 				</div>
 			<?php } ?>
 		</form>
-		<form id="gwptb-update-bot" action="admin.php" method="get">
-			<input type="hidden" name="page" value="gwptb">
-			<?php wp_nonce_field('connection_setup', '_gwptbnonce'); ?>
-			<?php if($hook) { ?>
-				<input type="hidden" name="action" value="update_bot_data">
-				<button type="submit" class="button button-secondary"><?php _e('Update bot data', 'gwptb');?></button>
-			<?php } ?>
-		</form>
+		
 	</div>
 	
 	<?php if($hook) { ?>
@@ -234,12 +230,21 @@ class Gwptb_Admin {
 						<td><?php echo (int)$show_data['updates_total']; ?></td>
 					</tr>
 					<tr>
-						<th><?php _e('Send links', 'gwptb');?></th>
+						<th><?php _e('Sent links', 'gwptb');?></th>
 						<td><?php echo (isset($show_data['returns_total'])) ? (int)$show_data['returns_total'] : 0; ?></td>
 					</tr>
 					<?php } ?>
 				</tbody>
 			</table>
+			
+			<form id="gwptb-update-bot" action="admin.php" method="get">
+				<input type="hidden" name="page" value="gwptb">
+				<?php wp_nonce_field('connection_setup', '_gwptbnonce'); ?>
+				
+					<input type="hidden" name="action" value="update_bot_data">
+					<button type="submit" class="button button-secondary"><?php _e('Update stats', 'gwptb');?></button>
+				
+			</form>
 		</div>
 	<?php
 		}
@@ -350,68 +355,8 @@ class Gwptb_Admin {
 		die();
 	}
 	
-	public function set_hook_screen() {
-				
-		$result = array('type' => 'ok', 'data' => '');
-		
-		if(!wp_verify_nonce($_REQUEST['nonce'], "gwptb_set_hook")) {		
-			die('nonce error');
-		}
-		
-		//make sethook request
-		$bot = Gwptb_Self::get_instance();
-		$test = $bot->set_webhook();
-		
-		//build reply
-		if(isset($test['content']) && !empty($test['content'])){			
-			$result['data'] = "<p>".$test['content']."</p>";	
-		}
-		elseif(isset($test['error']) && !empty($test['error'])){
-			$msg = sprintf(__('Connection is invalid. Error message: %s.', 'gwptb'), '<i>'.$test['error'].'</i>');
-			$result['data'] = "<p>".$msg."</p>";
-			$result['type'] = 'ok_with_error';
-		}
-		else {
-			$result['data'] = "<p>".__('Processing failed - try again later.', 'gwptb')."</p>";
-			$result['failed'] = 'failed';
-		}
-		
-		//return results			
-		echo json_encode($result);
-		die();
-	}
 	
-	public function del_hook_screen() {
-				
-		$result = array('type' => 'ok', 'data' => '');
-		
-		if(!wp_verify_nonce($_REQUEST['nonce'], "gwptb_del_hook")) {		
-			die('nonce error');
-		}
-		
-		//make sethook request
-		$bot = Gwptb_Self::get_instance();
-		$test = $bot->set_webhook(true);
-		
-		//build reply
-		if(isset($test['content']) && !empty($test['content'])){			
-			$result['data'] = "<p>".$test['content']."</p>";	
-		}
-		elseif(isset($test['error']) && !empty($test['error'])){
-			$msg = sprintf(__('Connection is invalid. Error message: %s.', 'gwptb'), '<i>'.$test['error'].'</i>');
-			$result['data'] = "<p>".$msg."</p>";
-			$result['type'] = 'ok_with_error';
-		}
-		else {
-			$result['data'] = "<p>".__('Processing failed - try again later.', 'gwptb')."</p>";
-			$result['failed'] = 'failed';
-		}
-		
-		//return results			
-		echo json_encode($result);
-		die();
-	}
-
+	
 	/** == Settings  fields == **/
 	function settings_init(  ) { 
 		
@@ -422,9 +367,9 @@ class Gwptb_Admin {
 		register_setting( 'gwptb_settings', 'gwptb_help_text' );
 	
 		add_settings_section(
-			'gwptb_access_section', 
-			__( 'Access settings', 'gwptb' ), 
-			array($this, 'access_section_callback'), 
+			'gwptb_bot_section', 
+			__( 'Bot settings', 'gwptb' ), 
+			array($this, 'bot_section_callback'), 
 			'gwptb_settings'
 		);
 	
@@ -433,31 +378,15 @@ class Gwptb_Admin {
 			__( 'Bot Token', 'gwptb' ), 
 			array($this, 'bot_token_render'), 
 			'gwptb_settings', 
-			'gwptb_access_section' 
+			'gwptb_bot_section' 
 		);
-	
-		add_settings_field( 
-			'gwptb_cert_path', 
-			__( 'Path to certificate file', 'gwptb' ), 
-			array($this, 'cert_path_render'), 
-			'gwptb_settings', 
-			'gwptb_access_section' 
-		);
-		
-		//default tests
-		add_settings_section(
-			'gwptb_response_section', 
-			__( 'Response settings', 'gwptb' ), 
-			array($this, 'response_section_callback'), 
-			'gwptb_settings'
-		);
-		
+					
 		add_settings_field( 
 			'gwptb_start_text', 
 			__( 'Start text for bot', 'gwptb' ), 
 			array($this, 'start_text_render'), 
 			'gwptb_settings', 
-			'gwptb_response_section' 
+			'gwptb_bot_section' 
 		);
 		
 		add_settings_field( 
@@ -465,9 +394,16 @@ class Gwptb_Admin {
 			__( 'Help text for bot', 'gwptb' ), 
 			array($this, 'help_text_render'), 
 			'gwptb_settings', 
-			'gwptb_response_section' 
+			'gwptb_bot_section' 
 		);
 		
+		add_settings_field( 
+			'gwptb_cert_key', 
+			__( 'Public key', 'gwptb' ), 
+			array($this, 'cert_key_render'), 
+			'gwptb_settings', 
+			'gwptb_bot_section' 
+		);
 		
 		//init table here otherwise columns will not be bind correctly to screen
 		$list_table = gwpt_get_list_table();
@@ -477,12 +413,16 @@ class Gwptb_Admin {
 	public function bot_token_render() { 		
 		
 		$set_hook = get_option('gwptb_webhook', 0);
-		$value = get_option('gwptb_bot_token'); 
-		if($set_hook > 0){
-			//token cann't be change until hook removeв
+		$value = get_option('gwptb_bot_token');
+		
+		$bot = Gwptb_Self::get_instance(); 
+		$bot_name = $bot->get_self_name();
+		$bot_name = (empty($bot_name)) ? __('Anonymous', 'gwptb') : "<span class='gwptb-bot-name'>".$bot_name."</span>";
+		
+		if($set_hook > 0){ 	//token cann't be change until hook removed
 		?>
-			<p><code><?php echo $value;?></code></p>
-			<p class="description"><?php _e('Your bot connected to Telegram. Token cann\'t be updated until connection removed.', 'gwptb');?></p>
+		<p><code class="gwptb-bot-token"><?php echo $value;?></code></p>
+		<p class="description"><?php printf(__('Your bot - %s - connected to Telegram. Remove connection to update token.', 'gwptb'), $bot_name);?></p>
 		<?php
 		}
 		else {
@@ -491,42 +431,41 @@ class Gwptb_Admin {
 	<?php
 		}
 	}
-	
-	
-	public function cert_path_render() { 
 		
-		$value = get_option('gwptb_cert_path'); 
-	?>
-		<input type='text' name='gwptb_cert_path' value='<?php echo $value; ?>' class="large-text">
-		<p class="description"><?php _e('For self-signed certificates - specify the path to it\'s public key file', 'gwptb');?></p>
-	<?php	
-	}
 	
 	public function start_text_render(){
-		$value = get_option('start_text_render', __('Hello, %%uername%%. Let\'s find something useful. Send me _your term_ to perform a search, type /help to get help.', 'gwptb')); 
+		$value = get_option('gwptb_start_text', __('Hello, %%uername%%. Let\'s find something useful. Send me _your term_ to perform a search, type /help to get help.', 'gwptb')); 
 	?>
-		<textarea name='start_text_render'class="large-text"><?php echo $value; ?></textarea>
-		<p class="description"><?php _e('Welcom text for first-time user %%uername%% will be replaced with actual name', 'gwptb');?></p>
+		<textarea name='gwptb_start_text' class="large-text" rows="3"><?php echo $value; ?></textarea>
+		<p class="description"><?php _e('Text showing as a response to /start command. %%uername%% will be replaced with actual name.', 'gwptb');?></p>
+		<p class="description"><?php _e('Command should be added in dialog with @BotFather', 'gwptb');?></p>
 	<?php	
 	}
 	
 	public function help_text_render(){
 		$value = get_option('gwptb_help_text', __('I can help you to find something useful at %%home%%. Send me _your term_ to perform a search.', 'gwptb')); 
 	?>
-		<textarea name='gwptb_help_text'class="large-text"><?php echo $value; ?></textarea>
-		<p class="description"><?php _e('Text showing as a response to /help command, %%home%% will be replaced with link to homepage', 'gwptb');?></p>
+		<textarea name='gwptb_help_text' class="large-text" rows="3"><?php echo $value; ?></textarea>
+		<p class="description"><?php _e('Text showing as a response to /help command. %%home%% will be replaced with link to homepage.', 'gwptb');?></p>
+		<p class="description"><?php _e('Command should be added in dialog with @BotFather', 'gwptb');?></p>
 	<?php	
 	}
 	
+	public function cert_key_render() {
+		
+		$value = get_option('gwptb_cert_key');
+		$help_link = "<a href='https://core.telegram.org/bots/self-signed' target='_blank'>".__('Telegram instructions', 'gwptb')."</a>";
+	?>
+		<textarea name='gwptb_cert_key' class="large-text" rows="3"><?php echo $value; ?></textarea>
+		<p class="description"><?php printf(__('For self-signed certificates: copy the content of public key. %s', 'gwptb'), $help_link);?></p>
+	<?php
+	}
 
-	public function access_section_callback(  ) { 	
+	public function bot_section_callback(  ) { 	
 		//description or help information	
 	}
 
 
-	public function response_section_callback(  ) { 	
-		//description or help information	
-	}
 
 
 	

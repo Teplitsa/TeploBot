@@ -92,6 +92,15 @@ class Gwptb_Self {
 					$payload .= file_get_contents($value);
 					$payload .= "\r\n";
 				}
+				elseif($key == 'certificate'){ //certificate should be submitted as file
+					$payload .= '--' . $boundary;
+					$payload .= "\r\n";
+					$payload .= 'Content-Disposition: form-data; name="'.$key.'"; filename="'.$key.'_file"'."\r\n";
+					//$payload .= 'Content-Type: image/jpeg' . "\r\n";
+					$payload .= "\r\n";
+					$payload .= $value;
+					$payload .= "\r\n";
+				}
 				else  {
 					$payload .= '--' . $boundary;
 					$payload .= "\r\n";
@@ -448,14 +457,21 @@ class Gwptb_Self {
 	public function set_webhook($remove = false){
 		
 		$params = array();
-		if($remove){
+		$token = get_option('gwptb_bot_token', '');
+		
+		if($remove || empty($token)){
 			$params['url'] = '';
 		}
 		else {
-			$params['url'] = home_url('gwptb/update/', 'https'); //support for custom slug in future
-			$cert_path = get_option('gwptb_cert_path');
-			if($cert_path)
-				$params['certificate'] = $cert_path;
+			
+			//build 
+			$params['url'] = home_url('gwptb/'.$token.'/', 'https'); 
+			flush_rewrite_rules(false); //flush permalink in case it's first build
+			
+			//certificate?
+			$cert = get_option('gwptb_cert_key');
+			if($cert)
+				$params['certificate'] = $cert;
 		}
 		
 		//api request		
@@ -655,16 +671,30 @@ class Gwptb_Self {
 		$link = '';
 		
 		if(!$self){
-			return __('Set connection and test token for the bot', 'gwptb');			 
+			return __('Set connection for the bot', 'gwptb');			 
 		}
 		
-		$txt = (isset($self['name']) && !empty($self['name'])) ? apply_filters('gwptb_admin_text', $self['name']) : __('Set connection and test token for the bot', 'gwptb');
+		$txt = $this->get_self_name();		
 		$url = (isset($self['username']) && !empty($self['username'])) ? esc_url('https://telegram.me/'.$self['username']) : '';
 		
 		if(empty($url))
-			return $txt;
+			return __('Set connection for the bot', 'gwptb');
 		
 		return "<a href='{$url}' target='_blank'>{$txt}</a>";
+	}
+	
+	public function get_self_name() {
+		
+		$self = $this->get_self_id();
+		$name = '';
+		
+		if(!isset($self['name']) || !isset($self['username']))
+			return '';
+		
+		$name = (!empty($self['name'])) ? $self['name'] : '';
+		$name .= (!empty($self['username'])) ? " (@".$self['username'].")" : '';
+		
+		return $name;
 	}
 	
 } //class

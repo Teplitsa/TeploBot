@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Green WP Telegram Bot\n"
-"POT-Creation-Date: 2016-05-20 20:32+0300\n"
-"PO-Revision-Date: 2016-05-20 20:37+0300\n"
+"POT-Creation-Date: 2016-05-21 18:08+0300\n"
+"PO-Revision-Date: 2016-05-21 18:13+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language: ru_RU\n"
@@ -16,20 +16,20 @@ msgstr ""
 "X-Poedit-WPHeader: gwptb.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "X-Poedit-SearchPathExcluded-1: src\n"
 "X-Poedit-SearchPathExcluded-2: assets\n"
 "X-Poedit-SearchPathExcluded-3: node_modules\n"
 
-#: inc/admin.php:48 inc/admin.php:60 inc/admin.php:92
+#: inc/admin.php:48 inc/admin.php:60 inc/admin.php:87
 msgid "Settings"
 msgstr "Настройки"
 
 #. Plugin Name of the plugin/theme
-#: inc/admin.php:57 inc/admin.php:60 inc/admin.php:101
+#: inc/admin.php:57 inc/admin.php:60 inc/admin.php:109
 msgid "Green WP Telegram Bot"
 msgstr "Green WP Telegram Bot"
 
@@ -37,115 +37,110 @@ msgstr "Green WP Telegram Bot"
 msgid "GWPTB"
 msgstr "GWPTB"
 
-#: inc/admin.php:63 inc/admin.php:298
+#: inc/admin.php:63 inc/admin.php:310
 msgid "GWPTB Log"
-msgstr "GWPTB История сообщений"
+msgstr "GWPTB Лог запросов"
 
 #: inc/admin.php:63
 msgid "Log"
-msgstr "История"
+msgstr "Лог запросов"
 
-#: inc/admin.php:74 inc/admin.php:294
+#: inc/admin.php:73 inc/admin.php:306
 msgid "Sorry, but you do not have permissions to access this page."
 msgstr "К сожалению, у вас нет прав для просмотра этой страницы"
 
-#: inc/admin.php:83
-msgid "Connection Setup"
-msgstr "Настройка соединения"
-
-#: inc/admin.php:88
+#: inc/admin.php:83 inc/admin.php:94
 msgid "How to create a bot"
 msgstr "Как создать бота"
 
-#: inc/admin.php:137
+#: inc/admin.php:92
+msgid "Connection Setup"
+msgstr "Настройка соединения"
+
+#: inc/admin.php:144
 msgid "Test token"
 msgstr "Проверить ключ (токен)"
 
-#: inc/admin.php:185
+#: inc/admin.php:192
 msgid "Your Bot is connected"
-msgstr "Ваш бот подсоединен и настроен"
+msgstr "Бот соединен и настроен"
 
-#: inc/admin.php:186
+#: inc/admin.php:195
 msgid "Remove connection"
 msgstr "Удалить соединение"
 
-#: inc/admin.php:191
+#: inc/admin.php:201
 msgid "Set connection"
 msgstr "Установить соединение"
 
-#: inc/admin.php:207
-msgid "Update bot data"
-msgstr "Обновить данные"
-
-#: inc/admin.php:218
+#: inc/admin.php:221
 msgid "Bot Link"
 msgstr "Ссылка на бота"
 
-#: inc/admin.php:226
+#: inc/admin.php:229
 msgid "Received messages"
 msgstr "Сообщений получено"
 
-#: inc/admin.php:230
-msgid "Send links"
+#: inc/admin.php:233
+msgid "Sent links"
 msgstr "Отправлено ссылок"
 
-#: inc/admin.php:270 inc/admin.php:363 inc/admin.php:394
+#: inc/admin.php:245
+msgid "Update stats"
+msgstr "Обновить"
+
+#: inc/admin.php:282
 #, php-format
 msgid "Connection is invalid. Error message: %s."
 msgstr "Некорректное соединение. Ошибка: %s."
 
-#: inc/admin.php:274 inc/admin.php:368 inc/admin.php:399
+#: inc/admin.php:286
 msgid "Processing failed - try again later."
 msgstr "Обработка не завершена - попробуйте еще раз"
 
-#: inc/admin.php:332
+#: inc/admin.php:344
 #, php-format
 msgid "Your token is connected with Bot: %s (@%s)."
 msgstr "Ваш ключ (токен) связан с ботом: %s (@%s)."
 
-#: inc/admin.php:335
+#: inc/admin.php:347
 #, php-format
 msgid "Your token is invalid. Error message: %s."
 msgstr "Некорректный ключ (токен). Ошибка: %s."
 
-#: inc/admin.php:419
-msgid "Access settings"
-msgstr "Настройки доступа"
+#: inc/admin.php:371
+msgid "Bot settings"
+msgstr "Настройки бота"
 
-#: inc/admin.php:426
+#: inc/admin.php:378
 msgid "Bot Token"
 msgstr "Ключ (токен)"
 
-#: inc/admin.php:434
-msgid "Path to certificate file"
-msgstr "Путь к файлу сертификата"
-
-#: inc/admin.php:443
-msgid "Response settings"
-msgstr "Настройки ответов"
-
-#: inc/admin.php:450
+#: inc/admin.php:386
 msgid "Start text for bot"
 msgstr "Текст приветствия"
 
-#: inc/admin.php:458
+#: inc/admin.php:394
 msgid "Help text for bot"
 msgstr "Текст подсказки"
 
-#: inc/admin.php:478
+#: inc/admin.php:402
+msgid "Public key"
+msgstr "Публичный ключ"
+
+#: inc/admin.php:420
+msgid "Anonymous"
+msgstr "Анонимный"
+
+#: inc/admin.php:425
+#, php-format
 msgid ""
-"Your bot connected to Telegram. Token cann't be updated until connection "
-"removed."
+"Your bot - %s - connected to Telegram. Remove connection to update token."
 msgstr ""
-"Соединение с Телеграм установлено. Ключ (токен) не может быть изменен, пока "
-"оно не отменено."
+"Бот - %s - соединен с Телеграм. Удалите соединение перед тем, как обновить "
+"ключ (токен)"
 
-#: inc/admin.php:494
-msgid "For self-signed certificates - specify the path to it's public key file"
-msgstr ""
-"Для самоподписанных сертификатов: укажите путь к файлу публичного ключа"
-
-#: inc/admin.php:499 inc/functions.php:26
+#: inc/admin.php:437 inc/functions.php:26
 #, php-format
 msgid ""
 "Hello, %%uername%%. Let's find something useful. Send me _your term_ to "
@@ -154,13 +149,19 @@ msgstr ""
 "Привет, %%uername%%. Давай найдем что-нибудь полезное. Отправь мне _запрос_ "
 "для осуществления поиска, или напиши /help для получения подсказки."
 
-#: inc/admin.php:502
+#: inc/admin.php:440
 #, php-format
 msgid ""
-"Welcom text for first-time user %%uername%% will be replaced with actual name"
-msgstr "Текст приветствия, %%uername%% заменяется именем пользователя"
+"Text showing as a response to /start command. %%uername%% will be replaced "
+"with actual name."
+msgstr ""
+"Текст ответа на команду /start. %%uername%% заменяется именем пользователя."
 
-#: inc/admin.php:507 inc/functions.php:13
+#: inc/admin.php:441 inc/admin.php:450
+msgid "Command should be added in dialog with @BotFather"
+msgstr "Команда должна быть добавлена в диалоге с @BotFather"
+
+#: inc/admin.php:446 inc/functions.php:13
 #, php-format
 msgid ""
 "I can help you to find something useful at %%home%%. Send me _your term_ to "
@@ -169,12 +170,21 @@ msgstr ""
 "Я могу найти что-то полезное на сайте %%home%%. Отправь мне _запрос_ для "
 "осуществления поиска."
 
-#: inc/admin.php:510
+#: inc/admin.php:449
 #, php-format
 msgid ""
-"Text showing as a response to /help command, %%home%% will be replaced with "
-"link to homepage"
-msgstr "Ответ на команду /help, %%home%% заменяется ссылкой на сайт"
+"Text showing as a response to /help command. %%home%% will be replaced with "
+"link to homepage."
+msgstr "Текст ответа на команду /help. "
+
+#: inc/admin.php:457
+msgid "Telegram instructions"
+msgstr "Инструкции Телеграм"
+
+#: inc/admin.php:460
+#, php-format
+msgid "For self-signed certificates: copy the content of public key. %s"
+msgstr "Для самоподписанных сертификатов: скопируйте публичный ключ. %s"
 
 #: inc/class-admin-list-table.php:81
 msgid "Date"
@@ -196,44 +206,44 @@ msgstr "Пользователь"
 msgid "Content"
 msgstr "Содержание"
 
-#: inc/class-gwptb.php:131
+#: inc/class-gwptb.php:140
 #, php-format
 msgid "Invalid request with error: %s"
 msgstr "Некорректный запрос. Ошибка: %s"
 
-#: inc/class-gwptb.php:137
+#: inc/class-gwptb.php:146
 #, php-format
 msgid "Invalid response with code: %s"
 msgstr "Некорректный запрос. Код: %s"
 
-#: inc/class-gwptb.php:144
+#: inc/class-gwptb.php:153
 #, php-format
 msgid "Invalid content in response: %s"
 msgstr "Некорректное содержание в ответе: %s"
 
-#: inc/class-gwptb.php:147
+#: inc/class-gwptb.php:156
 msgid "Invalid content in response"
 msgstr "Некорректное содержание в ответе"
 
-#: inc/class-gwptb.php:248
+#: inc/class-gwptb.php:257
 msgid "Connection removed"
 msgstr "Соединение удалено"
 
-#: inc/class-gwptb.php:248
+#: inc/class-gwptb.php:257
 msgid "Connection set"
 msgstr "Соединение установлено"
 
-#: inc/class-gwptb.php:260
+#: inc/class-gwptb.php:269
 msgid "Bot detected"
 msgstr "Бот определен"
 
-#: inc/class-gwptb.php:364
+#: inc/class-gwptb.php:373
 msgid "Empty update query"
 msgstr "Пустой запрос"
 
-#: inc/class-gwptb.php:658 inc/class-gwptb.php:661
-msgid "Set connection and test token for the bot"
-msgstr "Установить соединение и протестируйте ключ (токен)"
+#: inc/class-gwptb.php:674 inc/class-gwptb.php:681
+msgid "Set connection for the bot"
+msgstr "Настройте соединение"
 
 #: inc/core.php:122
 msgid "Invalid update received by webhook"
@@ -272,3 +282,43 @@ msgstr "Теплица социальных технологий"
 #. Author URI of the plugin/theme
 msgid "https://te-st.ru/"
 msgstr "https://te-st.ru/"
+
+#~ msgid "Update bot data"
+#~ msgstr "Обновить данные"
+
+#~ msgid "Send links"
+#~ msgstr "Отправлено ссылок"
+
+#~ msgid "Access settings"
+#~ msgstr "Настройки доступа"
+
+#~ msgid "Path to certificate file"
+#~ msgstr "Путь к файлу сертификата"
+
+#~ msgid "Response settings"
+#~ msgstr "Настройки ответов"
+
+#~ msgid ""
+#~ "Your bot connected to Telegram. Token cann't be updated until connection "
+#~ "removed."
+#~ msgstr ""
+#~ "Соединение с Телеграм установлено. Ключ (токен) не может быть изменен, "
+#~ "пока оно не отменено."
+
+#~ msgid ""
+#~ "For self-signed certificates - specify the path to it's public key file"
+#~ msgstr ""
+#~ "Для самоподписанных сертификатов: укажите путь к файлу публичного ключа"
+
+#~ msgid ""
+#~ "Welcom text for first-time user %%uername%% will be replaced with actual "
+#~ "name"
+#~ msgstr "Текст приветствия, %%uername%% заменяется именем пользователя"
+
+#~ msgid ""
+#~ "Text showing as a response to /help command, %%home%% will be replaced "
+#~ "with link to homepage"
+#~ msgstr "Ответ на команду /help, %%home%% заменяется ссылкой на сайт"
+
+#~ msgid "Set connection and test token for the bot"
+#~ msgstr "Установить соединение и протестируйте ключ (токен)"

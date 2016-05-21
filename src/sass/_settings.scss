@@ -33,9 +33,9 @@
 }
 
 /** help **/
-.gwptb-page-section.help-section {
-	.card { max-width: 840px; }
-}
+
+
+
 
 /** settings block */
 .gwptb-page-section.settings {
@@ -63,10 +63,30 @@
 			@include calc('margin-top', '3.82em + 20px');
 		}
 	}
+	
+	.description {
+		font-size: 0.95em;
+		margin-top: 8px;
+	}
+	
+	.description +  .description {
+		margin-top: 0;
+		padding-top: 0;}
+	
+	.gwptb-bot-name {
+		color: $green;
+		font-style: normal;
+	}
+	.gwptb-bot-token {
+		padding: 3px 6px;
+		background: #fff;
+		color: $green;
+	}
 }
 
 /** connection sections **/
 .gwptb-page-section.connection {
+	
 	.postbox  h2 {		
 		& > span {
 			position: relative;
@@ -92,34 +112,107 @@
 /* connection test **/
 .gwptb-conncetion-setup {
 	
-	.button {
-		margin-right: 8px;
-		.for-green { display: none; }
-		&.green {			
-			.for-init { display: none; }
-			.for-green { display: inline; }
+	
+	.gwptb-cs-button-row {
+		@include clearfix;
+		
+		.btn-col-green {
+			width: 100%;
 			
+			.green {
+				width: 100px;
+			}
+		}
+		
+		.btn-col-grey {
+			width: 100%;
+			text-align: center;
+			padding-top: 7px;			
+		}
+		
+		//two cols
+		@media screen and (min-width: 600px) { 
+			.btn-col-green{
+				float: left;
+				width: 60%;
+			}
+			.btn-col-grey {
+				float: left;
+				width: 40%;
+			}
+		}
+		
+		.button-green {
+			box-sizing: border-box;
 			background: $green;
 			border: 1px solid darken($green, 3%);
-			box-shadow: none;
-			text-shadow: none;
-			border-radius: 0;
-			font-size: 1.2em;
-			line-height: 1.2em;
-			height: auto;
-			padding: 0.65em 1.5em;
-			min-width: 40%;
-			text-align: center;
-			cursor: default;
+			
+			font-size: 16px;
+			line-height: 18px;			
+			padding: 13px 24px;			
+			text-align: center;			
+			color: #fff;			
+		}
+		
+		.button-grey {
+			display: inline-block;
+			box-sizing: border-box;
+			margin: 0 4px;
+			font-size: 13px;
+			line-heigth: 20px;
+			padding: 6px 14px;
+			
+			background: #f7f7f7;
+			border: 1px solid #ccc;
+			box-shadow: 0 1px 0 #ccc;
+			border-radius: 3px;
+			color: #777;
+			cursor: pointer;
+			@include transition(all 0.3s);
+			
+			&:hover {
+				background: #fafafa;
+				border-color: #999;
+				color: #23282d;
+			}
 		}
 	}
 	
+	.gwptb-cs-response {
+		margin: 1em 0;
+		
+		.gwptb-message {
+			box-sizing: border-box;
+			border: 1px solid #eee;
+			padding: 6px 16px;
+			border-radius: 2px;
+			font-size: 0.9em;
+			
+			@include for(large-screens) {
+				max-width: 60%;
+			}
+			
+			&.success {
+				color: $green;	
+			}
+			
+			&.fail {
+				color: red;
+			}
+		}
+		
+		p {
+			margin: 0;
+		}
+	}
 }
 
 /* data table */
 .gwptb-connection-data {
 	table {
 		width: 100%;
+		margin: 20px 0;
+		
 		@include for(large-screens){
 			width: 50%;
 		}
@@ -128,7 +221,7 @@
 	th {
 		text-align: left;
 		padding: 4px 0;
-		width: 160px;
+		width: 170px;
 	}
 	
 	td {
