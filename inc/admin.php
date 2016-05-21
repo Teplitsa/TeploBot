@@ -361,10 +361,10 @@ class Gwptb_Admin {
 	function settings_init(  ) { 
 		
 		//sanitize callback	
-		register_setting( 'gwptb_settings', 'gwptb_bot_token' );
-		register_setting( 'gwptb_settings', 'gwptb_cert_key' );
-		register_setting( 'gwptb_settings', 'gwptb_start_text');
-		register_setting( 'gwptb_settings', 'gwptb_help_text' );
+		register_setting( 'gwptb_settings', 'gwptb_bot_token', array('GWPTB_Filters', 'sanitize_url'));
+		register_setting( 'gwptb_settings', 'gwptb_cert_key', array('GWPTB_Filters', 'sanitize_string'));
+		register_setting( 'gwptb_settings', 'gwptb_start_text', array('GWPTB_Filters', 'sanitize_text'));
+		register_setting( 'gwptb_settings', 'gwptb_help_text', array('GWPTB_Filters', 'sanitize_text'));
 	
 		add_settings_section(
 			'gwptb_bot_section', 
@@ -434,10 +434,10 @@ class Gwptb_Admin {
 		
 	
 	public function start_text_render(){
-		$value = get_option('gwptb_start_text', __('Hello, %%uername%%. Let\'s find something useful. Send me _your term_ to perform a search, type /help to get help.', 'gwptb')); 
+		$value = get_option('gwptb_start_text', __('Hello, %%username%%. Let\'s find something useful. Send me _your term_ to perform a search, type /help to get help.', 'gwptb')); 
 	?>
 		<textarea name='gwptb_start_text' class="large-text" rows="3"><?php echo $value; ?></textarea>
-		<p class="description"><?php _e('Text showing as a response to /start command. %%uername%% will be replaced with actual name.', 'gwptb');?></p>
+		<p class="description"><?php _e('Text showing as a response to /start command. %%username%% will be replaced with actual name.', 'gwptb');?></p>
 		<p class="description"><?php _e('Command should be added in dialog with @BotFather', 'gwptb');?></p>
 	<?php	
 	}

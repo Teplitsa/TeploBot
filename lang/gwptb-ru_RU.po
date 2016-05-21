@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Green WP Telegram Bot\n"
-"POT-Creation-Date: 2016-05-21 18:08+0300\n"
-"PO-Revision-Date: 2016-05-21 18:13+0300\n"
+"POT-Creation-Date: 2016-05-21 22:02+0300\n"
+"PO-Revision-Date: 2016-05-21 22:02+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language: ru_RU\n"
@@ -16,8 +16,8 @@ msgstr ""
 "X-Poedit-WPHeader: gwptb.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
-"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "X-Poedit-SearchPathExcluded-1: src\n"
@@ -140,22 +140,21 @@ msgstr ""
 "Бот - %s - соединен с Телеграм. Удалите соединение перед тем, как обновить "
 "ключ (токен)"
 
-#: inc/admin.php:437 inc/functions.php:26
+#: inc/admin.php:437 inc/functions.php:28
 #, php-format
 msgid ""
-"Hello, %%uername%%. Let's find something useful. Send me _your term_ to "
+"Hello, %%username%%. Let's find something useful. Send me _your term_ to "
 "perform a search, type /help to get help."
 msgstr ""
-"Привет, %%uername%%. Давай найдем что-нибудь полезное. Отправь мне _запрос_ "
+"Привет, %%username%%. Давай найдем что-нибудь полезное. Отправь мне _запрос_ "
 "для осуществления поиска, или напиши /help для получения подсказки."
 
 #: inc/admin.php:440
 #, php-format
 msgid ""
-"Text showing as a response to /start command. %%uername%% will be replaced "
+"Text showing as a response to /start command. %%username%% will be replaced "
 "with actual name."
 msgstr ""
-"Текст ответа на команду /start. %%uername%% заменяется именем пользователя."
 
 #: inc/admin.php:441 inc/admin.php:450
 msgid "Command should be added in dialog with @BotFather"
@@ -237,37 +236,37 @@ msgstr "Соединение установлено"
 msgid "Bot detected"
 msgstr "Бот определен"
 
-#: inc/class-gwptb.php:373
+#: inc/class-gwptb.php:376
 msgid "Empty update query"
 msgstr "Пустой запрос"
 
-#: inc/class-gwptb.php:674 inc/class-gwptb.php:681
+#: inc/class-gwptb.php:677 inc/class-gwptb.php:684
 msgid "Set connection for the bot"
 msgstr "Настройте соединение"
 
-#: inc/core.php:122
+#: inc/core.php:125
 msgid "Invalid update received by webhook"
 msgstr "Получен некорректный апдейт"
 
-#: inc/functions.php:66 inc/functions.php:102
+#: inc/functions.php:68 inc/functions.php:105
 msgid "Unfortunately your request didn't match anything."
 msgstr "К сожалению, по такому запросу ничего не найдено"
 
-#: inc/functions.php:76
+#: inc/functions.php:79
 #, php-format
 msgid "Found results: %s / displaying %d - %d"
 msgstr "Найдено результатов: %s / показано %d - %d"
 
-#: inc/functions.php:79
+#: inc/functions.php:82
 #, php-format
 msgid "Found results: %s"
 msgstr "Найдено результатов: %s"
 
-#: inc/functions.php:91
+#: inc/functions.php:94
 msgid "Previous"
 msgstr "Пред."
 
-#: inc/functions.php:95
+#: inc/functions.php:98
 msgid "Next"
 msgstr "След."
 
@@ -282,6 +281,21 @@ msgstr "Теплица социальных технологий"
 #. Author URI of the plugin/theme
 msgid "https://te-st.ru/"
 msgstr "https://te-st.ru/"
+
+#~ msgid ""
+#~ "Hello, %%uername%%. Let's find something useful. Send me _your term_ to "
+#~ "perform a search, type /help to get help."
+#~ msgstr ""
+#~ "Привет, %%uername%%. Давай найдем что-нибудь полезное. Отправь мне "
+#~ "_запрос_ для осуществления поиска, или напиши /help для получения "
+#~ "подсказки."
+
+#~ msgid ""
+#~ "Text showing as a response to /start command. %%uername%% will be "
+#~ "replaced with actual name."
+#~ msgstr ""
+#~ "Текст ответа на команду /start. %%uername%% заменяется именем "
+#~ "пользователя."
 
 #~ msgid "Update bot data"
 #~ msgstr "Обновить данные"

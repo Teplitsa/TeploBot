@@ -8,8 +8,8 @@ class GWPTB_Filters {
 	private function __construct() {
 				
 		//add default filters
-		add_filter('gwptb_sanitize_latin', array('GWPTB_Filters', 'sanitize_email'));
-		add_filter('gwptb_sanitize_rich_text', array('GWPTB_Filters', 'sanitize_text'));
+		add_filter('gwptb_input_latin', array('GWPTB_Filters', 'sanitize_email'));
+		add_filter('gwptb_input_text', array('GWPTB_Filters', 'sanitize_string'));
 	}
 	
 	
@@ -31,11 +31,19 @@ class GWPTB_Filters {
 	}
 	
 	
-	public static function sanitize_text($input){
+	public static function sanitize_string($input){
 		//Strip tags, strip special characters
 		
 		return filter_var($input, FILTER_SANITIZE_STRING);
 	}
+	
+	public static function sanitize_text($input){
+		//HTML-escape '"<>& and characters with ASCII value less than 32
+		
+		$input = strip_tags($input); //no html at all
+		return filter_var($input, FILTER_SANITIZE_SPECIAL_CHARS);
+	}
+	
 	
 	public static function sanitize_url($input){
 		//Remove all characters except letters, digits and $-_.+!*'(),{}|\\^~[]`<>#%";/?:@&=. 
