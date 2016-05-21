@@ -8,7 +8,7 @@ if(!class_exists('WP_List_Table')) {
 /** Class to present Log table **/
 class Gwptb_Log_List_Table extends WP_List_Table  {
 	
-	protected $log_per_page = 30;
+	protected $log_per_page = 100;
 	
 	
 	/** constructor **/
@@ -98,7 +98,7 @@ class Gwptb_Log_List_Table extends WP_List_Table  {
 	protected function column_time( $item ) {
 		
 		if(isset($item->time))
-			echo date_i18n('d.m.Y H:i', strtotime($item->time));
+			echo $this->item_wrap(date_i18n('d.m.Y H:i', strtotime($item->time)), $item);
 	}
 	
 	protected function column_user( $item ) {
@@ -115,7 +115,7 @@ class Gwptb_Log_List_Table extends WP_List_Table  {
 			$user[] = (empty($user)) ? apply_filters('gwptb_admin_text', '@'.$item->username) : apply_filters('gwptb_admin_text', '(@'.$item->username.')');
 		}
 		
-		echo implode(' ', $user);
+		echo $this->item_wrap(implode(' ', $user), $item);
 	}
 	
 	protected function column_content( $item ) {
@@ -127,9 +127,12 @@ class Gwptb_Log_List_Table extends WP_List_Table  {
 		}
 		elseif(isset($item->content) && !empty($item->content)) {
 			
-			$c = (mb_strlen($item->content) > 140) ? mb_substr($item->content, 0, 140).'...' : $item->content;
-			
-			echo "<div class='gwptb-log-content'>";
+			$c = (mb_strlen($item->content) > 140) ? mb_substr($item->content, 0, 140).'...' : $item->content;			
+			$css = 'gwptb-log-content';
+			if($item->action == 'response')
+				$css .= ' row-response';
+				
+			echo "<div class='{$css}'>";
 			echo apply_filters('gwptb_admin_rich_text', $c);
 			echo "</div>";
 		}
@@ -138,7 +141,7 @@ class Gwptb_Log_List_Table extends WP_List_Table  {
 	protected function column_default( $item, $column_name ) {
 		
 		if(in_array($column_name, array('action', 'method')) && isset($item->$column_name)){
-			echo apply_filters('gwptb_admin_text', $item->$column_name);
+			echo $this->item_wrap(apply_filters('gwptb_admin_text', $item->$column_name), $item);
 			
 		}
 		else {
@@ -147,6 +150,12 @@ class Gwptb_Log_List_Table extends WP_List_Table  {
 		}		
 	}
 	
-	
+	protected function item_wrap($txt, $item){
+		
+		if($item->action != 'response')
+			return $txt;
+		
+		return "<span class='row-response'>{$txt}</span>";
+	}
 	
 } //class

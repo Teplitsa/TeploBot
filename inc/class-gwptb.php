@@ -218,7 +218,7 @@ class Gwptb_Self {
 		
 		$data['content'] = apply_filters('gwptb_sanitize_rich_text', $data['content']);
 		$data['error'] = apply_filters('gwptb_sanitize_rich_text', $data['error']);
-		$data['attachment'] = apply_filters('gwptb_sanitize_rich_text', $data['attachment']);
+		$data['attachment'] = apply_filters('gwptb_sanitize_rich_text', $data['attachment']); // ??
 		
 		$data['update_id'] = (int)$data['update_id'];
 		$data['user_id'] = (int)$data['user_id'];
