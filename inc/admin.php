@@ -421,6 +421,7 @@ class Gwptb_Admin {
 		
 		if($set_hook > 0){ 	//token cann't be change until hook removed
 		?>
+		<input type="hidden" name="gwptb_bot_token" value="<?php echo $value;?>">
 		<p><code class="gwptb-bot-token"><?php echo $value;?></code></p>
 		<p class="description"><?php printf(__('Your bot - %s - connected to Telegram. Remove connection to update token.', 'gwptb'), $bot_name);?></p>
 		<?php

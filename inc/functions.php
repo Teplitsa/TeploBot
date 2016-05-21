@@ -14,7 +14,7 @@ function gwptb_help_command_response($upd_data){
 	$result['text'] = get_option('gwptb_help_text', $default);
 	$result['text'] = str_replace('%%home%%', "[".home_url()."](".home_url().")", $result['text']);
 	
-	
+	$result['text'] = apply_filters('gwptb_output_text', $result['text']);
 	$result['parse_mode'] = 'Markdown';
 		
 	return $result;
@@ -32,6 +32,8 @@ function gwptb_start_command_response($upd_data){
 	//still may be empty??
 	
 	$result['text'] = str_replace('%%username%%', $username, $result['text']);
+	$result['text'] = apply_filters('gwptb_output_text', $result['text']);
+	
 	$result['parse_mode'] = 'Markdown';
 		
 	return $result;	
