@@ -361,10 +361,10 @@ class Gwptb_Admin {
 	function settings_init(  ) { 
 		
 		//sanitize callback	
-		register_setting( 'gwptb_settings', 'gwptb_bot_token', array('GWPTB_Filters', 'sanitize_url'));
-		register_setting( 'gwptb_settings', 'gwptb_cert_key', array('GWPTB_Filters', 'sanitize_string'));
+		register_setting( 'gwptb_settings', 'gwptb_bot_token',  array('GWPTB_Filters', 'sanitize_url'));
+		register_setting( 'gwptb_settings', 'gwptb_cert_key',   array('GWPTB_Filters', 'sanitize_string'));
 		register_setting( 'gwptb_settings', 'gwptb_start_text', array('GWPTB_Filters', 'sanitize_html'));
-		register_setting( 'gwptb_settings', 'gwptb_help_text', array('GWPTB_Filters', 'sanitize_html'));
+		register_setting( 'gwptb_settings', 'gwptb_help_text',  array('GWPTB_Filters', 'sanitize_html'));
 	
 		add_settings_section(
 			'gwptb_bot_section', 
@@ -435,7 +435,8 @@ class Gwptb_Admin {
 		
 	
 	public function start_text_render(){
-		$value = get_option('gwptb_start_text', __('Hello, %%username%%. Let\'s find something useful. Send me _your term_ to perform a search, type /help to get help.', 'gwptb')); 
+		$default = sprintf(__('Hello, %%username%%. Let\'s find something useful. Send me %s to perform a search, type /help to get help.', 'gwptb'), "<i>".__('your term', 'gwptb')."</i>");
+		$value = get_option('gwptb_start_text', $default); 
 	?>
 		<textarea name='gwptb_start_text' class="large-text" rows="3"><?php echo $value; ?></textarea>
 		<p class="description"><?php _e('Text showing as a response to /start command. %%username%% will be replaced with actual name.', 'gwptb');?></p>
@@ -444,7 +445,8 @@ class Gwptb_Admin {
 	}
 	
 	public function help_text_render(){
-		$value = get_option('gwptb_help_text', __('I can help you to find something useful at %%home%%. Send me _your term_ to perform a search.', 'gwptb')); 
+		$default = sprintf(__('I can help you to find something useful at %%home%%. Send me %s to perform a search.', 'gwptb'), "<i>".__('your term', 'gwptb')."</i>");
+		$value = get_option('gwptb_help_text', $default); 
 	?>
 		<textarea name='gwptb_help_text' class="large-text" rows="3"><?php echo $value; ?></textarea>
 		<p class="description"><?php _e('Text showing as a response to /help command. %%home%% will be replaced with link to homepage.', 'gwptb');?></p>

@@ -88,6 +88,7 @@ class GWPTB_Filters {
 		return $input;
 	}
 	
+	
 	/** == Output == **/
 	public static function print_html($output){
 		$allowed_html = self::get_allowed_tags();
@@ -95,14 +96,13 @@ class GWPTB_Filters {
 		$output = htmlspecialchars_decode($output);			
 		$output = wp_kses($output, $allowed_html);
 		
+		//tags should be closed
+		$output = force_balance_tags( $output );
+		
 		return $output;
 	}
 	
-	public static function print_markdown($output){
-		
-		$output = strip_tags($output);
-		
-	}
+	
 	
 	
 	/** == Special filters == **/

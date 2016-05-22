@@ -9,9 +9,8 @@ function gwptb_help_command_response($upd_data){
 	
 	$result = array();	
 	
-	//get help text from options	
-	$default = __('I can help you to find something useful at %%home%%. Send me _your term_ to perform a search.', 'gwptb');
-	$result['text'] = get_option('gwptb_help_text', $default);
+	//get help text from options		
+	$result['text'] = get_option('gwptb_help_text');
 	$result['text'] = str_replace('%%home%%', "<a href='".home_url()."'>".home_url()."</a>", $result['text']);
 	
 	$result['text'] = apply_filters('gwptb_output_html', $result['text']);
@@ -24,16 +23,13 @@ function gwptb_start_command_response($upd_data){
 	
 	$result = array();	
 	
-	//get help text from options	
-	$default = __('Hello, %%username%%. Let\'s find something useful. Send me _your term_ to perform a search, type /help to get help.', 'gwptb');
-	$result['text'] = get_option('gwptb_start_text', $default);
+	//get help text from options		
+	$result['text'] = get_option('gwptb_start_text');
 	
-	$username = (!empty($upd_data['user_fname'])) ? $upd_data['user_fname'] : $upd_data['username'];
-	//still may be empty??
-	
+	$username = (!empty($upd_data['user_fname'])) ? $upd_data['user_fname'] : $upd_data['username'];	
 	$result['text'] = str_replace('%%username%%', $username, $result['text']);
-	$result['text'] = apply_filters('gwptb_output_html', $result['text']);
 	
+	$result['text'] = apply_filters('gwptb_output_html', $result['text']);	
 	$result['parse_mode'] = 'HTML';
 		
 	return $result;	
