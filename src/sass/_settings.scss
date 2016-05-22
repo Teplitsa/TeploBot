@@ -1,13 +1,5 @@
 /** Settings styles **/
 
-.gwptb-test-response {
-	min-height: 100px;
-}
-
-.gwptb-dashboard {
-	margin-bottom: 24px;
-}
-
 #gwptb-widgets {
 	@include clearfix;
 		
@@ -22,11 +14,11 @@
 	
 	@include for(large-screens){
 		#postbox-container-1 {
-			width: 60%;		
+			width: 70%;		
 		}
 		
 		#postbox-container-2 {
-			width: 35%;
+			width: 25%;
 			margin: 0 0 0 3%;
 		}
 	}
@@ -48,30 +40,11 @@
 
 
 /** settings block */
-.gwptb-page-section.settings {
+.gwptb-settings {
 	@include clearfix;
 	
 	form {
 		display: block;		
-	}
-	
-	.settings-side {
-		margin-top: 24px;
-	}
-	
-	@include for(large-screens){
-		
-		form {
-			width: 60%;
-			float: left;
-		}
-		
-		.settings-side {
-			float: left;
-			width: 35%;
-			margin: 0 0 0 3%;
-			@include calc('margin-top', '3.82em + 20px');
-		}
 	}
 	
 	.description {
@@ -94,8 +67,20 @@
 	}
 }
 
+.gwptb-token-test {
+	margin-top: 8px;
+	
+	.gwptb-test-response {
+		min-height: 25px;
+		p {
+			font-size: 13px;
+			margin-top: 4px;
+		}
+	}
+}
+
 /** connection sections **/
-.gwptb-page-section.connection {
+.gwptb-page-section {
 	
 	.postbox  h2 {		
 		& > span {
@@ -119,10 +104,10 @@
 	}
 }
 
-/* connection test **/
+
+/* connection metabox **/
 .gwptb-conncetion-setup {
-	
-	
+
 	.gwptb-cs-button-row {
 		@include clearfix;
 		
@@ -248,7 +233,82 @@
 	font-size: 0.9em;
 	color: red;
 }
-
 .row-response {
 	color: $green;
 }
+
+
+/** Feedback page **/
+.gwptb-feedback-description {
+	p { margin: 0;}
+	
+	margin: 24px 0;
+}
+
+.feedback-columns {
+	@include clearfix;
+	
+	.gwptb-feedback-form {
+		@include for(large-screens){
+			width: 65%;
+			float: left;
+		}
+	}
+	
+	.feedback-sidebar {
+		@include for(large-screens){
+			width: 30%;
+			margin: 0 0 0 3%;
+			float: left;
+		}
+	}
+}
+
+.gwptb-ff-field {
+	margin: 12px 0;
+	
+	label {
+		display: block;
+		font-weight: bold;
+		padding-bottom: 4px;
+	}
+	
+	textarea {
+		height: 250px;
+	}
+}
+
+
+/** Teplitsa sidebar **/
+#gwptb-card {	
+	h4 {
+		font-size: 14px;
+		margin: 10px 0 20px;
+	}
+	
+	p { margin: 0; }
+	
+	.gwptb-ref-links { margin-top: 24px; }
+}
+#itv-card {
+	max-width: 280px;
+	background: #f9f9f9;
+	padding: 10px;
+	
+	.itv-logo {
+		width: 160px;
+		padding: 5px;
+		
+		img {
+			max-width: 100%;
+			height: auto;
+		}
+		
+		a { display: block; }
+		
+		p:last-child { margin-bottom: 0; }
+	}
+}
+
+#gwptb-card + #itv-card {
+	margin-top: 3em; }

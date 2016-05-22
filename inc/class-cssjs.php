@@ -52,47 +52,19 @@ class GWPTB_CssJs {
 		return $filename;
 	}
 	
-	/* load frontend css */
+	/* frontend CSSJS */
 	public function load_styles() {
 		
 	}
-		
-	/* load frontend js */
+	
 	public function load_scripts() {
 		global $wp_query;
 		
-		$url = get_template_directory_uri();
-				
-		// jQuery
-		$script_dependencies[] = 'jquery'; //adjust gulp if we want it in footer	
 		
-		if(tst_has_cond_cssjs()){
-			wp_enqueue_script(
-				'tst-cond',
-				$url.'/assets/rev/'.$this->get_rev_filename('cond.js'),
-				$script_dependencies,
-				null
-			);
-			$script_dependencies[] = 'tst-cond';
-		}
-
-		// front
-		wp_enqueue_script(
-			'tst-front',
-			$url.'/assets/rev/'.$this->get_rev_filename('bundle.js'),
-			$script_dependencies,
-			null,
-			true
-		);
-				
-		wp_localize_script('tst-front', 'frontend', array(
-			'ajaxurl' => admin_url('admin-ajax.php')
-			//'query_vars' => json_encode( $wp_query->query )
-		));
 	}
 	
 	
-	/* admin styles - moved to news system also */
+	/* admin CSSJS */
 	public function load_admin_styles() {
 		
 		$screen = get_current_screen();
@@ -126,7 +98,9 @@ class GWPTB_CssJs {
 		);
 				
 		wp_localize_script('gwptb-admin-js', 'gwptb', array(
-			'ajaxurl' => admin_url('admin-ajax.php')			
+			'ajaxurl' => admin_url('admin-ajax.php'),
+			'field_required' => __('This field is required', 'gwptb'),
+            'email_invalid' => __('Please enter a correct email', 'gwptb')
 		));
 	}
 	

@@ -6,6 +6,7 @@ if(!defined('ABSPATH')) die; // Die if accessed directly
 class Gwptb_Admin {
 	
 	private static $instance = NULL; //instance store
+	public $github_link = 'https://github.com/Teplitsa/GWPTB';
 	
 	private function __construct() {
 		
@@ -37,7 +38,8 @@ class Gwptb_Admin {
 	public function set_plugin_meta($links, $file){
 		
 		if($file == GWPTB_PLUGIN_BASE_NAME) {
-			$links[] = '<a href="https://github.com/Teplitsa/GWPTB">GitHub</a>';		  
+			
+			$links[] = '<a href="'.$this->github_link.'">GitHub</a>';		  
         }
 
         return $links;		
@@ -62,6 +64,7 @@ class Gwptb_Admin {
 		//Log
         add_submenu_page('gwptb', __('GWPTB Log', 'gwptb'), __('Log', 'gwptb'), 'manage_options', 'gwptb_log', array($this, 'log_screen'));
 		
+		do_action('gwptb_admin_menu_setup');		
 	}
 	
 	
@@ -109,10 +112,23 @@ class Gwptb_Admin {
             <h2><?php _e('Green WP Telegram Bot', 'gwptb');?></h2>
 		
 		<!-- metabox -->		
-		<div class="gwptb-page-section connection">
+		<div class="gwptb-page-section">
 			<div class="metabox-holder" id="gwptb-widgets">
-				<div class="postbox-container" id="postbox-container-1">
+				<div class="postbox-container " id="postbox-container-1">
 					<?php do_meta_boxes('toplevel_page_gwptb', 'normal', null);?>
+					
+					<!-- settings -->
+					<?php if($stage == 'default') { ?>
+						<div class="gwptb-settings">
+							<form action='options.php' method='post'>
+							<?php
+								settings_fields( 'gwptb_settings' );
+								do_settings_sections( 'gwptb_settings' );
+								submit_button();
+							?>
+							</form>
+						</div>
+					<?php } ?>
 				</div>
 			
 				<div class="postbox-container" id="postbox-container-2">
@@ -120,35 +136,14 @@ class Gwptb_Admin {
 					<?php $src = GWPTB_PLUGIN_BASE_URL.'assets/img/botfather.png';?>
 						<h4><?php _e('Example', 'gwptb');?></h4>
 						<div class="gwptb-help-screenshot"><img src="<?php echo esc_url($src);?>" alt="<?php _e('Botfather dialogue screenshot', 'gwptb');?>"></div>
-					<?php } elseif(!empty($token) && ($stage == 'default')){ ?>
-						<!-- branding and links -->
-					<?php } ?>		
+					<?php } elseif(!empty($token) && ($stage == 'default')){ 
+							$tst_util = Gwptb_TestUtil::get_instance();
+							$tst_util->tst_sidebar_screen();
+						}
+					?>		
 				</div>
 			</div>
 		</div>
-		
-		
-		<!-- settings -->
-		<?php if($stage == 'default') { ?>
-			<div class="gwptb-page-section settings">
-				<form action='options.php' method='post'>
-				<?php
-					settings_fields( 'gwptb_settings' );
-					do_settings_sections( 'gwptb_settings' );
-					submit_button();
-				?>
-				</form>
-				
-				<?php if(!empty($token)) { ?>
-				<div class="settings-side">
-					<?php $nonce = wp_create_nonce('gwptb_test_token'); ?>
-					<a id="gwptb_test_token" href='#' class='button button-secondary' data-nonce="<?php echo $nonce;?>"><?php _e('Test token', 'gwptb');?></a>
-					<div id="gwptb_test_token-response" class="gwptb-test-response"></div>
-				</div>
-				<?php } ?>
-				
-			</div>
-		<?php } ?>
 		
 		</div><!-- close .wrap -->
 	<?php
@@ -432,6 +427,14 @@ class Gwptb_Admin {
 		<input type='text' name='gwptb_bot_token' value='<?php echo $value; ?>' class="large-text">
 	<?php
 		}
+	
+		if(!empty($value)) { ?>
+			<div class="gwptb-token-test">
+				<?php $nonce = wp_create_nonce('gwptb_test_token'); ?>
+				<a id="gwptb_test_token" href='#' class='button button-secondary' data-nonce="<?php echo $nonce;?>"><?php _e('Test token', 'gwptb');?></a>
+				<div id="gwptb_test_token-response" class="gwptb-test-response"></div>
+			</div>
+		<?php } 
 	}
 		
 	
