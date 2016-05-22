@@ -106,23 +106,25 @@ class Gwptb_Log_List_Table extends WP_List_Table  {
 	$user = array();
 		
 		if(isset($item->user_fname) && !empty($item->user_fname))
-			$user[] = apply_filters('gwptb_admin_text', $item->user_fname);
+			$user[] = $item->user_fname;
 		
 		if(isset($item->user_lname) && !empty($item->user_lname))
-			$user[] = apply_filters('gwptb_admin_text', $item->user_lname);
+			$user[] = $item->user_lname;
 			
 		if(isset($item->username) && !empty($item->username)){
-			$user[] = (empty($user)) ? apply_filters('gwptb_admin_text', '@'.$item->username) : apply_filters('gwptb_admin_text', '(@'.$item->username.')');
+			$user[] = (empty($user)) ? '@'.$item->username : '(@'.$item->username.')';
 		}
 		
-		echo $this->item_wrap(implode(' ', $user), $item);
+		$user = apply_filters('gwptb_print_string', implode(' ', $user));
+		
+		echo $this->item_wrap($user, $item);
 	}
 	
 	protected function column_content( $item ) {
 				
 		if(isset($item->error) && !empty($item->error)){
 			echo "<div class='gwptb-log-error'>";
-			echo apply_filters('gwptb_admin_rich_text', $item->error);
+			echo apply_filters('gwptb_print_text', $item->error);
 			echo "</div>";
 		}
 		elseif(isset($item->content) && !empty($item->content)) {
@@ -133,7 +135,7 @@ class Gwptb_Log_List_Table extends WP_List_Table  {
 				$css .= ' row-response';
 				
 			echo "<div class='{$css}'>";
-			echo apply_filters('gwptb_admin_rich_text', $c);
+			echo apply_filters('gwptb_print_text', $c);
 			echo "</div>";
 		}
 	}
@@ -141,11 +143,11 @@ class Gwptb_Log_List_Table extends WP_List_Table  {
 	protected function column_default( $item, $column_name ) {
 		
 		if(in_array($column_name, array('action', 'method')) && isset($item->$column_name)){
-			echo $this->item_wrap(apply_filters('gwptb_admin_text', $item->$column_name), $item);
+			echo $this->item_wrap(apply_filters('gwptb_print_string', $item->$column_name), $item);
 			
 		}
 		else {
-			do_action( 'gwptb_log_table_custom_colyumn', $column_name, $item );
+			do_action( 'gwptb_log_table_custom_column', $column_name, $item );
 			
 		}		
 	}

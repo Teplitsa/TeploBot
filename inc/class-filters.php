@@ -16,8 +16,8 @@ class GWPTB_Filters {
 		
 		//output filter (for tlgrm)
 		add_filter('gwptb_output_html', array('GWPTB_Filters','print_html'));
-		add_filter('gwptb_output_markdown', array('GWPTB_Filters','sanitize_string'));		
-		
+		add_filter('gwptb_print_string', array('GWPTB_Filters','print_string'));
+		add_filter('gwptb_print_text', array('GWPTB_Filters','print_text'));
 	}
 	
 	
@@ -102,8 +102,24 @@ class GWPTB_Filters {
 		return $output;
 	}
 	
+	public static function print_string($output) {
+		
+		$output = htmlspecialchars_decode($output);		
+		$output = filter_var($output, FILTER_SANITIZE_STRING);
+		$output = htmlspecialchars($output, ENT_COMPAT, 'UTF-8');
+		
+		return $output;
+	}
 	
-	
+	public static function print_text($output) {
+		$allowed_html = self::get_allowed_tags();
+		
+		$output = htmlspecialchars_decode($output);			
+		$output = wp_kses($output, $allowed_html);
+		$output = htmlspecialchars($output, ENT_COMPAT, 'UTF-8');
+		
+		return $output;
+	}
 	
 	/** == Special filters == **/
 	public static function sanitize_message_entity($ent){
