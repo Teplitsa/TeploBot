@@ -16,6 +16,8 @@ class GWPTB_Filters {
 		
 		//output filter (for tlgrm)
 		add_filter('gwptb_output_html', array('GWPTB_Filters','print_html'));
+		add_filter('gwptb_output_markdown', array('GWPTB_Filters','sanitize_string'));		
+		
 	}
 	
 	
@@ -26,7 +28,21 @@ class GWPTB_Filters {
 			self :: $instance = new self;
 					
 		return self :: $instance;
-    }     
+    }
+	
+	public static function get_allowed_tags(){
+		return array(
+			'a' => array(
+				'href' => array()				
+			),
+			'b' => array(),
+			'i' => array(),
+			'em' => array(),
+			'strong' => array(),
+			'code' => array(),
+			'pre' => array()
+		);
+	}
 	
 	
 	/** == Input == **/
@@ -50,6 +66,13 @@ class GWPTB_Filters {
 		return filter_var($input, FILTER_SANITIZE_SPECIAL_CHARS);
 	}
 	
+	public static function sanitize_html($input){
+		//HTML-escape '"<>& and characters with ASCII value less than 32
+		$allowed_html = self::get_allowed_tags();
+		
+		$input = wp_kses($input, $allowed_html); //no html 
+		return filter_var($input, FILTER_SANITIZE_SPECIAL_CHARS);
+	}
 	
 	public static function sanitize_url($input){
 		//Remove all characters except letters, digits and $-_.+!*'(),{}|\\^~[]`<>#%";/?:@&=. 
@@ -67,24 +90,19 @@ class GWPTB_Filters {
 	
 	/** == Output == **/
 	public static function print_html($output){
+		$allowed_html = self::get_allowed_tags();
 		
-		$allowed_html = array(
-			'a' => array(
-				'href' => array()				
-			),
-			'b' => array(),
-			'i' => array(),
-			'em' => array(),
-			'strong' => array(),
-			'code' => array(),
-			'pre' => array()
-		);
-		
+		$output = htmlspecialchars_decode($output);			
 		$output = wp_kses($output, $allowed_html);
 		
 		return $output;
 	}
 	
+	public static function print_markdown($output){
+		
+		$output = strip_tags($output);
+		
+	}
 	
 	
 	/** == Special filters == **/

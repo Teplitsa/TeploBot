@@ -363,8 +363,8 @@ class Gwptb_Admin {
 		//sanitize callback	
 		register_setting( 'gwptb_settings', 'gwptb_bot_token', array('GWPTB_Filters', 'sanitize_url'));
 		register_setting( 'gwptb_settings', 'gwptb_cert_key', array('GWPTB_Filters', 'sanitize_string'));
-		register_setting( 'gwptb_settings', 'gwptb_start_text', array('GWPTB_Filters', 'sanitize_text'));
-		register_setting( 'gwptb_settings', 'gwptb_help_text', array('GWPTB_Filters', 'sanitize_text'));
+		register_setting( 'gwptb_settings', 'gwptb_start_text', array('GWPTB_Filters', 'sanitize_html'));
+		register_setting( 'gwptb_settings', 'gwptb_help_text', array('GWPTB_Filters', 'sanitize_html'));
 	
 		add_settings_section(
 			'gwptb_bot_section', 

@@ -12,10 +12,10 @@ function gwptb_help_command_response($upd_data){
 	//get help text from options	
 	$default = __('I can help you to find something useful at %%home%%. Send me _your term_ to perform a search.', 'gwptb');
 	$result['text'] = get_option('gwptb_help_text', $default);
-	$result['text'] = str_replace('%%home%%', "[".home_url()."](".home_url().")", $result['text']);
+	$result['text'] = str_replace('%%home%%', "<a href='".home_url()."'>".home_url()."</a>", $result['text']);
 	
-	$result['text'] = apply_filters('gwptb_output_markdown', $result['text']);
-	$result['parse_mode'] = 'Markdown';
+	$result['text'] = apply_filters('gwptb_output_html', $result['text']);
+	$result['parse_mode'] = 'HTML';
 		
 	return $result;
 }
@@ -32,9 +32,9 @@ function gwptb_start_command_response($upd_data){
 	//still may be empty??
 	
 	$result['text'] = str_replace('%%username%%', $username, $result['text']);
-	$result['text'] = apply_filters('gwptb_output_markdown', $result['text']);
+	$result['text'] = apply_filters('gwptb_output_html', $result['text']);
 	
-	$result['parse_mode'] = 'Markdown';
+	$result['parse_mode'] = 'HTML';
 		
 	return $result;	
 }
@@ -67,7 +67,7 @@ function gwptb_search_command_response($upd_data){
 	
 	if(empty($args['s'])) {
 		//don't perform empty search
-		$result['text'] = apply_filters('gwptb_output_markdown', __('Unfortunately your request didn\'t match anything.', 'gwptb'));
+		$result['text'] = apply_filters('gwptb_output_text', __('Unfortunately your request didn\'t match anything.', 'gwptb'));
 		return $result;
 	}
 	
@@ -107,7 +107,7 @@ function gwptb_search_command_response($upd_data){
 	}
 	else {
 		$result['text'] = __('Unfortunately your request didn\'t match anything.', 'gwptb');
-		$result['text'] = apply_filters('gwptb_output_markdown', $result['text']);
+		$result['text'] = apply_filters('gwptb_output_text', $result['text']);
 	}
 	
 	return $result;
