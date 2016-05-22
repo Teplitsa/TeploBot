@@ -133,10 +133,12 @@ class Gwptb_Log_List_Table extends WP_List_Table  {
 			$css = 'gwptb-log-content';
 			if($item->action == 'response')
 				$css .= ' row-response';
-				
-			echo "<div class='{$css}'>";
-			echo apply_filters('gwptb_print_text', $c);
-			echo "</div>";
+			
+			$c = apply_filters('gwptb_print_text', $c);
+			if(empty($c))
+				$c = __('Invalid content in received message', 'gwptb');
+			
+			echo "<div class='{$css}'>{$c}</div>";			
 		}
 	}
 	

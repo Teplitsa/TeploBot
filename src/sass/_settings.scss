@@ -33,8 +33,18 @@
 }
 
 /** help **/
+.gwptb-help-screenshot {
+	width: 100%;
+	img {
+		max-width: 100%;
+		height: auto;
+	}
+}
 
-
+#postbox-container-2 > h4 {
+	font-size: 14px;
+	margin: 10px 0;
+}
 
 
 /** settings block */

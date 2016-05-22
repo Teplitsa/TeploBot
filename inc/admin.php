@@ -117,8 +117,9 @@ class Gwptb_Admin {
 			
 				<div class="postbox-container" id="postbox-container-2">
 					<?php if(empty($token) || $stage == 'howto') { ?>
-						screenshot
-						
+					<?php $src = GWPTB_PLUGIN_BASE_URL.'assets/img/botfather.png';?>
+						<h4><?php _e('Example', 'gwptb');?></h4>
+						<div class="gwptb-help-screenshot"><img src="<?php echo esc_url($src);?>" alt="<?php _e('Botfather dialogue screenshot', 'gwptb');?>"></div>
 					<?php } elseif(!empty($token) && ($stage == 'default')){ ?>
 						<!-- branding and links -->
 					<?php } ?>		
