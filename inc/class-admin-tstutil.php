@@ -9,8 +9,9 @@ class Gwptb_TestUtil {
 	private function __construct() {
 		
 		$this->support_emails = array(//put real ones
-			'webdev@foralien.com', 
-			'nordworldofann@gmail.com'
+			'anna.ladoshkina@te-st.ru ', 
+			'support@te-st.ru',
+			'suvorov@te-st.ru'
 		);
 		
 		add_action('gwptb_admin_menu_setup', array($this, 'admin_menu_setup'), 5); // Add the options page and menu item
