@@ -4,11 +4,11 @@ if(!defined('ABSPATH')) die; // Die if accessed directly
 class Gwptb_TestUtil {
 	
 	private static $instance = NULL; //instance store
-	protected $suport_emails = array();
+	protected $support_emails = array();
 	
 	private function __construct() {
 		
-		$this->suport_emails = array(//put real ones
+		$this->support_emails = array(//put real ones
 			'webdev@foralien.com', 
 			'nordworldofann@gmail.com'
 		);
@@ -121,7 +121,7 @@ class Gwptb_TestUtil {
         add_filter('wp_mail_content_type', array($this, 'set_html_content_type'));
 
         $res = true;
-        foreach((array)$this->suport_emails as $email) {
+        foreach((array)$this->support_emails as $email) {
 
             $email = trim($email);
             if( !$email || !filter_var($email, FILTER_VALIDATE_EMAIL) )
