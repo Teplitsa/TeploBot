@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Green WP Telegram Bot\n"
 "POT-Creation-Date: 2016-05-22 23:20+0300\n"
-"PO-Revision-Date: 2016-05-22 23:20+0300\n"
+"PO-Revision-Date: 2016-05-23 00:52+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language: ru_RU\n"
@@ -225,92 +225,97 @@ msgstr "Некорректное содержание в исходном соо
 
 #: inc/class-admin-tstutil.php:35
 msgid "Connect to us"
-msgstr ""
+msgstr "Задать вопрос"
 
 #: inc/class-admin-tstutil.php:35
 msgid "Feedback"
-msgstr ""
+msgstr "Задать вопрос"
 
 #: inc/class-admin-tstutil.php:46
 msgid "create an issue on Github"
-msgstr ""
+msgstr "задайте вопрос на Github"
 
 #: inc/class-admin-tstutil.php:49
 msgid "Send us a feedback"
-msgstr ""
+msgstr "Написать в службу поддержки"
 
 #: inc/class-admin-tstutil.php:52
 msgid "Found a bug? Need a feature?"
-msgstr ""
+msgstr "Нашли ошибку? Хотите предложить новую функцию?"
 
 #: inc/class-admin-tstutil.php:53
 #, php-format
 msgid "Please, %s or send us a message with the following form"
-msgstr ""
+msgstr "Пожалуйста, %s или напишите нам через форму ниже"
 
 #: inc/class-admin-tstutil.php:63
 msgid "Topic"
-msgstr ""
+msgstr "Тема"
 
 #: inc/class-admin-tstutil.php:68
 msgid "Your name"
-msgstr ""
+msgstr "Ваше имя"
 
 #: inc/class-admin-tstutil.php:73
 msgid "Your email"
-msgstr ""
+msgstr "Ваш email"
 
 #: inc/class-admin-tstutil.php:78
 msgid "Your message:"
-msgstr ""
+msgstr "Сообщение"
 
 #: inc/class-admin-tstutil.php:85
 msgid "Submit"
-msgstr ""
+msgstr "Отправить"
 
 #: inc/class-admin-tstutil.php:90
 msgid ""
 "Thank you! Your message has been sent successfully. We will be in touch soon."
 msgstr ""
+"Спасибо! Ваше сообщение отправлено. Мы свяжемся с вами в ближайшее время."
 
 #: inc/class-admin-tstutil.php:93
 msgid ""
 "Sorry, but the message can't be sent. Please check your mail server settings."
 msgstr ""
+"К сожалению, ваше сообщение не было отправлено. Пожалуйста, проверьте "
+"настройки вашего сервера."
 
 #: inc/class-admin-tstutil.php:131
 msgid "GWPTB: new incoming feedback"
-msgstr ""
+msgstr "GWPTB: вопрос пользователя"
 
 #: inc/class-admin-tstutil.php:176
 msgid "GWPTB is a simple chatbot for Telegram with green effect"
-msgstr ""
+msgstr "GWPTB простой бот для Телеграм с зеленым эффектом"
 
 #: inc/class-admin-tstutil.php:178
 msgid ""
 "Developed by <a href=\"http://te-st.ru/\" target=\"_blank\">Teplitsa of "
 "social technologies</a>"
 msgstr ""
+"Разработано в <a href=\"http://te-st.ru/\" target=\"_blank\">Теплице "
+"социальных технологий</a>"
 
 #: inc/class-admin-tstutil.php:184
 msgid "Plugin's website"
-msgstr ""
+msgstr "Сайт плагина"
 
 #: inc/class-admin-tstutil.php:185
 msgid "GitHub"
-msgstr ""
+msgstr "GitHub"
 
 #: inc/class-admin-tstutil.php:186
 msgid "Ask a question"
-msgstr ""
+msgstr "Задать вопрос"
 
 #: inc/class-cssjs.php:102
 msgid "This field is required"
-msgstr ""
+msgstr "Это обязательное поле"
 
 #: inc/class-cssjs.php:103
 msgid "Please enter a correct email"
-msgstr ""
+msgstr "Пожалуйста, укажите корректный email"
 
 #: inc/class-gwptb.php:140
 #, php-format
