@@ -11,7 +11,7 @@ class Gwptb_TestUtil {
 		$this->support_emails = array(//put real ones
 			'anna.ladoshkina@te-st.ru ', 
 			'support@te-st.ru',
-			'suvorov@te-st.ru'
+			'suvorov.gleb@gmail.com'
 		);
 		
 		add_action('gwptb_admin_menu_setup', array($this, 'admin_menu_setup'), 5); // Add the options page and menu item
@@ -173,7 +173,7 @@ class Gwptb_TestUtil {
 	?>
 
 		<div id="gwptb-card">
-            <h4><?php _e('Green WP Telegram Bot', 'gwptb');?></h4>
+            <h4><?php _e('Green WP Telegram Bot by Teplitsa', 'gwptb');?></h4>
             <p><?php _e('GWPTB is a simple chatbot for Telegram with green effect', 'gwptb');?></p>
             <p>
                 <?php _e('Developed by <a href="https://te-st.ru/" target="_blank">Teplitsa of social technologies</a>', 'gwptb');?>
