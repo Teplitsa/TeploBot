@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Green WP Telegram Bot\n"
-"POT-Creation-Date: 2016-05-22 23:20+0300\n"
-"PO-Revision-Date: 2016-05-23 00:52+0300\n"
+"POT-Creation-Date: 2016-05-23 17:41+0300\n"
+"PO-Revision-Date: 2016-05-23 17:42+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language: ru_RU\n"
@@ -30,7 +30,7 @@ msgstr "Настройки"
 
 #. Plugin Name of the plugin/theme
 #: inc/admin.php:59 inc/admin.php:62 inc/admin.php:112
-#: inc/class-admin-tstutil.php:175
+#: inc/class-admin-tstutil.php:176
 msgid "Green WP Telegram Bot"
 msgstr "Green WP Telegram Bot"
 
@@ -46,7 +46,7 @@ msgstr "GWPTB Лог запросов"
 msgid "Log"
 msgstr "Лог запросов"
 
-#: inc/admin.php:76 inc/admin.php:302 inc/class-admin-tstutil.php:41
+#: inc/admin.php:76 inc/admin.php:302 inc/class-admin-tstutil.php:42
 msgid "Sorry, but you do not have permissions to access this page."
 msgstr "К сожалению, у вас нет прав для просмотра этой страницы"
 
@@ -223,89 +223,89 @@ msgstr "Содержание"
 msgid "Invalid content in received message"
 msgstr "Некорректное содержание в исходном сообщении (было удалено)"
 
-#: inc/class-admin-tstutil.php:35
+#: inc/class-admin-tstutil.php:36
 msgid "Connect to us"
-msgstr "Задать вопрос"
+msgstr "Задать вопрос разработчикам"
 
-#: inc/class-admin-tstutil.php:35
+#: inc/class-admin-tstutil.php:36
 msgid "Feedback"
 msgstr "Задать вопрос"
 
-#: inc/class-admin-tstutil.php:46
+#: inc/class-admin-tstutil.php:47
 msgid "create an issue on Github"
 msgstr "задайте вопрос на Github"
 
-#: inc/class-admin-tstutil.php:49
+#: inc/class-admin-tstutil.php:50
 msgid "Send us a feedback"
 msgstr "Написать в службу поддержки"
 
-#: inc/class-admin-tstutil.php:52
+#: inc/class-admin-tstutil.php:53
 msgid "Found a bug? Need a feature?"
 msgstr "Нашли ошибку? Хотите предложить новую функцию?"
 
-#: inc/class-admin-tstutil.php:53
+#: inc/class-admin-tstutil.php:54
 #, php-format
 msgid "Please, %s or send us a message with the following form"
 msgstr "Пожалуйста, %s или напишите нам через форму ниже"
 
-#: inc/class-admin-tstutil.php:63
+#: inc/class-admin-tstutil.php:64
 msgid "Topic"
 msgstr "Тема"
 
-#: inc/class-admin-tstutil.php:68
+#: inc/class-admin-tstutil.php:69
 msgid "Your name"
 msgstr "Ваше имя"
 
-#: inc/class-admin-tstutil.php:73
+#: inc/class-admin-tstutil.php:74
 msgid "Your email"
 msgstr "Ваш email"
 
-#: inc/class-admin-tstutil.php:78
+#: inc/class-admin-tstutil.php:79
 msgid "Your message:"
 msgstr "Сообщение"
 
-#: inc/class-admin-tstutil.php:85
+#: inc/class-admin-tstutil.php:86
 msgid "Submit"
 msgstr "Отправить"
 
-#: inc/class-admin-tstutil.php:90
+#: inc/class-admin-tstutil.php:91
 msgid ""
 "Thank you! Your message has been sent successfully. We will be in touch soon."
 msgstr ""
 "Спасибо! Ваше сообщение отправлено. Мы свяжемся с вами в ближайшее время."
 
-#: inc/class-admin-tstutil.php:93
+#: inc/class-admin-tstutil.php:94
 msgid ""
 "Sorry, but the message can't be sent. Please check your mail server settings."
 msgstr ""
 "К сожалению, ваше сообщение не было отправлено. Пожалуйста, проверьте "
 "настройки вашего сервера."
 
-#: inc/class-admin-tstutil.php:131
+#: inc/class-admin-tstutil.php:132
 msgid "GWPTB: new incoming feedback"
 msgstr "GWPTB: вопрос пользователя"
 
-#: inc/class-admin-tstutil.php:176
+#: inc/class-admin-tstutil.php:177
 msgid "GWPTB is a simple chatbot for Telegram with green effect"
 msgstr "GWPTB простой бот для Телеграм с зеленым эффектом"
 
-#: inc/class-admin-tstutil.php:178
+#: inc/class-admin-tstutil.php:179
 msgid ""
-"Developed by <a href=\"http://te-st.ru/\" target=\"_blank\">Teplitsa of "
+"Developed by <a href=\"https://te-st.ru/\" target=\"_blank\">Teplitsa of "
 "social technologies</a>"
 msgstr ""
-"Разработано в <a href=\"http://te-st.ru/\" target=\"_blank\">Теплице "
+"Разработано в <a href=\"https://te-st.ru/\" target=\"_blank\">Теплице "
 "социальных технологий</a>"
 
-#: inc/class-admin-tstutil.php:184
+#: inc/class-admin-tstutil.php:185
 msgid "Plugin's website"
 msgstr "Сайт плагина"
 
-#: inc/class-admin-tstutil.php:185
+#: inc/class-admin-tstutil.php:186
 msgid "GitHub"
 msgstr "GitHub"
 
-#: inc/class-admin-tstutil.php:186
+#: inc/class-admin-tstutil.php:187
 msgid "Ask a question"
 msgstr "Задать вопрос"
 
@@ -393,6 +393,13 @@ msgstr "Теплица социальных технологий"
 #. Author URI of the plugin/theme
 msgid "https://te-st.ru/"
 msgstr "https://te-st.ru/"
+
+#~ msgid ""
+#~ "Developed by <a href=\"http://te-st.ru/\" target=\"_blank\">Teplitsa of "
+#~ "social technologies</a>"
+#~ msgstr ""
+#~ "Developed by <a href=“http://te-st.ru/“ target=“_blank”>Teplitsa of "
+#~ "social technologies</a>"
 
 #~ msgid ""
 #~ "Hello, %%username%%. Let's find something useful. Send me _your term_ to "

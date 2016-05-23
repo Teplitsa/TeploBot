@@ -176,7 +176,7 @@ class Gwptb_TestUtil {
             <h4><?php _e('Green WP Telegram Bot', 'gwptb');?></h4>
             <p><?php _e('GWPTB is a simple chatbot for Telegram with green effect', 'gwptb');?></p>
             <p>
-                <?php _e('Developed by <a href="http://te-st.ru/" target="_blank">Teplitsa of social technologies</a>', 'gwptb');?>
+                <?php _e('Developed by <a href="https://te-st.ru/" target="_blank">Teplitsa of social technologies</a>', 'gwptb');?>
             </p>
             <!--<p class="te-st">
                 <img src="//gwptb.te-st.ru/wp-content/uploads/assets/tst-logo.svg" onerror="this.onerror=null;this.src='//gwptb.te-st.ru/wp-content/uploads/assets/tst-logo.png'">
