@@ -15,7 +15,7 @@ GWPTB простой чатбот для Телеграм с зеленым эф
 
 _For English description scroll down, please._
 
-*Green WP Telegram Bot* - плагин для WordPress, реализующий простого чатбота для [Телеграм](https://telegram.org/). Бот может автоматически отправлять результаты поиска по сайту в ответ на запрос пользователей и позволяет их просматривать. Состав действий бота может быть расширен. 
+*Green WP Telegram Bot* - плагин для WordPress, реализующий простого чатбота для [Телеграм](https://telegram.org/). Бот может автоматически отправлять результаты поиска по сайту в ответ на запрос пользователей и позволяет их просматривать. Для разработчиков: состав действий бота может быть расширен. 
 
 Основные функции
 
@@ -32,9 +32,8 @@ _For English description scroll down, please._
 
 **Стандартные команды**
 
-`/start` - Начало диалога
-
-`/help` - Подсказка и описание команд
+* `/start` Начало диалога
+* `/help`  Подсказка и описание команд
 
 Разработчики могут определять собственные команды, используя фильтр `gwptb_supported_commnds_list` (подробнее о добавлении собственных команд - в wiki на [GitHub](https://github.com/Teplitsa/GWPTB)).
 
@@ -53,13 +52,13 @@ _For English description scroll down, please._
 
 **IN ENGLISH**
 
-*Green WP Telegram Bot* is the plugin for WordPress that provide basic [Telegram](https://telegram.org/) chatbot functionality for your site. The bot send search results on your site as replay to chat users. The behavior of the bot could be customized.
+*Green WP Telegram Bot* is the plugin for WordPress that provides basic [Telegram](https://telegram.org/) chatbot functionality for your site. The bot sends search results on your site as replay to chat users. For developers: the behavior of the bot could be customized.
 
 Plugin features:
 
-* webhook support for automatic updates from Telegram
+* webhook support to receive automatic updates from Telegram
 * support for global Telegram commands
-* messages without command proccessed as search request and browsable search results returns to chat
+* messages without command proccessed as search requests and results returns to chat as list of links
 * log of messages and responses
 * for developers: customs commands could be defined
 
@@ -69,9 +68,8 @@ Follow the development on [GitHub](https://github.com/Teplitsa/GWPTB)
 
 **Global commands**
 
-`/start` - Greeting on the dialogue start
-
-`/help` - Provide the help text for user
+* `/start` Greeting on the dialogue start
+* `/help` Provide the help text for user
 
 Developers could define own commends through `gwptb_supported_commnds_list` filter (details published in wiki on  [GitHub](https://github.com/Teplitsa/GWPTB)).
 
@@ -111,7 +109,7 @@ Activate the plugin through the _Plugins_ menu in WordPress.
 
 Configure the plugin by going to the page _GWPTB -> Settings_ that appears in your admin menu.
 
-To make a plugin work you need to create a Telegram bot in the dialogue with <a href="https://telegram.me/botfather" target="_blank">BotFather</a> user. Start chat with it and follow a few simple steps. Once you've created a bot you will received your authorization token, that should be saved in plugin settings.
+To put the plugin into work you need to create a Telegram bot in the dialogue with <a href="https://telegram.me/botfather" target="_blank">BotFather</a> user. Start chat with it and follow a few simple steps. Once you've created a bot you will received your authorization token, that should be saved in plugin settings.
 
 
 == Screenshots ==
