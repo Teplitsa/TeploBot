@@ -41,16 +41,20 @@
 ## Как все выглядит ##
 
 Страница настроек плагина
-![]()
+
+![Страница настроек плагина](https://itv.te-st.ru/wp-content/uploads/gwptb-screenshot-1.png)
 
 Успешная настройка бота
-![]()
+
+![Успешная настройка бота](https://itv.te-st.ru/wp-content/uploads/gwptb-screenshot-2.png)
 
 Лог сообщений
-![]()
+
+![Лог сообщений](https://itv.te-st.ru/wp-content/uploads/gwptb-screenshot-3.png)
 
 Пример ответа с результатами поиска
-![]()
+
+![Пример ответа с результатами поиска](https://itv.te-st.ru/wp-content/uploads/gwptb-screenshot-4.png)
  
 
 ## Помощь проекту ##
