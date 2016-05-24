@@ -90,13 +90,28 @@ We will be very grateful if you will help us to make GWPTB better.
 
 Для корректной работы необходим PHP версии 5.3 и выше и WordPress версии 4.5 и выше.
 
-Процесс инсталляции плагина стандартен для WordPress (можно установить из админки).
+Загрузите папку плагина `gwptb` в директорию `wp-content/plugins`, используя административный интерфейс добавления плагинов (`Плагины -- Добавить новый`)
+или клонировав GitHub-репозиторий.
 
-После активации плагина его настройки доступны в меню _GWPTB -> Настройки_. 
+Активируйте плагин в списке плагинов (`Меню - Плагины`).
+
+Настройки плагина доступны в меню _GWPTB -> Настройки_. 
 
 Для начала работы необходимо создать нового бота в чате Телеграм с пользователем [@BotFather](https://telegram.me/botfather). Отправьте команду `/newbot` и следуйте инструкциям.
 
 В случае успешного создания бота вы получите ключ (токен) авторизации. Скопируйте и сохраните его в настройках плагина, после чего установите соединение с Телеграм. В этом режиме бот будет отвечать на запросы пользователей в чате, отправляя результаты поиска по сайту и позволяя их пролистывать. 
+
+**In English**
+
+Plugins requires PHP 5.3+ and WordPress 4.5+.
+
+Upload the plugin folder `gwptb` into `wp-content/plugins` using WordPress Dashboard (_Plugins -- Add new_) or by cloning Github-repo.
+
+Activate the plugin through the _Plugins_ menu in WordPress.
+
+Configure the plugin by going to the page _GWPTB -> Settings_ that appears in your admin menu.
+
+To make a plugin work you need to create a Telegram bot in the dialogue with <a href="https://telegram.me/botfather" target="_blank">BotFather</a> user. Start chat with it and follow a few simple steps. Once you've created a bot you will received your authorization token, that should be saved in plugin settings.
 
 
 == Screenshots ==

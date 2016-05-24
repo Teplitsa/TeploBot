@@ -18,9 +18,12 @@
 
 Для корректной работы необходим PHP версии 5.3 и выше и WordPress версии 4.5 и выше.
 
-Процесс инсталляции плагина стандартен для WordPress (можно установить из админки).
+Загрузите папку плагина `gwptb` в директорию `wp-content/plugins`, используя административный интерфейс добавления плагинов (_Плагины -- Добавить новый_)
+или клонировав GitHub-репозиторий.
 
-После активации плагина его настройки доступны через меню _GWPTB -> Настройки_. 
+Активируйте плагин в списке плагинов (_Меню - Плагины_).
+
+Настройки плагина доступны в меню _GWPTB -> Настройки_. 
 
 Для начала работы необходимо создать нового бота в чате Телеграм с пользователем [@BotFather](https://telegram.me/botfather). Отправьте команду `/newbot` и следуйте инструкциям.
 
@@ -74,13 +77,24 @@ Plugin features:
 
 * webhook support for automatic updates from Telegram
 * support for global Telegram commands
-* messages without command proccessed as search request and browsable search results returns to chat
+* messages without command proccessed as search request and search results returns to chat
 * log of messages and responses
 * for developers: customs commands could be defined
 
 The plugin developed and supported by [Teplitsa of social technologies](https://te-st.ru/).
 
 Follow the development on [GitHub](https://github.com/Teplitsa/GWPTB)
+
+**How to install**
+
+Plugins requires PHP 5.3+ and WordPress 4.5+.
+
+Upload the plugin folder `gwptb` into `wp-content/plugins` using WordPress Dashboard (_Plugins -- Add new_) or by cloning Github-repo.
+
+Activate the plugin through the _Plugins_ menu in WordPress.
+
+Configure the plugin by going to the page _GWPTB -> Settings_ that appears in your admin menu.
+
 
 **Global commands**
 
