@@ -85,7 +85,7 @@ The plugin developed and supported by [Teplitsa of social technologies](https://
 
 Follow the development on [GitHub](https://github.com/Teplitsa/GWPTB)
 
-**How to install**
+###How to install###
 
 Plugins requires PHP 5.3+ and WordPress 4.5+.
 
@@ -94,7 +94,6 @@ Upload the plugin folder `gwptb` into `wp-content/plugins` using WordPress Dashb
 Activate the plugin through the _Plugins_ menu in WordPress.
 
 Configure the plugin by going to the page _GWPTB -> Settings_ that appears in your admin menu.
-
 
 **Global commands**
 
@@ -106,7 +105,7 @@ Developers could define own commends through `gwptb_supported_commnds_list` filt
 
 Commands should be defined in chat with [@BotFather](https://telegram.me/botfather) to be accepted by plugin: use `/setcommands` command and follow the instructions. 
 
-**Help the project**
+###Help the project###
 
 We will be very grateful if you will help us to make GWPTB better.
 
