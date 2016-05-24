@@ -22,11 +22,11 @@ Plugin features:
 
 * webhook support to receive automatic updates from Telegram
 * support for global Telegram commands
-* messages without command proccessed as search requests and results returns to chat as list of links
+* messages without command processed as search requests and results returns to chat as list of links
 * log of messages and responses
 * for developers: customs commands could be defined
 
-**Limitation**. In mean time the plugin supports individual chars only - no support for group chars of inline mode. Follow the development progress or send as pull-requests for improvements.
+**Limitation**. In mean time the plugin supports individual chats only - no support for group chats or inline mode. Follow the development progress or send as pull-requests for improvements.
 
 The plugin developed and supported by [Teplitsa of social technologies](https://te-st.ru/).
 
@@ -39,13 +39,13 @@ Follow the development on [GitHub](https://github.com/Teplitsa/GWPTB)
 
 Developers could define own commends through `gwptb_supported_commnds_list` filter (details published in wiki on  [GitHub](https://github.com/Teplitsa/GWPTB)).
 
-Commands should be defined in chat with [@BotFather](https://telegram.me/botfather) to be accepted by plugin: use `/setcommands` command and follow the instuctions. 
+Commands should be defined in chat with [@BotFather](https://telegram.me/botfather) to be accepted by plugin: use `/setcommands` command and follow the instructions. 
 
 **Help the project**
 
 We will be very grateful if you will help us to make GWPTB better.
 
-* You can add a bugreport or a feature request on [GitHub](https://github.com/Teplitsa/GWPTB/issues).
+* You can add a bug report or a feature request on [GitHub](https://github.com/Teplitsa/GWPTB/issues).
 * Send us your pull request to share a code improvement.
 * Translate the plugin in your language
 
@@ -57,7 +57,7 @@ We will be very grateful if you will help us to make GWPTB better.
 
 * получение и обработка автоматический уведомлений от Телеграм о сообщениях боту
 * поддержка стандартных команд Телеграм
-* сообщения, не содержашие команд, трактуются как поисковый запрос и в ответ отсылаются результаты поиска по сайту с возможностью пролистывания
+* сообщения, не содержащие команд, трактуются как поисковый запрос и в ответ отсылаются результаты поиска по сайту с возможностью пролистывания
 * лог сообщений
 * для разработчиков - возможность добавлять собственные команды
 
@@ -113,10 +113,6 @@ To put the plugin into work you need to create a Telegram bot in the dialogue wi
 Для начала работы необходимо создать нового бота в чате Телеграм с пользователем [@BotFather](https://telegram.me/botfather). Отправьте команду `/newbot` и следуйте инструкциям.
 
 В случае успешного создания бота вы получите ключ (токен) авторизации. Скопируйте и сохраните его в настройках плагина, после чего установите соединение с Телеграм. В этом режиме бот будет отвечать на запросы пользователей в чате, отправляя результаты поиска по сайту и позволяя их пролистывать. 
-
-
-
-
 
 
 == Screenshots ==

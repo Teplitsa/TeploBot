@@ -8,11 +8,11 @@ Plugin features:
 
 * webhook support for automatic updates from Telegram
 * support for global Telegram commands
-* messages without command proccessed as search request and search results returns to chat
+* messages without command processed as search request and search results returns to chat
 * log of messages and responses
 * for developers: customs commands could be defined
 
-**Limitation**. In mean time the plugin supports individual chars only - no support for group chars of inline mode. Follow the development progress or send as pull-requests for improvements.
+**Limitation**. In mean time the plugin supports individual chats only - no support for group chats or inline mode. Follow the development progress or send as pull-requests for improvements.
 
 The plugin developed and supported by [Teplitsa of social technologies](https://te-st.ru/).
 
@@ -59,7 +59,7 @@ Search results in chat
 
 We will be very grateful if you will help us to make GWPTB better.
 
-* You can add a bugreport or a feature request on [GitHub](https://github.com/Teplitsa/GWPTB/issues).
+* You can add a bug report or a feature request on [GitHub](https://github.com/Teplitsa/GWPTB/issues).
 * Send us your pull request to share a code improvement.
 * Translate the plugin into your language
 
@@ -72,7 +72,7 @@ We will be very grateful if you will help us to make GWPTB better.
 
 * получение и обработка автоматический уведомлений от Телеграм о сообщениях боту
 * поддержка стандартных команд Телеграм
-* сообщения, не содержашие команд, трактуются как поисковый запрос и в ответ отсылаются результаты поиска по сайту с возможностью пролистывания
+* сообщения, не содержащие команд, трактуются как поисковый запрос и в ответ отсылаются результаты поиска по сайту с возможностью пролистывания
 * лог сообщений
 * для разработчиков - возможность добавлять собственные команды
 
