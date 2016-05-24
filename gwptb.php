@@ -7,9 +7,10 @@ Author: Teplitsa
 Author URI: https://te-st.ru/
 Text Domain: gwptb
 Domain Path: /lang
-Contributors:	
-	Anna Ladoshkina aka foralien (webdev@foralien.com)
-	Gleb Suvorov aka gsuvorov (suvorov.gleb@gmail.com)
+Contributors:
+	Gleb Suvorov aka gsuvorov (suvorov.gleb@gmail.com) - Idea, UX
+	Anna Ladoshkina aka foralien (webdev@foralien.com) - Development
+	
 
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 License: GPLv2 or later
