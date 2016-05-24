@@ -215,8 +215,6 @@ class Gwptb_Self {
 		$data['user_fname'] = apply_filters('gwptb_input_text', $data['user_fname']);
 		$data['user_lname'] = apply_filters('gwptb_input_text', $data['user_lname']);
 		$data['chatname'] = apply_filters('gwptb_input_text', $data['chatname']);
-		
-		$data['content'] = apply_filters('gwptb_input_text', $data['content']);
 		$data['error'] = apply_filters('gwptb_input_text', $data['error']);
 		$data['attachment'] = $data['attachment']; // ??
 		
@@ -225,6 +223,15 @@ class Gwptb_Self {
 		$data['message_id'] = (int)$data['message_id'];
 		$data['chat_id'] = (int)$data['chat_id'];
 		$data['count'] = (int)$data['count'];
+		
+		//prevent empty content fielf in log due to inccorect submissions
+		$content = apply_filters('gwptb_input_text', $data['content']);
+		if(!empty($data['content']) && empty($content)){
+			$data['content'] = __('Invalid content in received message', 'gwptb');
+		}
+		else {
+			$data['content'] = $content;
+		}
 		
 		$table_name = Gwptb_Core::get_log_tablename();
 		return $wpdb->insert($table_name, $data, array('%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d', '%d', '%s', '%s',));		
