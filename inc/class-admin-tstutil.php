@@ -33,7 +33,7 @@ class Gwptb_TestUtil {
 	
 	/** Question page **/
 	public function admin_menu_setup() {		
-        add_submenu_page('gwptb', __('Connect to us', 'gwptb'), __('Feedback', 'gwptb'), 'manage_options', 'gwptb_feedback', array($this, 'feedback_screen'));
+        add_submenu_page('gwptb', __('Feedback', 'gwptb'), __('Feedback', 'gwptb'), 'manage_options', 'gwptb_feedback', array($this, 'feedback_screen'));
 	}
 	
 	public function feedback_screen() {
