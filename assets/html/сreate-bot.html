@@ -1,0 +1,30 @@
+<p>There's a… bot for that. Just talk in telegram to <a href="https://telegram.me/botfather" target="_blank">BotFather</a> (described below) and follow a few simple steps. Once you've created a bot you will received your authorization token.</p>
+
+<p>Use the <b>/newbot</b> command to create a new bot. The BotFather will ask you for a name and username, then generate an authorization token for your new bot.</p>
+
+<p>The <b>name</b> of your bot will be displayed in contact details and elsewhere.</p>
+
+<p>The <b>Username</b> is a short name, to be used in mentions and telegram.me links. Usernames are 5-32 characters long and are case insensitive, but may only include Latin characters, numbers, and underscores. Your bot's username must end in ‘bot’, e.g. ‘tetris_bot’ or ‘TetrisBot’.</p>
+
+<p><b>The token</b> is a string along the lines of <code>110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw</code> that will be required to authorize the bot and send requests from the website.</p>
+
+<h4>Generate an authorization token for your bot</h4>
+
+<p>If your existing token is compromised or you lost it for some reason, use the <b>/token</b> command to generate a new one.</p>
+
+<h4>Edit settings</h4>
+
+<p>The remaining commands are pretty self-explanatory:</p>
+
+<ul>
+<li><b>/setname</b> – change your bot's name.</li>
+<li><b>/setdescription</b> — changes the bot's description, a short text of up to 512 characters, describing your bot. Users will see this text at the beginning of the conversation with the bot, titled ‘What can this bot do?’.</li>
+<li><b>/setabouttext</b> — changes the bot's about info, an even shorter text of up to 120 characters. Users will see this text on the bot's profile page. When they share your bot with someone, this text will be sent together with the link.</li>
+<li><b>/setuserpic</b> — changes the bot‘s profile pictures. It’s always nice to put a face to a name.</li>
+<li><b>/setcommands</b> — changes the list of commands supported by your bot. Each command has a name (must start with a slash ‘/’, alphanumeric plus underscores, no more than 32 characters, case-insensitive), parameters, and a text description. Users will see the list of commands whenever they type ‘/’ in a conversation with your bot.</li>
+<li><b>/setjoingroups</b> — determines whether your bot can be added to groups or not. Any bot must be able to process private messages, but if your bot was not designed to work in groups, you can disable this.</li>
+<li><b>/setprivacy</b> — determines which messages your bot will receive when added to a group. With privacy mode disabled, the bot will receive all messages. We recommend leaving privacy mode enabled.</li>
+<li><b>/deletebot</b> — deletes your bot and frees its username.</li>
+</ul>
+
+<a href="https://telegram.me/botfather" target="_blank" class="button button-primary">Start to create a bot</a>

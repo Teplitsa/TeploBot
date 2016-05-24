@@ -1,0 +1,340 @@
+/** Settings styles **/
+
+#gwptb-widgets {
+	@include clearfix;
+		
+	#postbox-container-1 {
+		width: 100%;		
+	}
+	
+	#postbox-container-2 {
+		width: 100%;
+		margin: 24px 0 0;
+	}
+	
+	@include for(large-screens){
+		#postbox-container-1 {
+			width: 70%;		
+		}
+		
+		#postbox-container-2 {
+			width: 25%;
+			margin: 0 0 0 3%;
+		}
+	}
+}
+
+/** help **/
+.gwptb-help-screenshot {
+	width: 100%;
+	img {
+		max-width: 100%;
+		height: auto;
+	}
+}
+
+#postbox-container-2 > h4 {
+	font-size: 14px;
+	margin: 10px 0;
+}
+
+
+/** settings block */
+.gwptb-settings {
+	@include clearfix;
+	
+	form {
+		display: block;		
+	}
+	
+	.description {
+		font-size: 0.95em;
+		margin-top: 8px;
+	}
+	
+	.description +  .description {
+		margin-top: 0;
+		padding-top: 0;}
+	
+	.gwptb-bot-name {
+		color: $green;
+		font-style: normal;
+	}
+	.gwptb-bot-token {
+		padding: 3px 6px;
+		background: #fff;
+		color: $green;
+	}
+}
+
+.gwptb-token-test {
+	margin-top: 8px;
+	
+	.gwptb-test-response {
+		min-height: 25px;
+		p {
+			font-size: 13px;
+			margin-top: 4px;
+		}
+	}
+}
+
+/** connection sections **/
+.gwptb-page-section {
+	
+	.postbox  h2 {		
+		& > span {
+			position: relative;
+			display: block;			
+		}
+		
+		.postbot-title-link {
+			font-size: 0.8em;
+			line-height: inherit;
+			margin-left: 8px;
+		}
+		
+		@include for(large-screens){
+			.postbot-title-link {
+				position: absolute;
+				right: 30px;
+				top: 2px;
+			}
+		}
+	}
+}
+
+
+/* connection metabox **/
+.gwptb-conncetion-setup {
+
+	.gwptb-cs-button-row {
+		@include clearfix;
+		
+		.btn-col-green {
+			width: 100%;
+			
+			.green {
+				width: 100px;
+			}
+		}
+		
+		.btn-col-grey {
+			width: 100%;
+			text-align: center;
+			padding-top: 7px;			
+		}
+		
+		//two cols
+		@media screen and (min-width: 600px) { 
+			.btn-col-green{
+				float: left;
+				width: 60%;
+			}
+			.btn-col-grey {
+				float: left;
+				width: 40%;
+			}
+		}
+		
+		.button-green {
+			box-sizing: border-box;
+			background: $green;
+			border: 1px solid darken($green, 3%);
+			
+			font-size: 16px;
+			line-height: 18px;			
+			padding: 13px 24px;			
+			text-align: center;			
+			color: #fff;			
+		}
+		
+		.button-grey {
+			display: inline-block;
+			box-sizing: border-box;
+			margin: 0 4px;
+			font-size: 13px;
+			line-heigth: 20px;
+			padding: 6px 14px;
+			
+			background: #f7f7f7;
+			border: 1px solid #ccc;
+			box-shadow: 0 1px 0 #ccc;
+			border-radius: 3px;
+			color: #777;
+			cursor: pointer;
+			@include transition(all 0.3s);
+			
+			&:hover {
+				background: #fafafa;
+				border-color: #999;
+				color: #23282d;
+			}
+		}
+	}
+	
+	.gwptb-cs-response {
+		margin: 1em 0;
+		
+		.gwptb-message {
+			box-sizing: border-box;
+			border: 1px solid #eee;
+			padding: 6px 16px;
+			border-radius: 2px;
+			font-size: 0.9em;
+			
+			@include for(large-screens) {
+				max-width: 60%;
+			}
+			
+			&.success {
+				color: $green;	
+			}
+			
+			&.fail {
+				color: red;
+			}
+		}
+		
+		p {
+			margin: 0;
+		}
+	}
+}
+
+/* data table */
+.gwptb-connection-data {
+	table {
+		width: 100%;
+		margin: 20px 0;
+		
+		@include for(large-screens){
+			width: 50%;
+		}
+	}
+	
+	th {
+		text-align: left;
+		padding: 4px 0;
+		width: 170px;
+	}
+	
+	td {
+		padding: 4px 0 4px 16px;
+	}
+}
+
+
+/* Log table */
+.gwptb-log-content {
+	font-size: 0.9em;
+}
+.gwptb-log-error {
+	font-size: 0.9em;
+	color: red;
+}
+.row-response {
+	color: $green;
+}
+
+
+/** Feedback page **/
+.gwptb-feedback-description {
+	p { margin: 0;}
+	
+	margin: 24px 0;
+}
+
+.feedback-columns {
+	@include clearfix;
+	
+	.gwptb-feedback-form {
+		min-height: 1px;
+		
+		@include for(large-screens){			
+			width: 65%;
+			float: left;
+		}
+	}
+	
+	.feedback-sidebar {
+		@include for(large-screens){
+			width: 30%;
+			margin: 0 0 0 3%;
+			float: left;
+		}
+	}
+}
+
+.gwptb-ff-field {
+	margin: 12px 0;
+	
+	label {
+		display: block;
+		font-weight: bold;
+		padding-bottom: 4px;
+	}
+	
+	textarea {
+		height: 250px;
+	}
+}
+
+.gwptb-ff-field-error {	
+	color: red;
+	font-size: 12px;
+	padding: 0 6px;
+	margin-top: 3px;
+}
+
+.gwptb-ff-msg {
+	font-size: 14px;
+	background: none repeat scroll 0 0 #fff;
+	border-left: 4px solid #fff;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+	margin: 0 0 2px;
+	padding: 1px 12px;
+	
+	p {
+		margin: 0;
+		padding: 15px;
+	}
+	
+	&.ok { border-left-color: #7ad03a;  }
+	&.wrong { border-left-color: #dd3d36;  }
+}
+
+
+/** Teplitsa sidebar **/
+#gwptb-card {	
+	h4 {
+		font-size: 14px;
+		margin: 10px 0 20px;
+	}
+	
+	p { margin: 0; }
+	
+	.gwptb-ref-links { margin-top: 24px; }
+}
+#itv-card {
+	max-width: 280px;
+	background: #f9f9f9;
+	padding: 10px;
+	
+	.itv-logo {
+		width: 160px;
+		padding: 5px;
+		
+		img {
+			max-width: 100%;
+			height: auto;
+		}
+		
+		a { display: block; }
+		
+		p:last-child { margin-bottom: 0; }
+	}
+}
+
+#gwptb-card + #itv-card {
+	margin-top: 3em; }

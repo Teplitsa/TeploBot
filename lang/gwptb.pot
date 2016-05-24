@@ -1,0 +1,228 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Project-Id-Version: Green WP Telegram Bot\n"
+"POT-Creation-Date: 2016-05-20 07:21+0300\n"
+"PO-Revision-Date: 2016-05-20 06:55+0300\n"
+"Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
+"Language-Team: Anna Ladoshkina <webdev@foralien.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: gwptb.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: inc/admin.php:48 inc/admin.php:60 inc/admin.php:88
+msgid "Settings"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+#: inc/admin.php:57 inc/admin.php:60 inc/admin.php:97
+msgid "Green WP Telegram Bot"
+msgstr ""
+
+#: inc/admin.php:57
+msgid "GWPTB"
+msgstr ""
+
+#: inc/admin.php:63 inc/admin.php:218
+msgid "GWPTB Log"
+msgstr ""
+
+#: inc/admin.php:63
+msgid "Log"
+msgstr ""
+
+#: inc/admin.php:73 inc/admin.php:213
+msgid "Sorry, but you do not have permissions to access this page."
+msgstr ""
+
+#: inc/admin.php:79
+msgid "Connection Setup"
+msgstr ""
+
+#: inc/admin.php:84
+msgid "How to create a bot"
+msgstr ""
+
+#: inc/admin.php:133
+msgid "Test token"
+msgstr ""
+
+#: inc/admin.php:176
+msgid "Set connection"
+msgstr ""
+
+#: inc/admin.php:176
+msgid "Your Bot is connected"
+msgstr ""
+
+#: inc/admin.php:178
+msgid "Remove connection"
+msgstr ""
+
+#: inc/admin.php:191
+msgid "Bot Link"
+msgstr ""
+
+#: inc/admin.php:195
+msgid "Received messages"
+msgstr ""
+
+#: inc/admin.php:199
+msgid "Send links"
+msgstr ""
+
+#: inc/admin.php:252
+#, php-format
+msgid "Your token is connected with Bot: %s (@%s)."
+msgstr ""
+
+#: inc/admin.php:255
+#, php-format
+msgid "Your token is invalid. Error message: %s."
+msgstr ""
+
+#: inc/admin.php:283 inc/admin.php:314
+#, php-format
+msgid "Connection is invalid. Error message: %s."
+msgstr ""
+
+#: inc/admin.php:288 inc/admin.php:319
+msgid "Processing failed - try again later."
+msgstr ""
+
+#: inc/admin.php:336
+msgid "Access settings"
+msgstr ""
+
+#: inc/admin.php:343
+msgid "Bot Token"
+msgstr ""
+
+#: inc/admin.php:351
+msgid "Path to certificate file"
+msgstr ""
+
+#: inc/admin.php:376
+msgid "For self-signed certificates - specify the path to it's public key file"
+msgstr ""
+
+#: inc/class-admin-list-table.php:81
+msgid "Date"
+msgstr ""
+
+#: inc/class-admin-list-table.php:82
+msgid "Action"
+msgstr ""
+
+#: inc/class-admin-list-table.php:83
+msgid "Method"
+msgstr ""
+
+#: inc/class-admin-list-table.php:84
+msgid "User"
+msgstr ""
+
+#: inc/class-admin-list-table.php:85
+msgid "Content"
+msgstr ""
+
+#: inc/class-gwptb.php:131
+#, php-format
+msgid "Invalid request with error: %s"
+msgstr ""
+
+#: inc/class-gwptb.php:137
+#, php-format
+msgid "Invalid response with code: %s"
+msgstr ""
+
+#: inc/class-gwptb.php:144
+#, php-format
+msgid "Invalid content in response: %s"
+msgstr ""
+
+#: inc/class-gwptb.php:147
+msgid "Invalid content in response"
+msgstr ""
+
+#: inc/class-gwptb.php:236
+msgid "Connection removed"
+msgstr ""
+
+#: inc/class-gwptb.php:236
+msgid "Connection set"
+msgstr ""
+
+#: inc/class-gwptb.php:244
+msgid "Bot detected"
+msgstr ""
+
+#: inc/class-gwptb.php:348
+msgid "Empty update query"
+msgstr ""
+
+#: inc/class-gwptb.php:642 inc/class-gwptb.php:645
+msgid "Set connection and test token for the bot"
+msgstr ""
+
+#: inc/core.php:122
+msgid "Invalid update received by webhook"
+msgstr ""
+
+#: inc/functions.php:13
+#, php-format
+msgid ""
+"I can help you to find something useful at %%home%%. Send me _your term_ to "
+"perform a search."
+msgstr ""
+
+#: inc/functions.php:26
+#, php-format
+msgid ""
+"Hello, %%uername%%. Let's find something useful. Send me _your term_ to "
+"perform a search, type /help to get help."
+msgstr ""
+
+#: inc/functions.php:66 inc/functions.php:102
+msgid "Unfortunately your request didn't match anything."
+msgstr ""
+
+#: inc/functions.php:76
+#, php-format
+msgid "Found results: %s / displaying %d - %d"
+msgstr ""
+
+#: inc/functions.php:79
+#, php-format
+msgid "Found results: %s"
+msgstr ""
+
+#: inc/functions.php:91
+msgid "Previous"
+msgstr ""
+
+#: inc/functions.php:95
+msgid "Next"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Simple Telegram Bot for your site with green effect"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Teplitsa"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://te-st.ru/"
+msgstr ""
