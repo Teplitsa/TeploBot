@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Green WP Telegram Bot
+Plugin Name: TeploBot - Telegram Bot for WP
 Description: Simple Telegram Bot for your site with green effect
 Version: 1.0
 Author: Teplitsa
@@ -14,7 +14,7 @@ Contributors:
 
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 License: GPLv2 or later
-	Copyright (C) 2012-2014 by Teplitsa of Social Technologies (http://te-st.ru).
+	Copyright (C) 2012-2014 by Teplitsa of Social Technologies (https://te-st.ru).
 
 	GNU General Public License, Free Software Foundation <http://www.gnu.org/licenses/gpl-2.0.html>
 
