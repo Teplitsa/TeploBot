@@ -1,4 +1,4 @@
-=== Green WP Telegram Bot ===
+=== TeploBot - Telegram Bot for WP ===
 Contributors: gsuvorov, foralien
 Author URI: https://te-st.ru
 Plugin URI: https://gwptb.te-st.ru
@@ -9,14 +9,14 @@ Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-GWPTB simple Telegram chatbot with green effect.
+TeploBot simple Telegram chatbot with green effect.
 
 == Description ==
 
 _Описание на русском языке - ниже._
 
 
-*Green WP Telegram Bot* is the plugin for WordPress that provides basic [Telegram](https://telegram.org/) chatbot functionality for your site. The bot sends search results on your site as replay to chat users. For developers: the behavior of the bot could be customized.
+*TeploBot - Telegram Bot for WP* is the plugin for WordPress that provides basic [Telegram](https://telegram.org/) chatbot functionality for your site. The bot sends search results on your site as replay to chat users. For developers: the behavior of the bot could be customized.
 
 Plugin features:
 
@@ -51,7 +51,7 @@ We will be very grateful if you will help us to make GWPTB better.
 
 **РУССКИЙ**
 
-*Green WP Telegram Bot* - плагин для WordPress, реализующий простого чатбота для [Телеграм](https://telegram.org/). Бот может автоматически отправлять результаты поиска по сайту в ответ на запрос пользователей и позволяет их просматривать. Для разработчиков: состав действий бота может быть расширен. 
+*TeploBot - Telegram Bot for WP* - плагин для WordPress, реализующий простого чатбота для [Телеграм](https://telegram.org/). Бот может автоматически отправлять результаты поиска по сайту в ответ на запрос пользователей и позволяет их просматривать. Для разработчиков: состав действий бота может быть расширен. 
 
 Основные функции
 
