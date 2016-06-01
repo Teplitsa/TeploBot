@@ -557,7 +557,7 @@ class Gwptb_Self {
 				
 		$reply_text = $this->get_replay_text_args($upd_data);
 		
-		$reply = array_merge($reply, $reply_text);
+		$reply = array_merge($reply, (array)$reply_text);
 		
 		return $reply;
 	}
@@ -568,9 +568,10 @@ class Gwptb_Self {
 		$commands = self::get_supported_commands(); 
 		$result = array();
 		
-		
-		if(isset($commands[$command]) && is_callable($commands[$command])){
+	
+		if(isset($commands[$command]) && is_callable($commands[$command])){			
 			$result = call_user_func($commands[$command], $upd_data);
+			
 		}
 		elseif($upd_data['chattype'] == 'private') {			
 			//no commands - return search results
@@ -579,8 +580,6 @@ class Gwptb_Self {
 		else {
 			//??? may be help text
 		}
-		
-		//$result['text'] = ($command) ? 'find command '.$command : 'no command';
 		
 		return $result;
 	}
@@ -720,6 +719,16 @@ class Gwptb_Self {
 		$name .= (!empty($self['username'])) ? " (@".$self['username'].")" : '';
 		
 		return $name;
+	}
+	
+	public function get_self_username() {
+		
+		$self = $this->get_self_id();
+		
+		if(!isset($self['username']))
+			return '';
+				
+		return $self['username'];
 	}
 	
 } //class

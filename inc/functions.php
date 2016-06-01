@@ -58,14 +58,18 @@ function gwptb_search_command_response($upd_data){
 		}
 	}	
 	else { //init search
-		$args['s'] = apply_filters('gwptb_search_term', $upd_data['content']);
+		$self = Gwptb_Self::get_instance();
+		$args['s'] = apply_filters('gwptb_search_term', str_replace(array('@', '/s', $self->get_self_username()), '', $upd_data['content']));
 	}
 	
-	if(empty($args['s'])) {
+	if(empty($args['s'])) {			
 		//don't perform empty search
-		$result['text'] = apply_filters('gwptb_output_text', __('Unfortunately your request didn\'t match anything.', 'gwptb'));
+		$result['text'] = apply_filters('gwptb_output_text', __('Unfortunately you\'ve submitted empty or incorrect request - provide the search term after /s command.', 'gwptb'));
+		
 		return $result;
 	}
+	
+	
 	
 	$paged = $args['paged'];	
 	$query = new WP_Query($args);
@@ -120,6 +124,3 @@ function gwptb_formtat_posts_list($posts){
 	
 	return $out;
 }
-
-
-
