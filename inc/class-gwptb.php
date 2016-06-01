@@ -578,7 +578,7 @@ class Gwptb_Self {
 			$result = gwptb_search_command_response($upd_data);
 		}
 		else {
-			//??? may be help text
+			//should we provide some response in group chat message
 		}
 		
 		return $result;
@@ -660,8 +660,8 @@ class Gwptb_Self {
 		}
 		
 		//strip bot name form command
-		$self = $this->get_self_id();
-		$command = str_replace('@'.$self['username'], '', $command);
+		$self = $this->get_self_username();
+		$command = str_replace('@'.$self, '', $command);
 		
 		return $command;
 	}
