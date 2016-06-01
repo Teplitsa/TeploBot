@@ -2,7 +2,7 @@
 
 **Описание на русском языке - ниже.**
 
-*Green WP Telegram Bot* is the plugin for WordPress that provide basic [Telegram](https://telegram.org/) chatbot functionality for your site. The bot send search results on your site as replay to chat users. The behavior of the bot could be customized.
+*TeploBot* is the plugin for WordPress that provide basic [Telegram](https://telegram.org/) chatbot functionality for your site. The bot send search results on your site as replay to chat users. The behavior of the bot could be customized.
 
 Plugin features:
 
@@ -24,7 +24,7 @@ Upload the plugin folder `gwptb` into `wp-content/plugins` using WordPress Dashb
 
 Activate the plugin through the _Plugins_ menu in WordPress.
 
-Configure the plugin by going to the page _GWPTB -> Settings_ that appears in your admin menu.
+Configure the plugin by going to the page _TeploBot -> Settings_ that appears in your admin menu.
 
 **Global commands**
 
@@ -57,7 +57,7 @@ Search results in chat
 
 ###Help the project###
 
-We will be very grateful if you will help us to make GWPTB better.
+We will be very grateful if you will help us to make TeploBot better.
 
 * You can add a bug report or a feature request on [GitHub](https://github.com/Teplitsa/GWPTB/issues).
 * Send us your pull request to share a code improvement.
@@ -89,7 +89,7 @@ We will be very grateful if you will help us to make GWPTB better.
 
 Активируйте плагин в списке плагинов (_Меню - Плагины_).
 
-Настройки плагина доступны в меню _GWPTB -> Настройки_. 
+Настройки плагина доступны в меню _TeploBot -> Настройки_. 
 
 Для начала работы необходимо создать нового бота в чате Телеграм с пользователем [@BotFather](https://telegram.me/botfather). Отправьте команду `/newbot` и следуйте инструкциям.
 

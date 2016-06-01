@@ -129,10 +129,10 @@ class Gwptb_TestUtil {
                 continue;
 
             $res &= wp_mail(
-                $email, __('GWPTB: new incoming feedback', 'gwptb'),
+                $email, __('TeploBot: new incoming feedback', 'gwptb'),
                 sprintf(
                 "Добрый день!<br><br>
-                Поступила новая обратная связь от пользователя GWPTB.<br><br>
+                Поступила новая обратная связь от пользователя TeploBot.<br><br>
                 <strong>Тема:</strong> %s<br>
                 <strong>Имя пользователя:</strong> %s<br>
                 <strong>Email:</strong> %s<br>
@@ -140,7 +140,7 @@ class Gwptb_TestUtil {
                 ---------------- Технические данные сайта пользователя --------------<br><br>
                 <strong>Cайт пользователя:</strong> <a href='%s'>%s</a> (IP: %s)<br>
                 <strong>Версия WP:</strong> %s<br>
-                <strong>Версия GWPTB:</strong> %s<br>
+                <strong>Версия TeploBot:</strong> %s<br>
                 <strong>Параметр admin_email:</strong> %s<br>
                 <strong>Язык:</strong> %s (кодировка: %s)<br>
                 <strong>ПО веб-сервера:</strong> %s<br>
@@ -173,8 +173,8 @@ class Gwptb_TestUtil {
 	?>
 
 		<div id="gwptb-card">
-            <h4><?php _e('Green WP Telegram Bot by Teplitsa', 'gwptb');?></h4>
-            <p><?php _e('GWPTB is a simple chatbot for Telegram with green effect', 'gwptb');?></p>
+            <h4><?php _e('TeploBot - Telegram Bot for WP', 'gwptb');?></h4>
+            <p><?php _e('TeploBot is a simple chatbot for Telegram with green effect', 'gwptb');?></p>
             <p>
                 <?php _e('Developed by <a href="https://te-st.ru/" target="_blank">Teplitsa of social technologies</a>', 'gwptb');?>
             </p>

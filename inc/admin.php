@@ -56,15 +56,18 @@ class Gwptb_Admin {
 	public function admin_menu_setup() {
 
         //Menu root
-        add_menu_page(__('Green WP Telegram Bot', 'gwptb'), __('GWPTB', 'gwptb'), 'manage_options', 'gwptb', array($this, 'dashboard_screen'), 'dashicons-nametag');
+        add_menu_page(__('TeploBot', 'gwptb'), __('TeploBot', 'gwptb'), 'manage_options', 'gwptb', array($this, 'dashboard_screen'), 'dashicons-nametag');
 
         // Dashboard
-        add_submenu_page('gwptb', __('Green WP Telegram Bot', 'gwptb'), __('Settings', 'gwptb'), 'manage_options', 'gwptb', array($this, 'dashboard_screen'));
+        add_submenu_page('gwptb', __('TeploBot', 'gwptb'), __('Settings', 'gwptb'), 'manage_options', 'gwptb', array($this, 'dashboard_screen'));
 		
 		//Log
-        add_submenu_page('gwptb', __('GWPTB Log', 'gwptb'), __('Log', 'gwptb'), 'manage_options', 'gwptb_log', array($this, 'log_screen'));
+        add_submenu_page('gwptb', __('TeploBot Log', 'gwptb'), __('Log', 'gwptb'), 'manage_options', 'gwptb_log', array($this, 'log_screen'));
 		
-		do_action('gwptb_admin_menu_setup');		
+		do_action('gwptb_admin_menu_setup');
+		
+		//init table here otherwise columns will not be bind correctly to screen
+		$list_table = gwpt_get_list_table();
 	}
 	
 	
@@ -109,7 +112,7 @@ class Gwptb_Admin {
 		
 	?>	
 		<div class="wrap">
-            <h2><?php _e('Green WP Telegram Bot by Teplitsa', 'gwptb');?></h2>
+            <h2><?php _e('TeploBot - Telegram Bot for WP', 'gwptb');?></h2>
 		
 		<!-- metabox -->		
 		<div class="gwptb-page-section">
@@ -303,7 +306,7 @@ class Gwptb_Admin {
         }		
 	?>
 		<div class="wrap">
-            <h2><?php _e('GWPTB Log', 'gwptb');?></h2>            
+            <h2><?php _e('TeploBot Log', 'gwptb');?></h2>            
 			<?php
 				$list_table = gwpt_get_list_table();				
 				$list_table->prepare_items(); 
@@ -399,10 +402,8 @@ class Gwptb_Admin {
 			array($this, 'cert_key_render'), 
 			'gwptb_settings', 
 			'gwptb_bot_section' 
-		);
+		);		
 		
-		//init table here otherwise columns will not be bind correctly to screen
-		$list_table = gwpt_get_list_table();
 	}
 
 

@@ -43,7 +43,7 @@ Commands should be defined in chat with [@BotFather](https://telegram.me/botfath
 
 **Help the project**
 
-We will be very grateful if you will help us to make GWPTB better.
+We will be very grateful if you will help us to make TeploBot better.
 
 * You can add a bug report or a feature request on [GitHub](https://github.com/Teplitsa/GWPTB/issues).
 * Send us your pull request to share a code improvement.
@@ -95,7 +95,7 @@ Upload the plugin folder `gwptb` into `wp-content/plugins` using WordPress Dashb
 
 Activate the plugin through the _Plugins_ menu in WordPress.
 
-Configure the plugin by going to the page _GWPTB -> Settings_ that appears in your admin menu.
+Configure the plugin by going to the page _TeploBot -> Settings_ that appears in your admin menu.
 
 To put the plugin into work you need to create a Telegram bot in the dialogue with <a href="https://telegram.me/botfather" target="_blank">BotFather</a> user. Start chat with it and follow a few simple steps. Once you've created a bot you will received your authorization token, that should be saved in plugin settings.
 
@@ -108,7 +108,7 @@ To put the plugin into work you need to create a Telegram bot in the dialogue wi
 
 Активируйте плагин в списке плагинов (`Меню - Плагины`).
 
-Настройки плагина доступны в меню _GWPTB -> Настройки_. 
+Настройки плагина доступны в меню _TeploBot -> Настройки_. 
 
 Для начала работы необходимо создать нового бота в чате Телеграм с пользователем [@BotFather](https://telegram.me/botfather). Отправьте команду `/newbot` и следуйте инструкциям.
 

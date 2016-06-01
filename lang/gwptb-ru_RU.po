@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Green WP Telegram Bot\n"
-"POT-Creation-Date: 2016-05-24 11:54+0300\n"
-"PO-Revision-Date: 2016-05-24 11:55+0300\n"
+"POT-Creation-Date: 2016-06-01 15:57+0300\n"
+"PO-Revision-Date: 2016-06-01 16:00+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language: ru_RU\n"
@@ -24,123 +24,119 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-2: assets\n"
 "X-Poedit-SearchPathExcluded-3: node_modules\n"
 
-#: inc/admin.php:50 inc/admin.php:62 inc/admin.php:90
+#: inc/admin.php:50 inc/admin.php:62 inc/admin.php:93
 msgid "Settings"
 msgstr "Настройки"
 
-#. Plugin Name of the plugin/theme
 #: inc/admin.php:59 inc/admin.php:62
-msgid "Green WP Telegram Bot"
-msgstr "Green WP Telegram Bot"
+msgid "TeploBot"
+msgstr "TeploBot"
 
-#: inc/admin.php:59
-msgid "GWPTB"
-msgstr "GWPTB"
-
-#: inc/admin.php:65 inc/admin.php:306
-msgid "GWPTB Log"
-msgstr "GWPTB Лог запросов"
+#: inc/admin.php:65 inc/admin.php:309
+msgid "TeploBot Log"
+msgstr "TeploBot журнал запросов"
 
 #: inc/admin.php:65
 msgid "Log"
-msgstr "Лог запросов"
+msgstr "Журнал запросов"
 
-#: inc/admin.php:76 inc/admin.php:302 inc/class-admin-tstutil.php:42
+#: inc/admin.php:79 inc/admin.php:305 inc/class-admin-tstutil.php:42
 msgid "Sorry, but you do not have permissions to access this page."
 msgstr "К сожалению, у вас нет прав для просмотра этой страницы"
 
-#: inc/admin.php:86 inc/admin.php:97
+#: inc/admin.php:89 inc/admin.php:100
 msgid "How to create a bot"
 msgstr "Как создать бота"
 
-#: inc/admin.php:95
+#: inc/admin.php:98
 msgid "Connection Setup"
 msgstr "Настройка соединения"
 
-#: inc/admin.php:112 inc/class-admin-tstutil.php:176
-msgid "Green WP Telegram Bot by Teplitsa"
-msgstr "Green WP Telegram Bot by Teplitsa"
+#. Plugin Name of the plugin/theme
+#: inc/admin.php:115 inc/class-admin-tstutil.php:176
+msgid "TeploBot - Telegram Bot for WP"
+msgstr "TeploBot - Telegram Bot for WP"
 
-#: inc/admin.php:137
+#: inc/admin.php:140
 msgid "Example"
 msgstr "Пример"
 
-#: inc/admin.php:138
+#: inc/admin.php:141
 msgid "Botfather dialogue screenshot"
 msgstr "Диалог с отцом ботов - скриншот"
 
-#: inc/admin.php:188
+#: inc/admin.php:191
 msgid "Your Bot is connected"
 msgstr "Бот соединен, настроен и доволен"
 
-#: inc/admin.php:191
+#: inc/admin.php:194
 msgid "Remove connection"
 msgstr "Удалить соединение"
 
-#: inc/admin.php:197
+#: inc/admin.php:200
 msgid "Set connection"
 msgstr "Установить соединение"
 
-#: inc/admin.php:217
+#: inc/admin.php:220
 msgid "Bot Link"
 msgstr "Ссылка на бота"
 
-#: inc/admin.php:225
+#: inc/admin.php:228
 msgid "Received messages"
 msgstr "Сообщений получено"
 
-#: inc/admin.php:229
+#: inc/admin.php:232
 msgid "Sent links"
 msgstr "Отправлено ссылок"
 
-#: inc/admin.php:241
+#: inc/admin.php:244
 msgid "Update stats"
 msgstr "Обновить"
 
-#: inc/admin.php:278
+#: inc/admin.php:281
 #, php-format
 msgid "Connection is invalid. Error message: %s."
 msgstr "Некорректное соединение. Ошибка: %s."
 
-#: inc/admin.php:282
+#: inc/admin.php:285
 msgid "Processing failed - try again later."
 msgstr "Обработка не завершена - попробуйте еще раз"
 
-#: inc/admin.php:340
+#: inc/admin.php:343
 #, php-format
 msgid "Your token is connected with Bot: %s (@%s)."
 msgstr "Ваш ключ (токен) связан с ботом: %s (@%s)."
 
-#: inc/admin.php:343
+#: inc/admin.php:346
 #, php-format
 msgid "Your token is invalid. Error message: %s."
 msgstr "Некорректный ключ (токен). Ошибка: %s."
 
-#: inc/admin.php:367
+#: inc/admin.php:370
 msgid "Bot settings"
 msgstr "Настройки бота"
 
-#: inc/admin.php:374
+#: inc/admin.php:377
 msgid "Bot Token"
 msgstr "Ключ (токен)"
 
-#: inc/admin.php:382
+#: inc/admin.php:385
 msgid "Start text for bot"
 msgstr "Текст приветствия"
 
-#: inc/admin.php:390
+#: inc/admin.php:393
 msgid "Help text for bot"
 msgstr "Текст подсказки"
 
-#: inc/admin.php:398
+#: inc/admin.php:401
 msgid "Public key"
 msgstr "Публичный ключ"
 
-#: inc/admin.php:416
+#: inc/admin.php:417
 msgid "Anonymous"
 msgstr "Анонимный"
 
-#: inc/admin.php:422
+#: inc/admin.php:423
 #, php-format
 msgid ""
 "Your bot - %s - connected to Telegram. Remove connection to update token."
@@ -148,11 +144,11 @@ msgstr ""
 "Бот - %s - соединен с Телеграм. Удалите соединение перед тем, как обновить "
 "ключ (токен)"
 
-#: inc/admin.php:434
+#: inc/admin.php:435
 msgid "Test token"
 msgstr "Проверить ключ (токен)"
 
-#: inc/admin.php:442
+#: inc/admin.php:443
 #, php-format
 msgid ""
 "Hello, %%username%%. Let's find something useful. Send me %s to perform a "
@@ -161,11 +157,11 @@ msgstr ""
 "Привет, %%username%%. Давай найдем что-нибудь полезное. Отправь мне %s для "
 "осуществления поиска, или напиши /help для получения подсказки."
 
-#: inc/admin.php:442 inc/admin.php:452
+#: inc/admin.php:443 inc/admin.php:453
 msgid "your term"
 msgstr "запрос"
 
-#: inc/admin.php:446
+#: inc/admin.php:447
 #, php-format
 msgid ""
 "Text showing as a response to /start command. %%username%% will be replaced "
@@ -173,11 +169,11 @@ msgid ""
 msgstr ""
 "Текст ответа на команду /start. %%uername%% заменяется именем пользователя."
 
-#: inc/admin.php:447 inc/admin.php:457
+#: inc/admin.php:448 inc/admin.php:458
 msgid "Command should be added in dialog with @BotFather"
 msgstr "Команда должна быть добавлена в диалоге с @BotFather"
 
-#: inc/admin.php:452
+#: inc/admin.php:453
 #, php-format
 msgid ""
 "I can help you to find something useful at %%home%%. Send me %s to perform a "
@@ -186,18 +182,18 @@ msgstr ""
 "Я могу найти что-то полезное на сайте %%home%%. Отправь мне %s для "
 "осуществления поиска."
 
-#: inc/admin.php:456
+#: inc/admin.php:457
 #, php-format
 msgid ""
 "Text showing as a response to /help command. %%home%% will be replaced with "
 "link to homepage."
 msgstr "Текст ответа на команду /help. "
 
-#: inc/admin.php:464
+#: inc/admin.php:465
 msgid "Telegram instructions"
 msgstr "Инструкции Телеграм"
 
-#: inc/admin.php:467
+#: inc/admin.php:468
 #, php-format
 msgid "For self-signed certificates: copy the content of public key. %s"
 msgstr "Для самоподписанных сертификатов: скопируйте публичный ключ. %s"
@@ -281,12 +277,12 @@ msgstr ""
 "настройки вашего сервера."
 
 #: inc/class-admin-tstutil.php:132
-msgid "GWPTB: new incoming feedback"
-msgstr "GWPTB: вопрос пользователя"
+msgid "TeploBot: new incoming feedback"
+msgstr "TeploBot: поступила новая обратная связь"
 
 #: inc/class-admin-tstutil.php:177
-msgid "GWPTB is a simple chatbot for Telegram with green effect"
-msgstr "GWPTB простой бот для Телеграм с зеленым эффектом"
+msgid "TeploBot is a simple chatbot for Telegram with green effect"
+msgstr "TeploBot - простой бот для Телеграм с зеленым эффектом"
 
 #: inc/class-admin-tstutil.php:179
 msgid ""
@@ -392,6 +388,24 @@ msgstr "Теплица социальных технологий"
 #. Author URI of the plugin/theme
 msgid "https://te-st.ru/"
 msgstr "https://te-st.ru/"
+
+#~ msgid "Green WP Telegram Bot"
+#~ msgstr "Green WP Telegram Bot"
+
+#~ msgid "GWPTB"
+#~ msgstr "GWPTB"
+
+#~ msgid "GWPTB Log"
+#~ msgstr "GWPTB Лог запросов"
+
+#~ msgid "Green WP Telegram Bot by Teplitsa"
+#~ msgstr "Green WP Telegram Bot by Teplitsa"
+
+#~ msgid "GWPTB: new incoming feedback"
+#~ msgstr "GWPTB: вопрос пользователя"
+
+#~ msgid "GWPTB is a simple chatbot for Telegram with green effect"
+#~ msgstr "GWPTB простой бот для Телеграм с зеленым эффектом"
 
 #~ msgid "Connect to us"
 #~ msgstr "Задать вопрос разработчикам"
