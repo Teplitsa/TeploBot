@@ -41,8 +41,8 @@ function gwptb_search_command_response($upd_data){
 	
 	$per_page = 5; //this will be option
 	$args = array(
-		'post_type' 		=> array('post'), //this should be option
-		'posts_per_page'	=> $per_page,		//this too
+		'post_type' 		=> apply_filters('gwptb_search_command_post_types', array('post')), 
+		'posts_per_page'	=> $per_page,		
 		's' 				=> '',
 		'paged' 			=> 1
 	);
@@ -70,7 +70,6 @@ function gwptb_search_command_response($upd_data){
 	}
 	
 	
-	
 	$paged = $args['paged'];	
 	$query = new WP_Query($args);
 	
@@ -84,7 +83,7 @@ function gwptb_search_command_response($upd_data){
 			$result['text'] = sprintf(__('Found results: %s', 'gwptb'), $query->found_posts.chr(10).chr(10));
 		}
 						
-		$result['text'] .= gwptb_formtat_posts_list($query->posts);
+		$result['text'] .= gwptb_format_posts_list($query->posts);
 		$result['text'] = apply_filters('gwptb_output_html', $result['text']);
 		
 		$result['parse_mode'] = 'HTML';
@@ -113,8 +112,89 @@ function gwptb_search_command_response($upd_data){
 	return $result;
 }
 
+function gwptb_custom_command_response($upd_data){
+	//add command param to $upd_data
+	
+	if(!isset($upd_data['command']) || empty($upd_data['command'])) { //no command in data
+		$result['text'] = apply_filters('gwptb_output_text', __('Unfortunately you\'ve submitted an incorrect request.', 'gwptb'));
+		return $result;
+	}
+	
+	$per_page = 5; //this will be option
+	$command = $upd_data['command'];
+	
+	if(false !== strpos($upd_data['content'], $command.'=')){ //update
+		
+		parse_str($upd_data['content'], $a);
+		
+		if(isset($a[$command]) && isset($a['paged'])){
+			//build query
+			$command_args = $bot->get_custom_command_args($command);
+			$title = (!empty($command_args['title'])) ? apply_filters('gwptb_output_text', $command_args['title']) : '';
+			
+			$qv = array(
+				'post_type' => (isset($command_args['post_types'])) ? $command_args['post_types'] : 'post',
+				'posts_per_page' => $per_page,
+				'paged' => (int)$a['paged']
+			);
+		}
+	}	
+	else { //init search
+		$bot = Gwptb_Self::get_instance();
+		$command_args = $bot->get_custom_command_args($command);
+		$title = (!empty($command_args['title'])) ? apply_filters('gwptb_output_text', $command_args['title']) : '';
+		
+		$qv = array(
+			'post_type' => (isset($command_args['post_types'])) ? $command_args['post_types'] : 'post',
+			'posts_per_page' => $per_page,
+			'paged' => 1
+		);
+	}
+	
+	$paged = $args['paged'];	
+	$query = new WP_Query($args);
+	
+	if($query->have_posts()){
+		
+		if($query->found_posts > $per_page){
+			$end = ($paged*$per_page < $query->found_posts) ? $paged*$per_page : $query->found_posts;
+			$result['text'] = sprintf(__('%s / displaying %d - %d', 'gwptb'), $title, ($paged*$per_page - $per_page) + 1, $end).chr(10).chr(10);
+		}
+		else {
+			$result['text'] = $title.chr(10).chr(10);
+		}
+						
+		$result['text'] .= gwptb_format_posts_list($query->posts);
+		$result['text'] = apply_filters('gwptb_output_html', $result['text']);
+		
+		$result['parse_mode'] = 'HTML';
+		
+		
+		if($query->found_posts > $per_page){
+			//next/prev			
+			$keys = array('inline_keyboard' => array());
+			
+			if($paged > 1){
+				$keys['inline_keyboard'][0][] = array('text' => __('Previous', 'gwptb'), 'callback_data' => $command.'=1&paged='.($paged-1));				
+			}
+			
+			if($paged < ceil($query->found_posts/$per_page)) {
+				$keys['inline_keyboard'][0][] = array('text' => __('Next', 'gwptb'), 'callback_data' => $command.'=1&paged='.($paged+1));		
+			}
+			
+			$result['reply_markup'] = json_encode($keys);
+		}
+	}
+	else {
+		$result['text'] = __('Unfortunately your request didn\'t match anything.', 'gwptb');
+		$result['text'] = apply_filters('gwptb_output_text', $result['text']);
+	}
+	
+	return $result;
+}
 
-function gwptb_formtat_posts_list($posts){
+
+function gwptb_format_posts_list($posts){
 	
 	$out = '';
 	

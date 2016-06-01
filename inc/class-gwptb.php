@@ -568,8 +568,9 @@ class Gwptb_Self {
 		$commands = self::get_supported_commands(); 
 		$result = array();
 		
-	
-		if(isset($commands[$command]) && is_callable($commands[$command])){			
+		
+		if(isset($commands[$command]) && is_callable($commands[$command])){
+			$upd_data['command'] = $command;
 			$result = call_user_func($commands[$command], $upd_data);
 			
 		}
@@ -634,11 +635,26 @@ class Gwptb_Self {
 	public static function get_supported_commands(){
         
         if (empty(self :: $commands)){
-			self :: $commands = apply_filters('gwptb_supported_commnds_list', array(
+			$default_commands = array(
 				'help'		=> 'gwptb_help_command_response',
 				'start'		=> 'gwptb_start_command_response',
 				's'	        => 'gwptb_search_command_response',
-			));
+			);
+			
+			$custom_commands = array();
+			$custom_commands_opt = get_option('gwptb_custom_commands');
+			
+			if(is_array($custom_commands_opt) && !empty($custom_commands_opt)) {
+				
+				foreach($custom_commands_opt as $i => $opt){
+					if(isset($opt['command']) && !empty($opt['command'])){
+						$command = esc_attr($opt['command']);
+						$custom_commands[$command] = 'gwptb_custom_command_response';
+					}
+				}
+			}
+			
+			self :: $commands = apply_filters('gwptb_supported_commnds_list', array_merge($default_commands, $custom_commands));
 		}
 		
 		return self :: $commands;
@@ -664,6 +680,24 @@ class Gwptb_Self {
 		$command = str_replace('@'.$self, '', $command);
 		
 		return $command;
+	}
+	
+	public function get_custom_command_args($command){
+		
+		$result = array('post_types' => array(), 'title' => '');
+		$custom_commands_opt = get_option('gwptb_custom_commands');
+		
+		if(!is_array($custom_commands_opt) && empty($custom_commands_opt))
+			return $result;
+				
+		foreach($custom_commands_opt as $i => $opt){
+			if(isset($opt['command']) && $opt['command'] == $command){
+				$result['post_types'] = array_map('trim', explode(',', $opt['post_type']));
+				$result['title'] = (isset($opt['title'])) ? $opt['title'] : '';
+			}
+		}
+		
+		return $result;
 	}
 	
 	

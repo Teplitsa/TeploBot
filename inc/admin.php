@@ -364,14 +364,17 @@ class Gwptb_Admin {
 		register_setting( 'gwptb_settings', 'gwptb_cert_key',   array('GWPTB_Filters', 'sanitize_string'));
 		register_setting( 'gwptb_settings', 'gwptb_start_text', array('GWPTB_Filters', 'sanitize_html'));
 		register_setting( 'gwptb_settings', 'gwptb_help_text',  array('GWPTB_Filters', 'sanitize_html'));
-	
+		register_setting( 'gwptb_settings', 'gwptb_custom_commands', array($this, 'custom_commands_prepare_filter'));
+		
+		//sections
 		add_settings_section(
 			'gwptb_bot_section', 
 			__( 'Bot settings', 'gwptb' ), 
 			array($this, 'bot_section_callback'), 
 			'gwptb_settings'
 		);
-	
+				
+		//fields
 		add_settings_field( 
 			'gwptb_bot_token', 
 			__( 'Bot Token', 'gwptb' ), 
@@ -404,6 +407,13 @@ class Gwptb_Admin {
 			'gwptb_bot_section' 
 		);		
 		
+		add_settings_field( 
+			'gwptb_custom_commands', 
+			__( 'Custom commands', 'gwptb' ), 
+			array($this, 'custom_commands_render'), 
+			'gwptb_settings', 
+			'gwptb_bot_section' 
+		);		
 	}
 
 
@@ -468,13 +478,62 @@ class Gwptb_Admin {
 		<p class="description"><?php printf(__('For self-signed certificates: copy the content of public key. %s', 'gwptb'), $help_link);?></p>
 	<?php
 	}
+	
+	public function custom_commands_render(){
+		
+		$value = get_option('gwptb_custom_commands'); 
+	?>
+		<p class="description"><?php _e('Add up to 5 commands to send recent posts in chat', 'gwptb');?></p>
+		<table class="gwptb-custom-command-table">
+			<thead>
+			<tr class="gwptb-cc-row header">
+				<th class="gwptb-cc-cell command"><?php _e('Command word', 'gwptb');?></th>
+				<th class="gwptb-cc-cell post_type"><?php _e('Post types (comma-separated)', 'gwptb');?></th>
+				<th class="gwptb-cc-cell title"><?php _e('Title for results', 'gwptb');?></th>
+			</tr>
+			</thead>
+			<tbody>
+		<?php for($i =0 ; $i < 5; $i++) { ?>	
+			<tr class="gwptb-cc-row">
+				<td class="gwptb-cc-cell command">					
+					<input type="text" name="gwptb_custom_commands[<?php echo $i;?>][command]" id="gwptb_cc_command-<?php echo $i;?>" value="<?php echo (isset($value[$i]['command'])) ? esc_attr($value[$i]['command']) : '';?>"/>
+				</td>
+				
+				<td class="gwptb-cc-cell post_type">
+					<input type="text" name="gwptb_custom_commands[<?php echo $i;?>][post_type]" id="gwptb_cc_post_types-<?php echo $i;?>" value="<?php echo (isset($value[$i]['command'])) ? esc_attr($value[$i]['post_type']) : '';?>"/>
+				</td>				
+				<td class="gwptb-cc-cell title">
+					<input type="text" name="gwptb_custom_commands[<?php echo $i;?>][title]" id="gwptb_cc_title-<?php echo $i;?>" value="<?php echo (isset($value[$i]['command'])) ? esc_attr($value[$i]['title']) : '';?>"/>
+				</td>
+			</tr>
+		<?php }?>
+			</tbody>
+		</table>
+	<?php
+	}
+	
+	public function custom_commands_prepare_filter($option) {
+		
+		if(!is_array($option))
+			return '';
+		
+		$result = array();
+		$defaults = array('command' => '', 'post_type' => '', 'title' => '');
+		foreach($option as $i => $opt){
+			
+			$opt = wp_parse_args($opt, $defaults);
+			$result[$i]['command'] = preg_replace('/[^a-zA-Z0-9\s]/u', '', $opt['command']);
+			$result[$i]['post_type'] = GWPTB_Filters::sanitize_string($opt['post_type']);
+			$result[$i]['title'] = GWPTB_Filters::sanitize_string($opt['title']);
+		}
+		
+		return $result;
+	}
 
 	public function bot_section_callback(  ) { 	
 		//description or help information	
 	}
-
-
-
+	
 
 	
 	
