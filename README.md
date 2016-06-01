@@ -20,11 +20,11 @@ The plugin developed and supported by [Teplitsa of social technologies](https://
 
 Plugins requires PHP 5.3+ and WordPress 4.5+.
 
-Upload the plugin folder `gwptb` into `wp-content/plugins` using WordPress Dashboard (_Plugins -- Add new_) or by cloning Github-repo.
+1. Upload the plugin folder `gwptb` into `wp-content/plugins` using WordPress Dashboard (_Plugins -- Add new_) or by cloning Github-repo.
 
-Activate the plugin through the _Plugins_ menu in WordPress.
+2. Activate the plugin through the _Plugins_ menu in WordPress.
 
-Configure the plugin by going to the page _TeploBot -> Settings_ that appears in your admin menu.
+3. Configure the plugin by going to the page _TeploBot -> Settings_ that appears in your admin menu.
 
 **Global commands**
 
@@ -84,12 +84,12 @@ We will be very grateful if you will help us to make TeploBot better.
 
 Для корректной работы необходим PHP версии 5.3 и выше и WordPress версии 4.5 и выше.
 
-Загрузите папку плагина `gwptb` в директорию `wp-content/plugins`, используя административный интерфейс добавления плагинов (_Плагины -- Добавить новый_)
+1. Загрузите папку плагина `gwptb` в директорию `wp-content/plugins`, используя административный интерфейс добавления плагинов (_Плагины -- Добавить новый_)
 или клонировав GitHub-репозиторий.
 
-Активируйте плагин в списке плагинов (_Меню - Плагины_).
+2. Активируйте плагин в списке плагинов (_Меню - Плагины_).
 
-Настройки плагина доступны в меню _TeploBot -> Настройки_. 
+3. Настройки плагина доступны в меню _TeploBot -> Настройки_. 
 
 Для начала работы необходимо создать нового бота в чате Телеграм с пользователем [@BotFather](https://telegram.me/botfather). Отправьте команду `/newbot` и следуйте инструкциям.
 
