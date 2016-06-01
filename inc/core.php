@@ -43,7 +43,7 @@ class Gwptb_Core {
 	
 	static function on_deactivation() {
 		update_option('gwptb_permalinks_flushed', 0);
-		update_option('gwptb_version', GWPTB_VERSION);  
+		
 	}
 	
 	/** upgrade **/

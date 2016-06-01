@@ -580,6 +580,8 @@ class Gwptb_Self {
 			//??? may be help text
 		}
 		
+		//$result['text'] = ($command) ? 'find command '.$command : 'no command';
+		
 		return $result;
 	}
 	
@@ -657,6 +659,10 @@ class Gwptb_Self {
 			$command = substr($upd_data['content'], $ent->offset, $ent->length);
 			$command = trim(str_replace('/', '', $command));
 		}
+		
+		//strip bot name form command
+		$self = $this->get_self_id();
+		$command = str_replace('@'.$self['username'], '', $command);
 		
 		return $command;
 	}
