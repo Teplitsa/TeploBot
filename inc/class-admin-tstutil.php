@@ -174,9 +174,9 @@ class Gwptb_TestUtil {
 
 		<div id="gwptb-card">
             <h4><?php _e('TeploBot - Telegram Bot for WP', 'gwptb');?></h4>
-            <p><?php _e('TeploBot is a simple chatbot for Telegram with green effect', 'gwptb');?></p>
+            <p><?php _e('TeploBot is a simple chatbot for Telegram with green effect', 'gwptb');?>.</p>
             <p>
-                <?php _e('Developed by <a href="https://te-st.ru/" target="_blank">Teplitsa of social technologies</a>', 'gwptb');?>
+                <?php _e('Developed by <a href="https://te-st.ru/" target="_blank">Teplitsa of social technologies</a>', 'gwptb');?>.
             </p>
             <!--<p class="te-st">
                 <img src="//gwptb.te-st.ru/wp-content/uploads/assets/tst-logo.svg" onerror="this.onerror=null;this.src='//gwptb.te-st.ru/wp-content/uploads/assets/tst-logo.png'">
@@ -204,7 +204,7 @@ class Gwptb_TestUtil {
 		<div id="itv-card">
 			<div class="itv-logo"><a href="<?php echo $itv_url;?>" target="_blank"><img src="<?php echo esc_url(GWPTB_PLUGIN_BASE_URL.'assets/img/logo-itv.png');?>"></a></div>
 	
-			<p>Вам нужна помощь в настройке плагина или создании бота? Опубликуйте задачу на платформе <a href="<?php echo $itv_url;?>" target="_blank">it-волонтер</a></p>
+			<p>Вам нужна помощь в настройке плагина или создании бота? Опубликуйте задачу на платформе <a href="<?php echo $itv_url;?>" target="_blank">it-волонтер.</a></p>
 	
 			<p><a href="<?php echo $itv_url;?>" target="_blank" class="button">Опубликовать задачу</a></p>
 		</div>

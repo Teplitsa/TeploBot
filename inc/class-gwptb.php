@@ -199,6 +199,7 @@ class Gwptb_Self {
 			'message_id'	=> 0,
 			'chat_id'		=> 0,
 			'chatname'		=> '',
+			'chattype'		=> '',
 			'content'		=> '',
 			'attachment'	=> '',
 			'error'			=> '',
@@ -215,6 +216,7 @@ class Gwptb_Self {
 		$data['user_fname'] = apply_filters('gwptb_input_text', $data['user_fname']);
 		$data['user_lname'] = apply_filters('gwptb_input_text', $data['user_lname']);
 		$data['chatname'] = apply_filters('gwptb_input_text', $data['chatname']);
+		$data['chatname'] = apply_filters('gwptb_input_text', $data['chattype']);
 		$data['error'] = apply_filters('gwptb_input_text', $data['error']);
 		$data['attachment'] = $data['attachment']; // ??
 		
@@ -234,7 +236,7 @@ class Gwptb_Self {
 		}
 		
 		$table_name = Gwptb_Core::get_log_tablename();
-		return $wpdb->insert($table_name, $data, array('%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d', '%d', '%s', '%s',));		
+		return $wpdb->insert($table_name, $data, array('%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s',));		
 	}
 	
 	/**
@@ -412,6 +414,7 @@ class Gwptb_Self {
 		
 		$log_data['chat_id'] = (isset($chat->id)) ? (int)$chat->id : 0;
 		$log_data['chatname'] = '';
+		$log_data['chattype'] = '';
 		
 		//this should take type into consideration
 		if(isset($chat->title))
@@ -428,6 +431,9 @@ class Gwptb_Self {
 			
 		if(isset($chat->last_name))
 			$log_data['user_lname'] = $chat->last_name;
+			
+		if(isset($chat->type))
+			$log_data['chattype'] = $chat->type;
 		
 		return $log_data;
 	}
@@ -566,9 +572,12 @@ class Gwptb_Self {
 		if(isset($commands[$command]) && is_callable($commands[$command])){
 			$result = call_user_func($commands[$command], $upd_data);
 		}
-		else {			
+		elseif($upd_data['chattype'] == 'private') {			
 			//no commands - return search results
 			$result = gwptb_search_command_response($upd_data);
+		}
+		else {
+			//??? may be help text
 		}
 		
 		return $result;
@@ -627,7 +636,7 @@ class Gwptb_Self {
 			self :: $commands = apply_filters('gwptb_supported_commnds_list', array(
 				'help'		=> 'gwptb_help_command_response',
 				'start'		=> 'gwptb_start_command_response',
-				'search'	=> 'gwptb_search_command_response',
+				's'	        => 'gwptb_search_command_response',
 			));
 		}
 		

@@ -91,7 +91,7 @@ We will be very grateful if you will help us to make TeploBot better.
 
 Plugins requires PHP 5.3+ and WordPress 4.5+.
 
-Upload the plugin folder `gwptb` into `wp-content/plugins` using WordPress Dashboard (_Plugins -- Add new_) or by cloning Github-repo.
+Upload the plugin folder `gwptb` into `wp-content/plugins` using WordPress Dashboard (_Plugins -- Add new_) or by cloning GitHub-repo.
 
 Activate the plugin through the _Plugins_ menu in WordPress.
 

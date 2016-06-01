@@ -20,7 +20,7 @@ The plugin developed and supported by [Teplitsa of social technologies](https://
 
 Plugins requires PHP 5.3+ and WordPress 4.5+.
 
-1. Upload the plugin folder `gwptb` into `wp-content/plugins` using WordPress Dashboard (_Plugins -- Add new_) or by cloning Github-repo.
+1. Upload the plugin folder `gwptb` into `wp-content/plugins` using WordPress Dashboard (_Plugins -- Add new_) or by cloning GitHub-repo.
 
 2. Activate the plugin through the _Plugins_ menu in WordPress.
 
