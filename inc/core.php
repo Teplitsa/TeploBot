@@ -29,7 +29,7 @@ class Gwptb_Core {
 		
 		$ver = get_option('gwptb_version');
 		
-		if($ver != GWPTB_VERSION){
+		if(!empty($ver) && $ver < GWPTB_VERSION){
 			self::self_upgrade();
 			update_option('gwptb_version', GWPTB_VERSION);  
 		}
@@ -66,9 +66,9 @@ AND COLUMN_NAME = 'chattype'");
 			}
 			catch(Exception $e) {
 				if(WP_DEBUG_DISPLAY)
-					echo $e->error_message();
+					echo $e->getMessage();
 					
-				error_log($e->error_message());
+				error_log($e->getMessage());
 			}
 			
 		}
