@@ -16,7 +16,7 @@ TeploBot simple Telegram chatbot with green effect.
 _Описание на русском языке - ниже._
 
 
-*TeploBot - Telegram Bot for WP* is the plugin for WordPress that provides basic [Telegram](https://telegram.org/) chatbot functionality for your site. The bot sends search results on your site as reply to chat users. For developers: the behavior of the bot could be customized.
+*TeploBot - Telegram Bot for WP* is the plugin for WordPress that provides basic [Telegram](https://telegram.org/) chatbot functionality for your site. The bot sends search results from your site as reply to chat users. For developers: the behavior of the bot could be customized.
 
 Plugin features:
 
