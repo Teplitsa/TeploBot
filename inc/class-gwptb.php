@@ -582,6 +582,12 @@ class Gwptb_Self {
 			//should we provide some response in group chat message
 		}
 		
+		//empty response?
+		if(empty($result)){
+			$result['text'] = __('Unfortunately you\'ve submitted an incorrect request.', 'gwptb');
+			$result['text'] = apply_filters('gwptb_output_text', $result['text']);
+		}
+		
 		return $result;
 	}
 	
@@ -620,12 +626,24 @@ class Gwptb_Self {
 	protected function get_update_text_args($upd_data) {
 		
 		$result = array(); 	
+		$commands = self::get_supported_commands();
 		
-		//find out type of update. only search support for now
-		if(false !== strpos($upd_data['content'], 's=')){
-			$result = gwptb_search_command_response($upd_data);
+		if(empty($commands))
+			return $result;
+		
+		//find out type of update
+		foreach($commands as $key => $callback){
+			if(0 === strpos(trim($upd_data['content']), $key.'=') && is_callable($callback)){
+				$upd_data['command'] = $key;				
+				$result = call_user_func($callback, $upd_data);				
+			}
 		}
 		
+		//empty response?
+		if(empty($result)){
+			$result['text'] = __('Unfortunately you\'ve submitted an incorrect request.', 'gwptb');
+			$result['text'] = apply_filters('gwptb_output_text', $result['text']);
+		}
 		
 		return $result;
 	}
@@ -659,7 +677,7 @@ class Gwptb_Self {
 		
 		return self :: $commands;
     }
-	
+		
 	protected function detect_command($upd_data){
 		
 		$command = false;

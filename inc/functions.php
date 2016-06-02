@@ -121,43 +121,31 @@ function gwptb_custom_command_response($upd_data){
 	}
 	
 	$per_page = 5; //this will be option
-	$command = $upd_data['command'];
 	
-	if(false !== strpos($upd_data['content'], $command.'=')){ //update
+	//command args
+	$command = $upd_data['command'];
+	$bot = Gwptb_Self::get_instance();
+	$command_args = $bot->get_custom_command_args($command);
+	
+	$title = (!empty($command_args['title'])) ? apply_filters('gwptb_output_text', $command_args['title']) : '';		
+	$post_type = (!empty($command_args['post_type'])) ? $command_args['post_type'] : 'post';
+	$post_type = array_map('trim', explode(',', $post_type));
+	
+	$qv = array(
+		'post_type' => (array)$post_type,
+		'posts_per_page' => $per_page,
+		'paged' => 1
+	);
+			
+	if(false !== strpos($upd_data['content'], 'paged=')){ //update
 		
 		parse_str($upd_data['content'], $a);
 		
-		if(isset($a[$command]) && isset($a['paged'])){
-			//build query
-			$command_args = $bot->get_custom_command_args($command);
-			$title = (!empty($command_args['title'])) ? apply_filters('gwptb_output_text', $command_args['title']) : '';
-			$post_type = (!empty($command_args['post_type'])) ? $command_args['post_type'] : 'post';
-			$post_type = array_map('trim', explode(',', $post_type));
-		
-			$qv = array(
-				'post_type' => (array)$post_type,
-				'posts_per_page' => $per_page,
-				'paged' => (int)$a['paged']
-			);
+		if(isset($a['paged'])){
+			$qv['paged'] = (int)$a['paged'];
 		}
 	}	
-	else { //init search
-		$bot = Gwptb_Self::get_instance();
-		$command_args = $bot->get_custom_command_args($command);
 		
-		$title = (!empty($command_args['title'])) ? apply_filters('gwptb_output_text', $command_args['title']) : '';
-		
-		$post_type = (!empty($command_args['post_type'])) ? $command_args['post_type'] : 'post';
-		$post_type = array_map('trim', explode(',', $post_type));
-		
-		$qv = array(
-			'post_type' => (array)$post_type,
-			'posts_per_page' => $per_page,
-			'paged' => 1
-		);
-			
-	}
-	
 	$paged = $qv['paged'];	
 	$query = new WP_Query($qv);
 	
