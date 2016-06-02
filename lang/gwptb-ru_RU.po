@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Green WP Telegram Bot\n"
-"POT-Creation-Date: 2016-06-01 19:06+0300\n"
-"PO-Revision-Date: 2016-06-01 19:09+0300\n"
+"POT-Creation-Date: 2016-06-02 08:12+0300\n"
+"PO-Revision-Date: 2016-06-02 08:13+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language: ru_RU\n"
@@ -112,31 +112,35 @@ msgstr "Ваш ключ (токен) связан с ботом: %s (@%s)."
 msgid "Your token is invalid. Error message: %s."
 msgstr "Некорректный ключ (токен). Ошибка: %s."
 
-#: inc/admin.php:370
+#: inc/admin.php:372
 msgid "Bot settings"
 msgstr "Настройки бота"
 
-#: inc/admin.php:377
+#: inc/admin.php:380
 msgid "Bot Token"
 msgstr "Ключ (токен)"
 
-#: inc/admin.php:385
+#: inc/admin.php:388
 msgid "Start text for bot"
 msgstr "Текст приветствия"
 
-#: inc/admin.php:393
+#: inc/admin.php:396
 msgid "Help text for bot"
 msgstr "Текст подсказки"
 
-#: inc/admin.php:401
+#: inc/admin.php:404
 msgid "Public key"
 msgstr "Публичный ключ"
 
-#: inc/admin.php:417
+#: inc/admin.php:412
+msgid "Custom commands"
+msgstr "Конструктор команд"
+
+#: inc/admin.php:427
 msgid "Anonymous"
 msgstr "Анонимный"
 
-#: inc/admin.php:423
+#: inc/admin.php:433
 #, php-format
 msgid ""
 "Your bot - %s - connected to Telegram. Remove connection to update token."
@@ -144,11 +148,11 @@ msgstr ""
 "Бот - %s - соединен с Телеграм. Удалите соединение перед тем, как обновить "
 "ключ (токен)"
 
-#: inc/admin.php:435
+#: inc/admin.php:445
 msgid "Test token"
 msgstr "Проверить ключ (токен)"
 
-#: inc/admin.php:443
+#: inc/admin.php:453
 #, php-format
 msgid ""
 "Hello, %%username%%. Let's find something useful. Send me %s to perform a "
@@ -157,11 +161,11 @@ msgstr ""
 "Привет, %%username%%. Давай найдем что-нибудь полезное. Отправь мне %s для "
 "осуществления поиска, или напиши /help для получения подсказки."
 
-#: inc/admin.php:443 inc/admin.php:453
+#: inc/admin.php:453 inc/admin.php:463
 msgid "your term"
 msgstr "запрос"
 
-#: inc/admin.php:447
+#: inc/admin.php:457
 #, php-format
 msgid ""
 "Text showing as a response to /start command. %%username%% will be replaced "
@@ -169,11 +173,11 @@ msgid ""
 msgstr ""
 "Текст ответа на команду /start. %%uername%% заменяется именем пользователя."
 
-#: inc/admin.php:448 inc/admin.php:458
+#: inc/admin.php:458 inc/admin.php:468
 msgid "Command should be added in dialog with @BotFather"
 msgstr "Команда должна быть добавлена в диалоге с @BotFather"
 
-#: inc/admin.php:453
+#: inc/admin.php:463
 #, php-format
 msgid ""
 "I can help you to find something useful at %%home%%. Send me %s to perform a "
@@ -182,21 +186,37 @@ msgstr ""
 "Я могу найти что-то полезное на сайте %%home%%. Отправь мне %s для "
 "осуществления поиска."
 
-#: inc/admin.php:457
+#: inc/admin.php:467
 #, php-format
 msgid ""
 "Text showing as a response to /help command. %%home%% will be replaced with "
 "link to homepage."
 msgstr "Текст ответа на команду /help. "
 
-#: inc/admin.php:465
+#: inc/admin.php:475
 msgid "Telegram instructions"
 msgstr "Инструкции Телеграм"
 
-#: inc/admin.php:468
+#: inc/admin.php:478
 #, php-format
 msgid "For self-signed certificates: copy the content of public key. %s"
 msgstr "Для самоподписанных сертификатов: скопируйте публичный ключ. %s"
+
+#: inc/admin.php:489
+msgid "Command word"
+msgstr "Команда"
+
+#: inc/admin.php:490
+msgid "Post types (comma-separated)"
+msgstr "Типы записей (разделять запятыми)"
+
+#: inc/admin.php:491
+msgid "Title for results"
+msgstr "Заголовок результатов выдачи"
+
+#: inc/admin.php:511
+msgid "Add up to 5 commands to send recent posts in chat"
+msgstr "Добавьте до 5 собственных команд для отправки последних записей в чат"
 
 #: inc/class-admin-list-table.php:81
 msgid "Date"
@@ -347,7 +367,11 @@ msgstr "Бот определен"
 msgid "Empty update query"
 msgstr "Пустой запрос"
 
-#: inc/class-gwptb.php:698 inc/class-gwptb.php:705
+#: inc/class-gwptb.php:640 inc/functions.php:119
+msgid "Unfortunately you've submitted an incorrect request."
+msgstr ""
+
+#: inc/class-gwptb.php:746 inc/class-gwptb.php:753
 msgid "Set connection for the bot"
 msgstr "Настройте соединение"
 
@@ -363,27 +387,32 @@ msgstr ""
 "К сожалению, это был пустой или некорректный поисковый запрос - укажи слово "
 "для поиска после команды /s."
 
-#: inc/functions.php:81
+#: inc/functions.php:80
 #, php-format
 msgid "Found results: %s / displaying %d - %d"
 msgstr "Найдено результатов: %s / показано %d - %d"
 
-#: inc/functions.php:84
+#: inc/functions.php:83
 #, php-format
 msgid "Found results: %s"
 msgstr "Найдено результатов: %s"
 
-#: inc/functions.php:98
+#: inc/functions.php:97 inc/functions.php:173
 msgid "Previous"
 msgstr "Пред."
 
-#: inc/functions.php:102
+#: inc/functions.php:101 inc/functions.php:177
 msgid "Next"
 msgstr "След."
 
-#: inc/functions.php:109
+#: inc/functions.php:108 inc/functions.php:184
 msgid "Unfortunately your request didn't match anything."
 msgstr "К сожалению, по такому запросу ничего не найдено"
+
+#: inc/functions.php:156
+#, php-format
+msgid "%s. Total %d / displaying %d - %d"
+msgstr "%s. Всего %d / показано %d - %d"
 
 #. Description of the plugin/theme
 msgid "Simple Telegram Bot for your site with green effect"

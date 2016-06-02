@@ -579,14 +579,10 @@ class Gwptb_Self {
 			$result = gwptb_search_command_response($upd_data);
 		}
 		else {
-			//should we provide some response in group chat message
+			//rections to group aux messages
 		}
 		
-		//empty response?
-		if(empty($result)){
-			$result['text'] = __('Unfortunately you\'ve submitted an incorrect request.', 'gwptb');
-			$result['text'] = apply_filters('gwptb_output_text', $result['text']);
-		}
+		
 		
 		return $result;
 	}

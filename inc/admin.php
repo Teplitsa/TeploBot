@@ -483,7 +483,6 @@ class Gwptb_Admin {
 		
 		$value = get_option('gwptb_custom_commands'); 
 	?>
-		<p class="description"><?php _e('Add up to 5 commands to send recent posts in chat', 'gwptb');?></p>
 		<table class="gwptb-custom-command-table">
 			<thead>
 			<tr class="gwptb-cc-row header">
@@ -509,6 +508,7 @@ class Gwptb_Admin {
 		<?php }?>
 			</tbody>
 		</table>
+		<p class="description"><?php _e('Add up to 5 commands to send recent posts in chat', 'gwptb');?></p>
 	<?php
 	}
 	
