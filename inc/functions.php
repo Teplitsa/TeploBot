@@ -131,9 +131,11 @@ function gwptb_custom_command_response($upd_data){
 			//build query
 			$command_args = $bot->get_custom_command_args($command);
 			$title = (!empty($command_args['title'])) ? apply_filters('gwptb_output_text', $command_args['title']) : '';
-			
+			$post_type = (!empty($command_args['post_type'])) ? $command_args['post_type'] : 'post';
+			$post_type = array_map('trim', explode(',', $post_type));
+		
 			$qv = array(
-				'post_type' => (isset($command_args['post_types'])) ? $command_args['post_types'] : 'post',
+				'post_type' => (array)$post_type,
 				'posts_per_page' => $per_page,
 				'paged' => (int)$a['paged']
 			);
@@ -142,23 +144,28 @@ function gwptb_custom_command_response($upd_data){
 	else { //init search
 		$bot = Gwptb_Self::get_instance();
 		$command_args = $bot->get_custom_command_args($command);
+		
 		$title = (!empty($command_args['title'])) ? apply_filters('gwptb_output_text', $command_args['title']) : '';
 		
+		$post_type = (!empty($command_args['post_type'])) ? $command_args['post_type'] : 'post';
+		$post_type = array_map('trim', explode(',', $post_type));
+		
 		$qv = array(
-			'post_type' => (isset($command_args['post_types'])) ? $command_args['post_types'] : 'post',
+			'post_type' => (array)$post_type,
 			'posts_per_page' => $per_page,
 			'paged' => 1
 		);
+			
 	}
 	
-	$paged = $args['paged'];	
-	$query = new WP_Query($args);
+	$paged = $qv['paged'];	
+	$query = new WP_Query($qv);
 	
 	if($query->have_posts()){
 		
 		if($query->found_posts > $per_page){
 			$end = ($paged*$per_page < $query->found_posts) ? $paged*$per_page : $query->found_posts;
-			$result['text'] = sprintf(__('%s / displaying %d - %d', 'gwptb'), $title, ($paged*$per_page - $per_page) + 1, $end).chr(10).chr(10);
+			$result['text'] = sprintf(__('%s. Total %d / displaying %d - %d', 'gwptb'), $title, $query->found_posts, ($paged*$per_page - $per_page) + 1, $end).chr(10).chr(10);
 		}
 		else {
 			$result['text'] = $title.chr(10).chr(10);

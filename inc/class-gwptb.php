@@ -684,15 +684,15 @@ class Gwptb_Self {
 	
 	public function get_custom_command_args($command){
 		
-		$result = array('post_types' => array(), 'title' => '');
+		$result = array('post_type' => array(), 'title' => '');
 		$custom_commands_opt = get_option('gwptb_custom_commands');
 		
-		if(!is_array($custom_commands_opt) && empty($custom_commands_opt))
+		if(!is_array($custom_commands_opt) || empty($custom_commands_opt))
 			return $result;
 				
 		foreach($custom_commands_opt as $i => $opt){
 			if(isset($opt['command']) && $opt['command'] == $command){
-				$result['post_types'] = array_map('trim', explode(',', $opt['post_type']));
+				$result['post_type'] = (isset($opt['post_type'])) ? $opt['post_type'] : 'post';
 				$result['title'] = (isset($opt['title'])) ? $opt['title'] : '';
 			}
 		}
