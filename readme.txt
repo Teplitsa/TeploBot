@@ -29,7 +29,7 @@ Plugin features:
 
 **Limitation**. In mean time the plugin doesn't support inline mode. Follow the development progress or send as pull-requests for improvements.
 
-The plugin developed and supported by [Teplitsa of social technologies](https://te-st.ru/).
+The plugin developed and supported by [Teplitsa. Technologies for Social Good](https://te-st.ru/).
 
 Follow the progress at [GitHub](https://github.com/Teplitsa/TeploBot)
 

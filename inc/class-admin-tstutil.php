@@ -169,18 +169,16 @@ class Gwptb_TestUtil {
 	/** Teplitsa sidebar **/
 	public function tst_sidebar_screen() {
 		
-		$github_link = Gwptb_Admin::get_instance()->github_link;		
+		$github_link = Gwptb_Admin::get_instance()->github_link;
+		$test_link = '<a href="https://te-st.ru/" target="_blank">'.__('Teplitsa. Technologies for Social Good', 'gwptb').'</a>';
 	?>
-
 		<div id="gwptb-card">
             <h4><?php _e('TeploBot - Telegram Bot for WP', 'gwptb');?></h4>
             <p><?php _e('TeploBot is a simple chatbot for Telegram with green effect', 'gwptb');?>.</p>
             <p>
-                <?php _e('Developed by <a href="https://te-st.ru/" target="_blank">Teplitsa of social technologies</a>', 'gwptb');?>.
+                <?php printf(__('Developed by %s', 'gwptb'), $test_link);?>.
             </p>
-            <!--<p class="te-st">
-                <img src="//gwptb.te-st.ru/wp-content/uploads/assets/tst-logo.svg" onerror="this.onerror=null;this.src='//gwptb.te-st.ru/wp-content/uploads/assets/tst-logo.png'">
-            </p>-->
+            
             <ul class="gwptb-ref-links">
                 <li><a href="https://gwptb.te-st.ru" target='_blank'><?php _e('Plugin\'s website', 'gwptb');?></a></li>
 				<li><a href="<?php echo $github_link;?>" target='_blank'><?php _e('GitHub', 'gwptb');?></a></li>

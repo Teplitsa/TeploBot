@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Green WP Telegram Bot\n"
-"POT-Creation-Date: 2016-06-02 08:12+0300\n"
-"PO-Revision-Date: 2016-06-02 09:27+0300\n"
+"POT-Creation-Date: 2016-06-02 13:28+0300\n"
+"PO-Revision-Date: 2016-06-02 13:29+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language: ru_RU\n"
@@ -300,17 +300,18 @@ msgstr ""
 msgid "TeploBot: new incoming feedback"
 msgstr "TeploBot: поступила новая обратная связь"
 
+#: inc/class-admin-tstutil.php:173
+msgid "Teplitsa. Technologies for Social Good"
+msgstr "Теплица социальных технологий"
+
 #: inc/class-admin-tstutil.php:177
 msgid "TeploBot is a simple chatbot for Telegram with green effect"
 msgstr "TeploBot - простой бот для Телеграм с зеленым эффектом"
 
 #: inc/class-admin-tstutil.php:179
-msgid ""
-"Developed by <a href=\"https://te-st.ru/\" target=\"_blank\">Teplitsa of "
-"social technologies</a>"
-msgstr ""
-"Разработано в <a href=\"https://te-st.ru/\" target=\"_blank\">Теплице "
-"социальных технологий</a>"
+#, php-format
+msgid "Developed by %s"
+msgstr "Разработка: %s"
 
 #: inc/class-admin-tstutil.php:185
 msgid "Plugin's website"
@@ -369,7 +370,7 @@ msgstr "Пустой запрос"
 
 #: inc/class-gwptb.php:640 inc/functions.php:119
 msgid "Unfortunately you've submitted an incorrect request."
-msgstr ""
+msgstr "К сожалению, вы отправили некорректный запрос."
 
 #: inc/class-gwptb.php:746 inc/class-gwptb.php:753
 msgid "Set connection for the bot"
@@ -425,6 +426,20 @@ msgstr "Теплица социальных технологий"
 #. Author URI of the plugin/theme
 msgid "https://te-st.ru/"
 msgstr "https://te-st.ru/"
+
+#~ msgid ""
+#~ "Developed by <a href=\"https://te-st.ru/\" target=\"_blank\">Teplitsa. "
+#~ "Technologies for Social Good</a>"
+#~ msgstr ""
+#~ "Разработано в <a href=‘http://te-st.ru/« target=«_blank»>Теплице "
+#~ "социальных технологий</a>"
+
+#~ msgid ""
+#~ "Developed by <a href=\"https://te-st.ru/\" target=\"_blank\">Teplitsa of "
+#~ "social technologies</a>"
+#~ msgstr ""
+#~ "Разработано в <a href=\"https://te-st.ru/\" target=\"_blank\">Теплице "
+#~ "социальных технологий</a>"
 
 #~ msgid "Green WP Telegram Bot"
 #~ msgstr "Green WP Telegram Bot"
