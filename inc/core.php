@@ -30,11 +30,11 @@ class Gwptb_Core {
 		$ver = get_option('gwptb_version');
 		
 		if(!empty($ver) && $ver < GWPTB_VERSION){
-			self::self_upgrade();
-			update_option('gwptb_version', GWPTB_VERSION);  
+			self::self_upgrade();			
 		}
 		
 		self::create_table();
+		update_option('gwptb_version', GWPTB_VERSION);
 		
 		//stats
 		$stat = GWPTB_Stats::get_instance();
