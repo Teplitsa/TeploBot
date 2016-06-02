@@ -26,7 +26,14 @@ class Gwptb_Core {
 	
 	static function on_activation() {
 		update_option('gwptb_permalinks_flushed', 0);
-		update_option('gwptb_version', GWPTB_VERSION);  
+		
+		$ver = get_option('gwptb_version');
+		
+		if($ver != GWPTB_VERSION){
+			self::self_upgrade();
+			update_option('gwptb_version', GWPTB_VERSION);  
+		}
+		
 		self::create_table();
 		
 		//stats
@@ -35,9 +42,39 @@ class Gwptb_Core {
 	}
 	
 	static function on_deactivation() {
-		update_option('gwptb_permalinks_flushed', 0);  
+		update_option('gwptb_permalinks_flushed', 0);
+		
 	}
 	
+	/** upgrade **/
+	static function self_upgrade(){
+		global $wpdb;
+		
+		$db = (defined('DB_NAME'))? DB_NAME : '';
+		$table = self::get_log_tablename();
+		
+		$test = $wpdb->get_results(
+"SELECT * FROM information_schema.COLUMNS 
+WHERE TABLE_SCHEMA = '$db' 
+AND TABLE_NAME = '$table' 
+AND COLUMN_NAME = 'chattype'");
+		
+		if(!$test){
+			try {
+				if(!$wpdb->query("ALTER TABLE $table ADD chattype varchar(255) DEFAULT '' NOT NULL AFTER chatname"))
+					throw new Exception("The chattype column could not be added to Log table");
+			}
+			catch(Exception $e) {
+				if(WP_DEBUG_DISPLAY)
+					echo $e->error_message();
+					
+				error_log($e->error_message());
+			}
+			
+		}
+	}
+	
+	/** == Log Table == **/
 	static function create_table(){
 		global $wpdb;			
 		
@@ -59,6 +96,7 @@ class Gwptb_Core {
 				message_id bigint(20) DEFAULT 0 NOT NULL,
 				chat_id bigint(20) DEFAULT 0 NOT NULL,
 				chatname varchar(255) DEFAULT '' NOT NULL,
+				chattype varchar(255) DEFAULT '' NOT NULL,
 				content text DEFAULT '' NOT NULL,
 				attachment text DEFAULT '',
 				error text DEFAULT '' NOT NULL,
@@ -76,6 +114,8 @@ class Gwptb_Core {
 		
 		return $wpdb->prefix . 'gwptb_log';
 	}
+	
+	
 	
 		
 	/** service page */	
@@ -196,19 +236,6 @@ class Gwptb_Core {
 	}
 	
 	
-	/** == Filters == **/
-	function add_formatting_filters(){
-		
-		/* Output
-		gwptb_admin_text
-		gwptb_admin_rich_text
-		*/
-		
-		/* Input 
-		gwptb_sanitize_latin
-		gwptb_sanitize_text
-		gwptb_sanitize_rich_text
-		*/
-	}
+	
 	
 } //class

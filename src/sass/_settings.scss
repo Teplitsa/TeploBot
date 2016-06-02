@@ -224,6 +224,29 @@
 	}
 }
 
+/* Custom commands table */
+.gwptb-custom-command-table {
+	width: 100%;
+	margin-top: 15px;
+	
+	th {
+		padding: 2px 3px 2px 6px;
+	}
+	
+	td {
+		padding: 2px 3px;
+		input {
+			width: 100%;
+			margin: 0;
+		}		
+	}
+	
+	.command {
+		width: 20%;
+		padding-left: 0;
+	}
+}
+
 
 /* Log table */
 .gwptb-log-content {

@@ -199,6 +199,7 @@ class Gwptb_Self {
 			'message_id'	=> 0,
 			'chat_id'		=> 0,
 			'chatname'		=> '',
+			'chattype'		=> '',
 			'content'		=> '',
 			'attachment'	=> '',
 			'error'			=> '',
@@ -215,6 +216,7 @@ class Gwptb_Self {
 		$data['user_fname'] = apply_filters('gwptb_input_text', $data['user_fname']);
 		$data['user_lname'] = apply_filters('gwptb_input_text', $data['user_lname']);
 		$data['chatname'] = apply_filters('gwptb_input_text', $data['chatname']);
+		$data['chatname'] = apply_filters('gwptb_input_text', $data['chattype']);
 		$data['error'] = apply_filters('gwptb_input_text', $data['error']);
 		$data['attachment'] = $data['attachment']; // ??
 		
@@ -234,7 +236,7 @@ class Gwptb_Self {
 		}
 		
 		$table_name = Gwptb_Core::get_log_tablename();
-		return $wpdb->insert($table_name, $data, array('%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d', '%d', '%s', '%s',));		
+		return $wpdb->insert($table_name, $data, array('%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s',));		
 	}
 	
 	/**
@@ -412,6 +414,7 @@ class Gwptb_Self {
 		
 		$log_data['chat_id'] = (isset($chat->id)) ? (int)$chat->id : 0;
 		$log_data['chatname'] = '';
+		$log_data['chattype'] = '';
 		
 		//this should take type into consideration
 		if(isset($chat->title))
@@ -428,6 +431,9 @@ class Gwptb_Self {
 			
 		if(isset($chat->last_name))
 			$log_data['user_lname'] = $chat->last_name;
+			
+		if(isset($chat->type))
+			$log_data['chattype'] = $chat->type;
 		
 		return $log_data;
 	}
@@ -551,7 +557,7 @@ class Gwptb_Self {
 				
 		$reply_text = $this->get_replay_text_args($upd_data);
 		
-		$reply = array_merge($reply, $reply_text);
+		$reply = array_merge($reply, (array)$reply_text);
 		
 		return $reply;
 	}
@@ -564,12 +570,19 @@ class Gwptb_Self {
 		
 		
 		if(isset($commands[$command]) && is_callable($commands[$command])){
+			$upd_data['command'] = $command;
 			$result = call_user_func($commands[$command], $upd_data);
+			
 		}
-		else {			
+		elseif($upd_data['chattype'] == 'private') {			
 			//no commands - return search results
 			$result = gwptb_search_command_response($upd_data);
 		}
+		else {
+			//rections to group aux messages
+		}
+		
+		
 		
 		return $result;
 	}
@@ -609,12 +622,24 @@ class Gwptb_Self {
 	protected function get_update_text_args($upd_data) {
 		
 		$result = array(); 	
+		$commands = self::get_supported_commands();
 		
-		//find out type of update. only search support for now
-		if(false !== strpos($upd_data['content'], 's=')){
-			$result = gwptb_search_command_response($upd_data);
+		if(empty($commands))
+			return $result;
+		
+		//find out type of update
+		foreach($commands as $key => $callback){
+			if(0 === strpos(trim($upd_data['content']), $key.'=') && is_callable($callback)){
+				$upd_data['command'] = $key;				
+				$result = call_user_func($callback, $upd_data);				
+			}
 		}
 		
+		//empty response?
+		if(empty($result)){
+			$result['text'] = __('Unfortunately you\'ve submitted an incorrect request.', 'gwptb');
+			$result['text'] = apply_filters('gwptb_output_text', $result['text']);
+		}
 		
 		return $result;
 	}
@@ -624,16 +649,31 @@ class Gwptb_Self {
 	public static function get_supported_commands(){
         
         if (empty(self :: $commands)){
-			self :: $commands = apply_filters('gwptb_supported_commnds_list', array(
+			$default_commands = array(
 				'help'		=> 'gwptb_help_command_response',
 				'start'		=> 'gwptb_start_command_response',
-				'search'	=> 'gwptb_search_command_response',
-			));
+				's'	        => 'gwptb_search_command_response',
+			);
+			
+			$custom_commands = array();
+			$custom_commands_opt = get_option('gwptb_custom_commands');
+			
+			if(is_array($custom_commands_opt) && !empty($custom_commands_opt)) {
+				
+				foreach($custom_commands_opt as $i => $opt){
+					if(isset($opt['command']) && !empty($opt['command'])){
+						$command = esc_attr($opt['command']);
+						$custom_commands[$command] = 'gwptb_custom_command_response';
+					}
+				}
+			}
+			
+			self :: $commands = apply_filters('gwptb_supported_commnds_list', array_merge($default_commands, $custom_commands));
 		}
 		
 		return self :: $commands;
     }
-	
+		
 	protected function detect_command($upd_data){
 		
 		$command = false;
@@ -649,7 +689,29 @@ class Gwptb_Self {
 			$command = trim(str_replace('/', '', $command));
 		}
 		
+		//strip bot name form command
+		$self = $this->get_self_username();
+		$command = str_replace('@'.$self, '', $command);
+		
 		return $command;
+	}
+	
+	public function get_custom_command_args($command){
+		
+		$result = array('post_type' => array(), 'title' => '');
+		$custom_commands_opt = get_option('gwptb_custom_commands');
+		
+		if(!is_array($custom_commands_opt) || empty($custom_commands_opt))
+			return $result;
+				
+		foreach($custom_commands_opt as $i => $opt){
+			if(isset($opt['command']) && $opt['command'] == $command){
+				$result['post_type'] = (isset($opt['post_type'])) ? $opt['post_type'] : 'post';
+				$result['title'] = (isset($opt['title'])) ? $opt['title'] : '';
+			}
+		}
+		
+		return $result;
 	}
 	
 	
@@ -705,6 +767,16 @@ class Gwptb_Self {
 		$name .= (!empty($self['username'])) ? " (@".$self['username'].")" : '';
 		
 		return $name;
+	}
+	
+	public function get_self_username() {
+		
+		$self = $this->get_self_id();
+		
+		if(!isset($self['username']))
+			return '';
+				
+		return $self['username'];
 	}
 	
 } //class
