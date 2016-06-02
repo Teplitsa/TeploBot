@@ -2,17 +2,19 @@
 
 **Описание на русском языке - ниже.**
 
-*TeploBot* is the plugin for WordPress that provide basic [Telegram](https://telegram.org/) chatbot functionality for your site. The bot send search results on your site as replay to chat users. The behavior of the bot could be customized.
+*TeploBot - Telegram Bot for WP* is the plugin for WordPress that provides basic [Telegram](https://telegram.org/) chatbot functionality for your site. The bot sends search results on your site as reply to chat users. For developers: the behavior of the bot could be customized.
 
 Plugin features:
 
-* webhook support for automatic updates from Telegram
+* webhook support to receive automatic updates from Telegram
 * support for global Telegram commands
-* messages without command processed as search request and search results returns to chat
+* send list of serach results into group and privte chats as a response to search requst
+* support up to 5 custom commands with lists or recent posts or custom post types
+* in private chats messages without command processed as search requests 
 * log of messages and responses
-* for developers: customs commands could be defined
+* for developers: commands with custom logic could be defined
 
-**Limitation**. In mean time the plugin supports individual chats only - no support for group chats or inline mode. Follow the development progress or send as pull-requests for improvements.
+**Limitation**. In mean time the plugin doesn't support inline mode. Follow the development progress or send as pull-requests for improvements.
 
 The plugin developed and supported by [Teplitsa of social technologies](https://te-st.ru/).
 
@@ -26,15 +28,17 @@ Plugins requires PHP 5.3+ and WordPress 4.5+.
 
 3. Configure the plugin by going to the page _TeploBot -> Settings_ that appears in your admin menu.
 
-**Global commands**
+To set the plugin into work you need to create a Telegram bot in the dialogue with <a href="https://telegram.me/botfather" target="_blank">BotFather</a> user. Start chat with it and follow a few simple steps. Once you've created a bot you will received your authorization token, that should be saved in plugin settings.
 
-`/start` - Greeting on the dialogue start
+**Default commands**
 
-`/help` - Provide the help text for user
+* `/start` Greeting on the dialogue start
+* `/help` Provide the help text for user
+* `/s` Provide links of posts as search results
 
-Developers could define own commends through `gwptb_supported_commnds_list` filter (details published in wiki on  [GitHub](//github.com/Teplitsa/GWPTB)).
+Admins could add up to 5 custom commands that send list or posts or CPTs to chats. Developers could alter the commands logic through `gwptb_supported_commnds_list` filter (details published in wiki on  [GitHub](https://github.com/Teplitsa/GWPTB)).
 
-Commands should be defined in chat with [@BotFather](https://telegram.me/botfather) to be accepted by plugin: use `/setcommands` command and follow the instructions.
+Commands should be defined in chat with [@BotFather](https://telegram.me/botfather) to be accepted by plugin: use `/setcommands` command and follow the instructions. 
 
 ### Screenshots ###
 
@@ -66,17 +70,19 @@ We will be very grateful if you will help us to make TeploBot better.
 
 ##Описание на русском языке##
 
-*TeploBot - Telegram Bot for WP* - плагин для WordPress, реализующий простого чатбота для [Телеграм](https://telegram.org/). Бот может автоматически отправлять результаты поиска по сайту в ответ на запрос пользователей и позволяет их просматривать. Состав действий бота может быть расширен. 
+*TeploBot - Telegram Bot for WP* - плагин для WordPress, реализующий простого чатбота для [Телеграм](https://telegram.org/). Бот может автоматически отправлять результаты поиска по сайту в ответ на запрос пользователей и позволяет их просматривать. Для разработчиков: состав действий бота может быть расширен. 
 
 Основные функции
 
 * получение и обработка автоматический уведомлений от Телеграм о сообщениях боту
-* поддержка стандартных команд Телеграм
-* сообщения, не содержащие команд, трактуются как поисковый запрос и в ответ отсылаются результаты поиска по сайту с возможностью пролистывания
+* поддержка стандартных команд Телеграм - /start и /help
+* отправка результатов поиска по сайту в ответ на поисковый запрос (команду)
+* поддержка до 5 собственный команд, отправляющих список последних записей или пользовательских типов записей
+* в индивидуальных чатах сообщения, не содержащие команд, трактуются как поисковый запрос 
 * лог сообщений
-* для разработчиков - возможность добавлять собственные команды
+* для разработчиков - возможность добавлять собственные команды или менять логику существующих
 
-**Ограничение**. Пока бот обрабатывает сообщения только в индивидуальных чатах. Групповые чаты и инлайновый режим не поддерживается. Следите за обновлениями и присылайте пулл-реквесты.
+**Ограничение**. В настоящее время инлайновый режим не поддерживается плагином. Следите за обновлениями и присылайте пулл-реквесты.
 
 Плагин разработан и поддерживается [Теплицей социальных технологий](https://te-st.ru/).
 
@@ -97,11 +103,11 @@ We will be very grateful if you will help us to make TeploBot better.
 
 **Стандартные команды**
 
-`/start` - Начало диалога
+* `/start` Начало диалога
+* `/help`  Подсказка и описание команд
+* `/s`  Результаты поиска
 
-`/help` - Подсказка и описание команд
-
-Разработчики могут определять собственные команды, используя фильтр `gwptb_supported_commnds_list` (подробнее о добавлении собственных команд - в wiki).
+Администраторы сайта могут добавить до 5 собственных команд, отправляющих список последних публикаций в чат. Разработчики могут определять собственные команды или менять логику существующих, используя фильтр `gwptb_supported_commnds_list` (подробнее в wiki на [GitHub](https://github.com/Teplitsa/GWPTB)).
 
 Чтобы бот распознавал команды, они должны быть установлены в диалоге с [@BotFather](https://telegram.me/botfather): отправьте ему команду `/setcommands` и следуйте инструкциям. 
 

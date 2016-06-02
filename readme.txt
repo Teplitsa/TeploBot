@@ -103,7 +103,7 @@ Plugins requires PHP 5.3+ and WordPress 4.5+.
 
 3. Configure the plugin by going to the page _TeploBot -> Settings_ that appears in your admin menu.
 
-To put the plugin into work you need to create a Telegram bot in the dialogue with <a href="https://telegram.me/botfather" target="_blank">BotFather</a> user. Start chat with it and follow a few simple steps. Once you've created a bot you will received your authorization token, that should be saved in plugin settings.
+To set the plugin into work you need to create a Telegram bot in the dialogue with <a href="https://telegram.me/botfather" target="_blank">BotFather</a> user. Start chat with it and follow a few simple steps. Once you've created a bot you will received your authorization token, that should be saved in plugin settings.
 
 **РУССКИЙ**
 
