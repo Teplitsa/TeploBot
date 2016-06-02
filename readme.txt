@@ -24,7 +24,7 @@ Plugin features:
 * support for global Telegram commands
 * send list of serach results into group and privte chats as a response to search requst
 * support up to 5 custom commands with lists or recent posts or custom post types
-* in private chats messages without command processed as search requests 
+* in private chats: messages without command processed as search requests 
 * log of messages and responses
 * for developers: commands with custom logic could be defined
 
@@ -38,19 +38,19 @@ Follow the progress at [GitHub](https://github.com/Teplitsa/GWPTB)
 
 * `/start` Greeting on the dialogue start
 * `/help` Provide the help text for user
-* `/s` Provide links of posts as search results
+* `/s` Provide search results as list of posts' link
 
-Admins could add up to 5 custom commands that send list or posts or CPTs to chats. Developers could alter the commands logic through `gwptb_supported_commnds_list` filter (details published in wiki on  [GitHub](https://github.com/Teplitsa/GWPTB)).
+Admins could add up to 5 custom commands that send list or posts or CPTs to chats. Developers could alter the commands logic through `gwptb_supported_commnds_list` filter (details published at [GitHub wiki](https://github.com/Teplitsa/GWPTB)).
 
 Commands should be defined in chat with [@BotFather](https://telegram.me/botfather) to be accepted by plugin: use `/setcommands` command and follow the instructions. 
 
 **Help the project**
 
-We will be very grateful if you will help us to make TeploBot better.
+We will be very grateful if you help us to make TeploBot better.
 
-* You can add a bug report or a feature request on [GitHub](https://github.com/Teplitsa/GWPTB/issues).
-* Send us your pull request to share a code improvement.
-* Translate the plugin in your language
+* Submit a bug report or feature request at [GitHub](https://github.com/Teplitsa/GWPTB/issues).
+* Send us pull-request to share a code improvement.
+* Translate the plugin into your language
 
 **РУССКИЙ**
 
