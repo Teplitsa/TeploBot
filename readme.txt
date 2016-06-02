@@ -1,7 +1,7 @@
 === TeploBot - Telegram Bot for WP ===
 Contributors: gsuvorov, foralien
 Author URI: https://te-st.ru
-Plugin URI: https://gwptb.te-st.ru
+Plugin URI: https://teplobot.te-st.ru
 Tags: Telegram, telegram, bot, chatbot, messenger, robot
 Requires at least: 4.5
 Tested up to: 4.5.2
@@ -44,7 +44,7 @@ Plugin features:
 
 The plugin developed and supported by [Teplitsa of social technologies](https://te-st.ru/).
 
-Follow the progress at [GitHub](https://github.com/Teplitsa/GWPTB)
+Follow the progress at [GitHub](https://github.com/Teplitsa/TeploBot)
 
 **Default commands**
 
@@ -52,7 +52,7 @@ Follow the progress at [GitHub](https://github.com/Teplitsa/GWPTB)
 * `/help` Provide the help text for user
 * `/s` Provide search results as list of posts' link
 
-Admins could add up to 5 custom commands that send list or posts or CPTs to chats. Developers could alter the commands logic through `gwptb_supported_commnds_list` filter (details published at [GitHub wiki](https://github.com/Teplitsa/GWPTB)).
+Admins could add up to 5 custom commands that send list or posts or CPTs to chats. Developers could alter the commands logic through `gwptb_supported_commnds_list` filter (details published at [GitHub wiki](https://github.com/Teplitsa/TeploBot)).
 
 Commands should be defined in chat with [@BotFather](https://telegram.me/botfather) to be accepted by plugin: use `/setcommands` command and follow the instructions. 
 
@@ -61,11 +61,11 @@ Commands should be defined in chat with [@BotFather](https://telegram.me/botfath
 We will be very grateful if you help us to make TeploBot better.
 
 <<<<<<< HEAD
-* You can add a bug report or a feature request on [GitHub](https://github.com/Teplitsa/GWPTB/issues).
+* You can add a bug report or a feature request on [GitHub](https://github.com/Teplitsa/TeploBot/issues).
 * Send us your pull request to share a code improvement.
 * Translate the plugin in your language
 =======
-* Submit a bug report or feature request at [GitHub](https://github.com/Teplitsa/GWPTB/issues).
+* Submit a bug report or feature request at [GitHub](https://github.com/Teplitsa/TeploBot/issues).
 * Send us pull-request to share a code improvement.
 * Translate the plugin into your language
 >>>>>>> dev
@@ -93,7 +93,7 @@ We will be very grateful if you help us to make TeploBot better.
 
 Плагин разработан и поддерживается [Теплицей социальных технологий](https://te-st.ru/).
 
-Следите за разработкой на [GitHub](https://github.com/Teplitsa/GWPTB)
+Следите за разработкой на [GitHub](https://github.com/Teplitsa/TeploBot)
 
 
 **Стандартные команды**
@@ -102,7 +102,7 @@ We will be very grateful if you help us to make TeploBot better.
 * `/help`  Подсказка и описание команд
 * `/s`  Результаты поиска
 
-Администраторы сайта могут добавить до 5 собственных команд, отправляющих список последних публикаций в чат. Разработчики могут определять собственные команды или менять логику существующих, используя фильтр `gwptb_supported_commnds_list` (подробнее в wiki на [GitHub](https://github.com/Teplitsa/GWPTB)).
+Администраторы сайта могут добавить до 5 собственных команд, отправляющих список последних публикаций в чат. Разработчики могут определять собственные команды или менять логику существующих, используя фильтр `gwptb_supported_commnds_list` (подробнее в wiki на [GitHub](https://github.com/Teplitsa/TeploBot)).
 
 Чтобы бот распознавал команды, они должны быть установлены в диалоге с [@BotFather](https://telegram.me/botfather): отправьте ему команду `/setcommands` и следуйте инструкциям. 
 
@@ -111,7 +111,7 @@ We will be very grateful if you help us to make TeploBot better.
 
 Мы очень ждем вашей помощи проекту. Вы можете помочь следующими способами:
 
-* Добавить сообщение об ошибке или предложение по улучшению на [GitHub](https://github.com/Teplitsa/GWPTB/issues/)
+* Добавить сообщение об ошибке или предложение по улучшению на [GitHub](https://github.com/Teplitsa/TeploBot/issues/)
 * Поделиться улучшениями кода, послав нам Pull Request
 * Сделать перевод плагина или оптимизировать его для вашей страны.
 
