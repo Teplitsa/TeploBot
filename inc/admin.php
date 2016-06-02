@@ -6,7 +6,7 @@ if(!defined('ABSPATH')) die; // Die if accessed directly
 class Gwptb_Admin {
 	
 	private static $instance = NULL; //instance store
-	public $github_link = 'https://github.com/Teplitsa/GWPTB';
+	public $github_link = 'https://github.com/Teplitsa/TeploBot';
 	
 	private function __construct() {
 		

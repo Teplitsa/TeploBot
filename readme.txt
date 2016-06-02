@@ -15,32 +15,19 @@ TeploBot simple Telegram chatbot with green effect.
 
 _Описание на русском языке - ниже._
 
-
-<<<<<<< HEAD
-*TeploBot - Telegram Bot for WP* is the plugin for WordPress that provides basic [Telegram](https://telegram.org/) chatbot functionality for your site. The bot sends search results on your site as replay to chat users. For developers: the behavior of the bot could be customized.
-=======
 *TeploBot - Telegram Bot for WP* is the plugin for WordPress that provides basic [Telegram](https://telegram.org/) chatbot functionality for your site. The bot sends search results from your site as reply to chat users. For developers: the behavior of the bot could be customized.
->>>>>>> dev
 
 Plugin features:
 
 * webhook support to receive automatic updates from Telegram
 * support for global Telegram commands
-<<<<<<< HEAD
-* messages without command processed as search requests and results returns to chat as list of links
-=======
 * send list of serach results into group and privte chats as a response to search requst
 * support up to 5 custom commands with lists or recent posts or custom post types
 * in private chats: messages without command processed as search requests 
->>>>>>> dev
 * log of messages and responses
 * for developers: commands with custom logic could be defined
 
-<<<<<<< HEAD
-**Limitation**. In mean time the plugin supports individual chats only - no support for group chats or inline mode. Follow the development progress or send as pull-requests for improvements.
-=======
 **Limitation**. In mean time the plugin doesn't support inline mode. Follow the development progress or send as pull-requests for improvements.
->>>>>>> dev
 
 The plugin developed and supported by [Teplitsa of social technologies](https://te-st.ru/).
 
@@ -60,15 +47,10 @@ Commands should be defined in chat with [@BotFather](https://telegram.me/botfath
 
 We will be very grateful if you help us to make TeploBot better.
 
-<<<<<<< HEAD
-* You can add a bug report or a feature request on [GitHub](https://github.com/Teplitsa/TeploBot/issues).
-* Send us your pull request to share a code improvement.
-* Translate the plugin in your language
-=======
 * Submit a bug report or feature request at [GitHub](https://github.com/Teplitsa/TeploBot/issues).
 * Send us pull-request to share a code improvement.
 * Translate the plugin into your language
->>>>>>> dev
+
 
 **РУССКИЙ**
 
@@ -77,15 +59,10 @@ We will be very grateful if you help us to make TeploBot better.
 Основные функции
 
 * получение и обработка автоматический уведомлений от Телеграм о сообщениях боту
-<<<<<<< HEAD
-* поддержка стандартных команд Телеграм
-* сообщения, не содержащие команд, трактуются как поисковый запрос и в ответ отсылаются результаты поиска по сайту с возможностью пролистывания
-=======
 * поддержка стандартных команд Телеграм - /start и /help
 * отправка результатов поиска по сайту в ответ на поисковый запрос (команду)
 * поддержка до 5 собственный команд, отправляющих список последних записей или пользовательских типов записей
 * в индивидуальных чатах сообщения, не содержащие команд, трактуются как поисковый запрос 
->>>>>>> dev
 * лог сообщений
 * для разработчиков - возможность добавлять собственные команды или менять логику существующих
 
@@ -157,7 +134,7 @@ To set the plugin into work you need to create a Telegram bot in the dialogue wi
 * New: Support for group chats
 * New: Support for custom commands
 * Fix: correct naming of the bot
-* Fix: some search request provides an incorrect results without notification
+* Fix: some search request provide an incorrect results without notification
 
 = 1.0 =
 * First official release!
