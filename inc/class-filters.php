@@ -15,9 +15,9 @@ class GWPTB_Filters {
 		add_filter('gwptb_search_term', array('GWPTB_Filters','sanitize_search_term'));
 		
 		//output filter (for tlgrm)
-		add_filter('gwptb_output_html', array('GWPTB_Filters','print_html'));
+		add_filter('gwptb_output_html', array('GWPTB_Filters','print_html'));		
 		add_filter('gwptb_print_string', array('GWPTB_Filters','print_string'));
-		add_filter('gwptb_print_text', array('GWPTB_Filters','print_text'));
+		add_filter('gwptb_print_text', array('GWPTB_Filters','print_text'));		
 	}
 	
 	
