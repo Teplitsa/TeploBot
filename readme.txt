@@ -97,7 +97,7 @@ We will be very grateful if you help us to make TeploBot better.
 
 Plugins requires PHP 5.3+ and WordPress 4.5+.
 
-1. Upload the plugin folder `gwptb` into `wp-content/plugins` using WordPress Dashboard (_Plugins -- Add new_) or by cloning GitHub-repo.
+1. Upload the plugin folder into `wp-content/plugins` using WordPress Dashboard (_Plugins -- Add new_) or by cloning GitHub-repo.
 
 2. Activate the plugin through the _Plugins_ menu in WordPress.
 
@@ -109,7 +109,7 @@ To set the plugin into work you need to create a Telegram bot in the dialogue wi
 
 Для корректной работы необходим PHP версии 5.3 и выше и WordPress версии 4.5 и выше.
 
-1. Загрузите папку плагина `gwptb` в директорию `wp-content/plugins`, используя административный интерфейс добавления плагинов (`Плагины -- Добавить новый`)
+1. Загрузите папку плагина в директорию `wp-content/plugins`, используя административный интерфейс добавления плагинов (`Плагины -- Добавить новый`)
 или клонировав GitHub-репозиторий.
 
 2. Активируйте плагин в списке плагинов (`Меню - Плагины`).
