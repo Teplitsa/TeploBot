@@ -65,7 +65,7 @@ AND COLUMN_NAME = 'chattype'");
 					throw new Exception("The chattype column could not be added to Log table");
 			}
 			catch(Exception $e) {
-				if(WP_DEBUG_DISPLAY)
+				if(defined('WP_DEBUG_DISPLAY') && WP_DEBUG_DISPLAY)
 					echo $e->getMessage();
 					
 				error_log($e->getMessage());
