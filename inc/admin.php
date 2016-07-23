@@ -196,8 +196,21 @@ class Gwptb_Admin {
 				<input type="hidden" name="action" value="del_webhook">
 				
 			<?php } else { ?>
-				<input type="hidden" name="action" value="set_webhook">
-				<button type="submit" class="button button-primary"><?php _e('Set connection', 'gwptb');?></button>				
+				<!-- is it possible to setup connection? -->
+				<?php
+					$core = Gwptb_Core::get_instance();
+					$test_webhook = $core->test_webhook_url();
+					if(!is_wp_error($test_webhook)) {
+				?>
+					<input type="hidden" name="action" value="set_webhook">
+					<button type="submit" class="button button-primary"><?php _e('Set connection', 'gwptb');?></button>
+				<?php } else {  ?>
+					<div class="gwptb-connection-error-message">
+						<p><?php _e('Bot cann\'t be connected to Telegram due to following error on service URL:');?></p>
+						<p><code><?php echo $test_webhook->get_error_message();?></code></p>
+						<p><?php _e('Please check the bot\'s settings and be sure that you have correct HTTPS support on your site.');?></p>
+					</div>
+				<?php } ?>
 			<?php }?>
 			</div>
 			

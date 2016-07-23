@@ -152,6 +152,45 @@ AND COLUMN_NAME = 'chattype'");
 		}
 	}
 	
+	/** test for webhook URL support **/
+	public function test_webhook_url() {
+		
+		$token = get_option('gwptb_bot_token', '');		
+		if(!$token)
+			return new WP_Error('no_bot_token', __('The bot\'s token is not set up', 'gwptb'));
+		
+		$test_url = home_url('gwptb/'.$token.'/', 'https'); 		
+		$result = self::test_local_url($test_url); //test with ssl verification first
+		
+		if(is_wp_error($result) && 'http_request_failed' ==  $result->get_error_code()){ //test for self-signed cert
+			
+			$cert = get_option('gwptb_cert_key', '');
+			if(!empty($cert))
+				$result = self::test_local_url($test_url, false);
+		}
+
+		return $result;
+	}
+	
+	static public function test_local_url($url, $sslverify = true) {
+		
+		$response = wp_remote_post($url, array('local' => true, 'sslverify' => $sslverify, 'timeout' => 20));
+		$result = '';
+		
+		if(is_wp_error($response)){
+			$result = new WP_Error('http_request_failed', sprintf(__('WebHook\'s URL request failed with error: %s', 'gwptb'), $response->get_error_message()));
+		}
+		elseif(isset($response['response']['code']) && $response['response']['code'] == 200){
+			$result = true;
+		}
+		else {
+			$code = isset($response['response']['code']) ? $response['response']['code'] : 0;
+			$result = new WP_Error('incorrect_header_status', sprintf(__('WebHook\'s URL responds with incotrect status: %d', 'gwptb'), $code));
+		}
+		
+		return $result;
+	}
+	
 	/**
 	 * method to received updates
 	 * through webhook
@@ -231,6 +270,17 @@ AND COLUMN_NAME = 'chattype'");
 			
 			echo "<pre>";
 			print_r($upd);
+			echo "</pre>";
+		}
+		elseif($action == 'test_url'){
+			$token = get_option('gwptb_bot_token', '');
+			$test_url = home_url('gwptb/'.$token.'/', 'https');
+			
+			echo $test_url."<br>";
+			$response = wp_remote_post($test_url, array('local' => true, 'sslverify' => true, 'timeout' => 20));
+			
+			echo "<pre>";
+			print_r($response);			
 			echo "</pre>";
 		}
 	}
