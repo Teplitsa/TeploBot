@@ -174,9 +174,10 @@ AND COLUMN_NAME = 'chattype'");
 	
 	static public function test_local_url($url, $sslverify = true) {
 		
-		$response = wp_remote_post($url, array('local' => true, 'sslverify' => $sslverify, 'timeout' => 20));
 		$result = '';
-		
+		$response = '';
+		$response = wp_remote_post($url, array('local' => true, 'sslverify' => $sslverify, 'timeout' => 20));
+				
 		if(is_wp_error($response)){
 			$result = new WP_Error('http_request_failed', sprintf(__('WebHook\'s URL request failed with error: %s', 'gwptb'), $response->get_error_message()));
 		}

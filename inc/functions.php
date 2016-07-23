@@ -199,3 +199,16 @@ function gwptb_format_posts_list($posts){
 	
 	return $out;
 }
+
+/** Errors handling **/
+function gwptb_exception_error_handler($err_number, $err_str, $err_file, $err_line ) {
+    throw new GWPTB_ErrorException($err_str, 0, $err_number, $err_file, $err_line);
+}
+
+class GWPTB_ErrorException extends ErrorException {
+	
+	public function error_message(){
+		
+		return 'ErrorException: '.$this->getMessage().' '.$this->getFile().' on line '.$this->getLine();
+	}
+}

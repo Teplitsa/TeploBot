@@ -199,7 +199,23 @@ class Gwptb_Admin {
 				<!-- is it possible to setup connection? -->
 				<?php
 					$core = Gwptb_Core::get_instance();
-					$test_webhook = $core->test_webhook_url();
+					$test_webhook = false;
+					
+					set_error_handler('gwptb_exception_error_handler');
+					try {
+						$test_webhook = $core->test_webhook_url();
+					}
+					catch (Exception $e){		
+						if(WP_DEBUG_DISPLAY)
+							echo $e->error_message();
+							
+						error_log($e->error_message());
+						$test_webhook = new WP_Error('http_request_failed', $e->error_message());
+					}
+					finally {
+						restore_error_handler();
+					}
+					
 					if(!is_wp_error($test_webhook)) {
 				?>
 					<input type="hidden" name="action" value="set_webhook">
