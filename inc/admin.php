@@ -415,7 +415,7 @@ class Gwptb_Admin {
 		
 		add_settings_field( 
 			'gwptb_cert_key', 
-			__( 'Public key', 'gwptb' ), 
+			__( 'Public key / certificate', 'gwptb' ), 
 			array($this, 'cert_key_render'), 
 			'gwptb_settings', 
 			'gwptb_bot_section' 
@@ -489,7 +489,7 @@ class Gwptb_Admin {
 		$help_link = "<a href='https://core.telegram.org/bots/self-signed' target='_blank'>".__('Telegram instructions', 'gwptb')."</a>";
 	?>
 		<textarea name='gwptb_cert_key' class="large-text" rows="3"><?php echo $value; ?></textarea>
-		<p class="description"><?php printf(__('For self-signed certificates: copy the content of public key. %s', 'gwptb'), $help_link);?></p>
+		<p class="description"><?php printf(__('For self-signed certificates: copy the content of public key / certificate. %s', 'gwptb'), $help_link);?></p>
 	<?php
 	}
 	
