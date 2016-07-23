@@ -207,9 +207,9 @@ class Gwptb_Admin {
 					</p>
 				<?php } else {  ?>
 					<div class="gwptb-connection-error-message">
-						<p><?php _e('Bot cann\'t be connected to Telegram due to following error on service URL:');?></p>
+						<p><?php _e('Bot cann\'t be connected to Telegram due to following error on service URL:', 'gwptb');?></p>
 						<p><code><?php echo $test_webhook->get_error_message();?></code></p>
-						<p><?php _e('Please check the bot\'s settings and be sure that you have correct HTTPS support on your site.');?></p>
+						<p><?php _e('Please check the bot\'s settings and be sure that you have correct HTTPS support on your site.', 'gwptb');?></p>
 					</div>
 				<?php } ?>
 			<?php }?>
