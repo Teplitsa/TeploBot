@@ -159,14 +159,15 @@ AND COLUMN_NAME = 'chattype'");
 		if(!$token)
 			return new WP_Error('no_bot_token', __('The bot\'s token is not set up', 'gwptb'));
 		
-		$test_url = home_url('gwptb/'.$token.'/', 'https'); 		
+		$test_url = home_url('gwptb/'.$token.'/', 'https');
 		$result = self::test_local_url($test_url); //test with ssl verification first
-		
+			
 		if(is_wp_error($result) && 'http_request_failed' ==  $result->get_error_code()){ //test for self-signed cert
 			
 			$cert = get_option('gwptb_cert_key', '');
-			if(!empty($cert))
+			if(!empty($cert)){
 				$result = self::test_local_url($test_url, false);
+			}
 		}
 
 		return $result;
@@ -175,21 +176,35 @@ AND COLUMN_NAME = 'chattype'");
 	static public function test_local_url($url, $sslverify = true) {
 		
 		$result = '';
-		$response = '';
-		$response = wp_remote_post($url, array('local' => true, 'sslverify' => $sslverify, 'timeout' => 20));
-				
-		if(is_wp_error($response)){
-			$result = new WP_Error('http_request_failed', sprintf(__('WebHook\'s URL request failed with error: %s', 'gwptb'), $response->get_error_message()));
-		}
-		elseif(isset($response['response']['code']) && $response['response']['code'] == 200){
-			$result = true;
-		}
-		else {
-			$code = isset($response['response']['code']) ? $response['response']['code'] : 0;
-			$result = new WP_Error('incorrect_header_status', sprintf(__('WebHook\'s URL responds with incotrect status: %d', 'gwptb'), $code));
-		}
 		
-		return $result;
+		set_error_handler('gwptb_exception_error_handler');
+		
+		try {
+			$response = wp_remote_post($url, array('local' => true, 'sslverify' => $sslverify, 'timeout' => 20));
+				
+			if(is_wp_error($response)){
+				$result = new WP_Error('http_request_failed', sprintf(__('WebHook\'s URL request failed with error: %s', 'gwptb'), $response->get_error_message()));
+			}
+			elseif(isset($response['response']['code']) && $response['response']['code'] == 200){
+				$result = true;
+			}
+			else {
+				$code = isset($response['response']['code']) ? $response['response']['code'] : 0;
+				$result = new WP_Error('incorrect_header_status', sprintf(__('WebHook\'s URL responds with incotrect status: %d', 'gwptb'), $code));
+			}
+		}
+		catch (Exception $e){		
+			if(WP_DEBUG_DISPLAY)
+				echo $e->error_message();
+				
+			error_log($e->error_message());
+			$result = new WP_Error('http_request_failed', $e->error_message());
+		}
+		finally {
+			restore_error_handler();
+			return $result;
+		}
+			
 	}
 	
 	/**
