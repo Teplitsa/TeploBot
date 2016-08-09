@@ -653,8 +653,7 @@ class Gwptb_Self {
 				'help'		=> 'gwptb_help_command_response',
 				'start'		=> 'gwptb_start_command_response',
 				's'	        => 'gwptb_search_command_response',
-				'post'	    => 'gwptb_post_command_response',
-				'pc'	    => 'gwptb_pc_command_response',				
+				'post'	    => 'gwptb_post_command_response'							
 			);
 			
 			$custom_commands = array();

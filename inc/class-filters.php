@@ -10,6 +10,7 @@ class GWPTB_Filters {
 		//add input filter
 		add_filter('gwptb_input_latin', array('GWPTB_Filters', 'sanitize_email'));
 		add_filter('gwptb_input_text', array('GWPTB_Filters', 'sanitize_string'));
+		add_filter('gwptb_post_draft_content', array('GWPTB_Filters', 'sanitize_text'));
 		
 		//search term
 		add_filter('gwptb_search_term', array('GWPTB_Filters','sanitize_search_term'));
