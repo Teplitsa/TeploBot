@@ -379,6 +379,7 @@ class Gwptb_Admin {
 		register_setting( 'gwptb_settings', 'gwptb_start_text', array('GWPTB_Filters', 'sanitize_html'));
 		register_setting( 'gwptb_settings', 'gwptb_help_text',  array('GWPTB_Filters', 'sanitize_html'));
 		register_setting( 'gwptb_settings', 'gwptb_custom_commands', array($this, 'custom_commands_prepare_filter'));
+		register_setting( 'gwptb_settings', 'gwptb_post_target_posttype', array('GWPTB_Filters', 'sanitize_string'));
 		
 		//sections
 		add_settings_section(
