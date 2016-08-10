@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Green WP Telegram Bot\n"
-"POT-Creation-Date: 2016-08-09 15:13+0300\n"
-"PO-Revision-Date: 2016-08-09 15:19+0300\n"
+"POT-Creation-Date: 2016-08-10 16:43+0300\n"
+"PO-Revision-Date: 2016-08-10 16:48+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language: ru_RU\n"
@@ -390,27 +390,32 @@ msgstr "Пустой запрос"
 msgid "Unfortunately you've submitted an incorrect request."
 msgstr "К сожалению, вы отправили некорректный запрос."
 
-#: inc/class-gwptb.php:746 inc/class-gwptb.php:753
+#: inc/class-gwptb.php:749 inc/class-gwptb.php:756
 msgid "Set connection for the bot"
 msgstr "Настройте соединение"
 
-#: inc/core.php:160
+#: inc/core.php:182
 msgid "The bot's token is not set up"
 msgstr "Токен бота не указан в настройках"
 
-#: inc/core.php:186
+#: inc/core.php:208
 #, php-format
 msgid "WebHook's URL request failed with error: %s"
 msgstr "Запрос URL для уведомлений завершился ошибкой: %s"
 
-#: inc/core.php:193
+#: inc/core.php:215
 #, php-format
 msgid "WebHook's URL responds with incotrect status: %d"
 msgstr "Запрос URL для уведомлений вернул некорректный статус:  %d"
 
-#: inc/core.php:220
+#: inc/core.php:242
 msgid "Invalid update received by webhook"
 msgstr "Получен некорректный апдейт"
+
+#: inc/core.php:344
+#, php-format
+msgid "%s, your message has been published - %s"
+msgstr "%s, твое сообщение опубликовано - %s"
 
 #: inc/functions.php:67
 msgid ""
@@ -446,6 +451,89 @@ msgstr "К сожалению, по такому запросу ничего н�
 #, php-format
 msgid "%s. Total %d / displaying %d - %d"
 msgstr "%s. Всего %d / показано %d - %d"
+
+#: inc/posting.php:19
+msgid "OK! I tell you when your message will be published."
+msgstr "ОК! Я сообщу, когда сообщение будет опубликовано."
+
+#: inc/posting.php:38
+#, php-format
+msgid "Message from %s at %s"
+msgstr "Сообщение от %s, %s"
+
+#: inc/posting.php:58
+msgid "Thank you! Your message has been accepted."
+msgstr "Спасибо! Сообщение принято."
+
+#: inc/posting.php:59
+msgid "Would you like to be notified, when your message is published?"
+msgstr "Хочешь получить уведомление, когда сообщение будет опубликовано?"
+
+#: inc/posting.php:62
+msgid "Yes, notify me"
+msgstr "Да, сообщить мне"
+
+#: inc/posting.php:67
+msgid "Our posting service is temporary unavailable. Please try again later"
+msgstr ""
+"Наш сервис приема сообщений временно не доступен. Пожалуйста, попробуйте "
+"позже."
+
+#: inc/posting.php:71
+msgid ""
+"Unfortunately, you have provided wrong data, please format your message as "
+"following:"
+msgstr ""
+"К сожалению, отправлены неверные данные, пожалуйста, придерживайся "
+"форматирования:"
+
+#: inc/posting.php:72
+msgid "/post Message text"
+msgstr "/post Текст сообщения"
+
+#: inc/subscription.php:21
+msgid "You have already subscribed."
+msgstr ""
+
+#: inc/subscription.php:29
+msgid "You are successfully subscribed and will receive push notifications!"
+msgstr ""
+
+#: inc/subscription.php:32
+msgid "Subscription failed. Please try again later."
+msgstr ""
+
+#: inc/subscription.php:37
+msgid "Please provide subscription name"
+msgstr ""
+
+#: inc/subscription.php:38 inc/subscription.php:42
+#, php-format
+msgid "/subscribe %s"
+msgstr "/subscribe %s"
+
+#: inc/subscription.php:41 inc/subscription.php:71
+#, php-format
+msgid "You have provided unknown subscription %s"
+msgstr ""
+
+#: inc/subscription.php:67
+msgid "Please provide subscription name or \"all\" keyword"
+msgstr ""
+
+#: inc/subscription.php:68 inc/subscription.php:74
+#, php-format
+msgid "/unsubscribe %s"
+msgstr "/unsubscribe %s"
+
+#: inc/subscription.php:94
+#, php-format
+msgid ""
+"New content: %s\n"
+"Link: %s"
+msgstr ""
+"Новая публикация: %s\n"
+"Ссылка: %s"
 
 #. Description of the plugin/theme
 msgid "Simple Telegram Bot for your site with green effect"
