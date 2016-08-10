@@ -47,6 +47,7 @@ function gwptb_post_command_response($upd_data){
 					'_gwptb_chat_id' => (int)$upd_data['chat_id'],					
 					'_gwptb_user_id' => (int)$upd_data['user_id'],
 					'_gwptb_notify'  => 0,
+					'_gwptb_user_fname'  => $upd_data['user_fname'],
 					'telegram_user'  => $un	
 				)
 			);
@@ -77,4 +78,7 @@ function gwptb_post_command_response($upd_data){
 		
 	return $result;
 }
+
+
+
 

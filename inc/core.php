@@ -12,6 +12,8 @@ class Gwptb_Core {
 		add_action('gwptb_service',  array($this, 'service_process'));
 		add_action('gwptb_update',  array($this, 'webhook_update_process'));
 		
+		//notification
+		add_action('publish_post',  array($this, 'on_publish_notification'), 10, 2 );
 	}
 	
 	
@@ -322,6 +324,32 @@ AND COLUMN_NAME = 'chattype'");
 	}
 	
 	
+	/**
+	 * method to hook notification
+	 * when post, submitted by user, is published
+	 **/
+	public function on_publish_notification( $ID, $post ) {
 	
+		$notify = (bool)get_post_meta($ID, '_gwptb_notify', true);
+		$notification_send = (bool)get_post_meta($ID, '_gwptb_notification_send', true);
+		
+		if($notify && !$notification_send){
+			
+			$notification = array();
+			$notification['chat_id'] = (int)get_post_meta($ID, '_gwptb_chat_id', true);
+			
+			$link = "<a href='".get_permalink($ID)."'>".get_permalink($ID)."</a>";
+			$name = apply_filters('gwptb_print_string', get_post_meta($ID, '_gwptb_user_fname', true));
+			
+			$notification['text'] = apply_filters('gwptb_post_publish_notofication_text', sprintf(__('%s, your message has been published - %s', 'gwptb'), $name, $link));		
+			$notification['parse_mode'] = 'HTML';
+			
+			$self = Gwptb_Self::get_instance();
+			$self->send_notification($notification);
+			
+			update_post_meta($ID, '_gwptb_notification_send', 1);
+		}
+		
+	}
 	
 } //class

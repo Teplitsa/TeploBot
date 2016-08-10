@@ -805,4 +805,10 @@ class Gwptb_Self {
         return $ret;
 	}
 	
+	/** == Notification == **/
+	public function send_notification($reply_data){
+		
+		$this->request_api_json('sendMessage', $reply_data);	
+	}
+	
 } //class
