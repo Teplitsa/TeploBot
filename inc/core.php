@@ -115,7 +115,7 @@ AND COLUMN_NAME = 'chattype'");
 			`id` INT NOT NULL AUTO_INCREMENT , 
 			`chat_id` BIGINT NOT NULL , 
 			`name` VARCHAR(16) NOT NULL , 
-			`moment` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+			`moment` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00', 
 			PRIMARY KEY (`id`),
 			INDEX(`name`)
 		) $charset_collate;";

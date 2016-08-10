@@ -653,8 +653,8 @@ class Gwptb_Self {
 				'help'		=> 'gwptb_help_command_response',
 				'start'		=> 'gwptb_start_command_response',
 				's'	        => 'gwptb_search_command_response',
-			    'subscribe'	=> 'gwptb_subscribe_command_response',
-			    'unsubscribe'	=> 'gwptb_unsubscribe_command_response',
+			    'sub'	    => 'gwptb_subscribe_command_response',
+			    'unsub'	    => 'gwptb_unsubscribe_command_response',
 			    'post'	    => 'gwptb_post_command_response'
 			);
 			
@@ -780,29 +780,6 @@ class Gwptb_Self {
 			return '';
 				
 		return $self['username'];
-	}
-	
-	public function send_push_notification($chat_id, $message) {
-	    
-        $method = 'sendMessage';
-        $url = $this->api_url . $method . '?chat_id=' . $chat_id . '&text=' . urlencode($message);
-    
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        
-        $ret = false;
-        if( curl_exec($ch) ) {
-            $ret = true;
-        }
-        
-        curl_close($ch);
-        
-        return $ret;
 	}
 	
 	/** == Notification == **/

@@ -378,6 +378,7 @@ class Gwptb_Admin {
 		register_setting( 'gwptb_settings', 'gwptb_cert_key',   array('GWPTB_Filters', 'sanitize_string'));
 		register_setting( 'gwptb_settings', 'gwptb_start_text', array('GWPTB_Filters', 'sanitize_html'));
 		register_setting( 'gwptb_settings', 'gwptb_help_text',  array('GWPTB_Filters', 'sanitize_html'));
+		register_setting( 'gwptb_settings', 'gwptb_subscriptions',  array('GWPTB_Filters', 'sanitize_string'));
 		register_setting( 'gwptb_settings', 'gwptb_custom_commands', array($this, 'custom_commands_prepare_filter'));
 		
 		//sections
@@ -417,6 +418,14 @@ class Gwptb_Admin {
 			'gwptb_cert_key', 
 			__( 'Public key / certificate', 'gwptb' ), 
 			array($this, 'cert_key_render'), 
+			'gwptb_settings', 
+			'gwptb_bot_section' 
+		);		
+		
+		add_settings_field( 
+			'gwptb_subscriptions', 
+			__( 'Active subscriptions', 'gwptb' ), 
+			array($this, 'subscriptions_render'), 
 			'gwptb_settings', 
 			'gwptb_bot_section' 
 		);		
@@ -493,6 +502,15 @@ class Gwptb_Admin {
 	<?php
 	}
 	
+	public function subscriptions_render() {
+	
+	    $value = get_option('gwptb_subscriptions');
+	    ?>
+			<textarea name='gwptb_subscriptions' class="large-text" rows="3"><?php echo $value; ?></textarea>
+			<p class="description"><?php printf(__('Post types based subscriptions are available by default. They are: <b>%s</b>. Just put it into the field, separated by ",". Also you can add your own subscriptions and send messages using <b>gwptb_notify_subscribers</b>($subscription_name, $message) function.', 'gwptb'), implode(',', gwptb_get_available_post_types()));?></p>
+		<?php
+	}
+		
 	public function custom_commands_render(){
 		
 		$value = get_option('gwptb_custom_commands'); 
