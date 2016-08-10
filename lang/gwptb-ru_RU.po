@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Green WP Telegram Bot\n"
-"POT-Creation-Date: 2016-08-10 23:28+0200\n"
-"PO-Revision-Date: 2016-08-10 23:28+0200\n"
+"POT-Creation-Date: 2016-08-10 23:59+0200\n"
+"PO-Revision-Date: 2016-08-11 00:01+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language: ru_RU\n"
@@ -204,10 +204,12 @@ msgstr "Команда должна быть добавлена в диалог�
 #, php-format
 msgid ""
 "I can help you to find something useful at %%home%%. Send me %s to perform a "
-"search."
+"search, /post to make a post, /sub to subscrube to site updates or /unsub to "
+"stop updates subscription."
 msgstr ""
 "Я могу найти что-то полезное на сайте %%home%%. Отправь мне %s для "
-"осуществления поиска."
+"осуществления поиска, /post чтобы отправить статью на сайт, /sub чтобы "
+"получать обновления с сайта %%home%%, /unsub чтобы прекратить их получать."
 
 #: inc/admin.php:499
 #, php-format
@@ -243,10 +245,9 @@ msgstr ""
 
 #: inc/admin.php:520
 msgid ""
-"To make subscriptions work <b>sub</b> and <b>unsub</b> commands should be "
-"added in dialog with @BotFather"
-msgstr ""
-"Команды <b>sub</b> and <b>unsub</b> должны быть добавлены через @BotFather."
+"To make subscriptions work /sub and /unsub commands should be added in "
+"dialog with @BotFather"
+msgstr "Команды /sub и /unsub должны быть добавлены через @BotFather."
 
 #: inc/admin.php:531
 msgid "Command word"
@@ -537,13 +538,13 @@ msgstr "/sub %s"
 #: inc/subscription.php:23
 #, php-format
 msgid "You have already subscribed to %s subscription."
-msgstr "Вы уже подписаны на  %s."
+msgstr "Вы уже подписаны на  рассылку %s."
 
 #: inc/subscription.php:31
 #, php-format
 msgid ""
 "You are successfully subscribed to %s subscription and will receive updates!"
-msgstr "Вы успешно подписались на %s и будете получать обновления!"
+msgstr "Вы успешно подписались на рассылку %s и будете получать обновления!"
 
 #: inc/subscription.php:34
 msgid "Subscription failed. Please try again later."
@@ -560,7 +561,7 @@ msgstr "Пожалуйста укажите имя подписки."
 #: inc/subscription.php:46 inc/subscription.php:104
 #, php-format
 msgid "You have provided unknown subscription %s."
-msgstr "Вы указали неизвестное имя подписки %s."
+msgstr "Вы указали неизвестное имя рассылки %s."
 
 #: inc/subscription.php:67
 #, php-format
@@ -583,7 +584,7 @@ msgstr "Вы успешно отписались от рассылки %s."
 #: inc/subscription.php:95
 #, php-format
 msgid "You are not subscribed to %s subscription."
-msgstr "Вы не подписаны на %s."
+msgstr "Вы не подписаны на рассылку %s."
 
 #: inc/subscription.php:100
 msgid "Please provide subscription name or \"all\" keyword."
@@ -609,6 +610,20 @@ msgstr "Теплица социальных технологий"
 #. Author URI of the plugin/theme
 msgid "https://te-st.ru/"
 msgstr "https://te-st.ru/"
+
+#~ msgid ""
+#~ "I can help you to find something useful at %%home%%. Send me %s to "
+#~ "perform a search."
+#~ msgstr ""
+#~ "Я могу найти что-то полезное на сайте %%home%%. Отправь мне %s для "
+#~ "осуществления поиска."
+
+#~ msgid ""
+#~ "To make subscriptions work <b>sub</b> and <b>unsub</b> commands should be "
+#~ "added in dialog with @BotFather"
+#~ msgstr ""
+#~ "Команды <b>sub</b> and <b>unsub</b> должны быть добавлены через "
+#~ "@BotFather."
 
 #~ msgid ""
 #~ "To make subscriptions work <b>sub</> and <b>unsub</b> commands should be "

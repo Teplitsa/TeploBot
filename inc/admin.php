@@ -492,7 +492,7 @@ class Gwptb_Admin {
 	}
 	
 	public function help_text_render(){
-		$default = sprintf(__('I can help you to find something useful at %%home%%. Send me %s to perform a search.', 'gwptb'), "<i>".__('your term', 'gwptb')."</i>");
+		$default = sprintf(__('I can help you to find something useful at %%home%%. Send me %s to perform a search, /post to make a post, /sub to subscrube to site updates or /unsub to stop updates subscription.', 'gwptb'), "<i>".__('your term', 'gwptb')."</i>");
 		$value = apply_filters('gwptb_output_html', get_option('gwptb_help_text', $default)); 
 	?>
 		<textarea name='gwptb_help_text' class="large-text" rows="3"><?php echo $value; ?></textarea>
@@ -517,7 +517,7 @@ class Gwptb_Admin {
 	    ?>
 			<textarea name='gwptb_subscriptions' class="large-text" rows="3"><?php echo $value; ?></textarea>
 			<p class="description"><?php printf(__('Post types based subscriptions are available by default. They are: <b>%s</b>. Just put it into the field, separated by ",". Also you can add your own subscriptions and send messages using <b>gwptb_notify_subscribers</b>($subscription_name, $message) function.', 'gwptb'), implode(',', gwptb_get_available_post_types()));?></p>
-			<p class="description"><?php _e('To make subscriptions work <b>sub</b> and <b>unsub</b> commands should be added in dialog with @BotFather', 'gwptb');?></p>
+			<p class="description"><?php _e('To make subscriptions work /sub and /unsub commands should be added in dialog with @BotFather', 'gwptb');?></p>
 		<?php
 	}
 		
