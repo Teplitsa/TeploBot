@@ -13,7 +13,10 @@ class Gwptb_Core {
 		add_action('gwptb_update',  array($this, 'webhook_update_process'));
 		
 		//notification
-		add_action('publish_post',  array($this, 'on_publish_notification'), 10, 2 );
+		$target_pt = get_option('gwptb_post_target_posttype');
+		if($target_pt && $target_pt != 'none' &&  post_type_exists($target_pt)){
+			add_action("publish_{$target_pt}",  array($this, 'on_publish_notification'), 10, 2 );
+		}
 	}
 	
 	

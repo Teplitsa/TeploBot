@@ -650,13 +650,18 @@ class Gwptb_Self {
         
         if (empty(self :: $commands)){
 			$default_commands = array(
-				'help'		=> 'gwptb_help_command_response',
-				'start'		=> 'gwptb_start_command_response',
-				's'	        => 'gwptb_search_command_response',
-			    'subscribe'	=> 'gwptb_subscribe_command_response',
-			    'unsubscribe'	=> 'gwptb_unsubscribe_command_response',
-			    'post'	    => 'gwptb_post_command_response'
+				'help'			=> 'gwptb_help_command_response',
+				'start'			=> 'gwptb_start_command_response',
+				's'	        	=> 'gwptb_search_command_response',
+			    'subscribe'		=> 'gwptb_subscribe_command_response',
+			    'unsubscribe'	=> 'gwptb_unsubscribe_command_response'
 			);
+			
+			//post command if avaliable
+			$target_pt = get_option('gwptb_post_target_posttype');
+			if($target_pt && $target_pt != 'none' &&  post_type_exists($target_pt)){
+				$default_commands['post'] = 'gwptb_post_command_response';
+			}
 			
 			$custom_commands = array();
 			$custom_commands_opt = get_option('gwptb_custom_commands');

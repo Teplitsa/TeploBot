@@ -427,7 +427,15 @@ class Gwptb_Admin {
 			array($this, 'custom_commands_render'), 
 			'gwptb_settings', 
 			'gwptb_bot_section' 
-		);		
+		);
+		
+		add_settings_field( 
+			'gwptb_post_target_posttype', 
+			__( 'Target post type for user messages', 'gwptb' ), 
+			array($this, 'post_target_posttype_render'), 
+			'gwptb_settings', 
+			'gwptb_bot_section' 
+		);
 	}
 
 
@@ -523,6 +531,15 @@ class Gwptb_Admin {
 			</tbody>
 		</table>
 		<p class="description"><?php _e('Add up to 5 commands to send recent posts in chat', 'gwptb');?></p>
+	<?php
+	}
+	
+	public function post_target_posttype_render() {
+		
+		$value = get_option('gwptb_post_target_posttype');
+	?>
+		<input type="text" name='gwptb_post_target_posttype' class="large-text" value="<?php esc_attr($value);?>">
+		<p class="description"><?php _e('Specify a target post_type to receive messages from Telegram users with /post command. Command should be added in dialogue with @BotFather. Type \'none\' to disable feature completely. ', 'gwptb');?></p>
 	<?php
 	}
 	
