@@ -380,6 +380,7 @@ class Gwptb_Admin {
 		register_setting( 'gwptb_settings', 'gwptb_help_text',  array('GWPTB_Filters', 'sanitize_html'));
 		register_setting( 'gwptb_settings', 'gwptb_subscriptions',  array('GWPTB_Filters', 'sanitize_string'));
 		register_setting( 'gwptb_settings', 'gwptb_custom_commands', array($this, 'custom_commands_prepare_filter'));
+		register_setting( 'gwptb_settings', 'gwptb_post_target_posttype', array('GWPTB_Filters', 'sanitize_string'));
 		
 		//sections
 		add_settings_section(
@@ -436,7 +437,15 @@ class Gwptb_Admin {
 			array($this, 'custom_commands_render'), 
 			'gwptb_settings', 
 			'gwptb_bot_section' 
-		);		
+		);
+		
+		add_settings_field( 
+			'gwptb_post_target_posttype', 
+			__( 'Target post type for user messages', 'gwptb' ), 
+			array($this, 'post_target_posttype_render'), 
+			'gwptb_settings', 
+			'gwptb_bot_section' 
+		);
 	}
 
 
@@ -508,6 +517,7 @@ class Gwptb_Admin {
 	    ?>
 			<textarea name='gwptb_subscriptions' class="large-text" rows="3"><?php echo $value; ?></textarea>
 			<p class="description"><?php printf(__('Post types based subscriptions are available by default. They are: <b>%s</b>. Just put it into the field, separated by ",". Also you can add your own subscriptions and send messages using <b>gwptb_notify_subscribers</b>($subscription_name, $message) function.', 'gwptb'), implode(',', gwptb_get_available_post_types()));?></p>
+			<p class="description"><?php _e('To make subscriptions work <b>sub</b> and <b>unsub</b> commands should be added in dialog with @BotFather', 'gwptb');?></p>
 		<?php
 	}
 		
@@ -541,6 +551,15 @@ class Gwptb_Admin {
 			</tbody>
 		</table>
 		<p class="description"><?php _e('Add up to 5 commands to send recent posts in chat', 'gwptb');?></p>
+	<?php
+	}
+	
+	public function post_target_posttype_render() {
+		
+		$value = get_option('gwptb_post_target_posttype');
+	?>
+		<input type="text" name='gwptb_post_target_posttype' class="large-text" value="<?php echo esc_attr($value);?>">
+		<p class="description"><?php _e('Specify a target post_type to receive messages from Telegram users with /post command. Command should be added in dialogue with @BotFather. Type \'none\' to disable feature completely. ', 'gwptb');?></p>
 	<?php
 	}
 	

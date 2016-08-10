@@ -10,6 +10,7 @@ Domain Path: /lang
 Contributors:
 	Gleb Suvorov aka gsuvorov (suvorov.gleb@gmail.com) - Idea, UX
 	Anna Ladoshkina aka foralien (webdev@foralien.com) - Development
+	Denis Cherniatev aka denischerniatev (denis.cherniatev@gmail.com) - Development
 	
 
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt

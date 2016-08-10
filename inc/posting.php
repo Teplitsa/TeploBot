@@ -8,6 +8,11 @@ function gwptb_post_command_response($upd_data){
 	
 	$result = array();	
 	
+	$target_pt = get_option('gwptb_post_target_posttype');
+	if(!$target_pt || $target_pt == 'none') 	
+		return $result; //no support for /post command
+	
+		
 	if(false !== strpos($upd_data['content'], 'post=')){ //update - store notification meta
 		
 		$post_id = str_replace('post=', '', $upd_data['content']);
@@ -40,7 +45,7 @@ function gwptb_post_command_response($upd_data){
 						
 			$postdata = array(
 				'post_status' => 'draft',
-				'post_type' => 'post',
+				'post_type' => $target_pt,
 				'post_title' => $post_title,
 				'post_content' => $post_content,				
 				'meta_input' => array(
