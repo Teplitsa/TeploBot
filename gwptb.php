@@ -70,6 +70,7 @@ require_once(plugin_dir_path(__FILE__).'inc/class-gwptb.php');
 require_once(plugin_dir_path(__FILE__).'inc/class-cssjs.php');
 require_once(plugin_dir_path(__FILE__).'inc/class-stat.php');
 require_once(plugin_dir_path(__FILE__).'inc/class-filters.php');
+require_once(plugin_dir_path(__FILE__).'inc/subscription.php');
 require_once(plugin_dir_path(__FILE__).'inc/posting.php');
 $tplb = Gwptb_Core::get_instance();
 

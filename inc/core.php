@@ -79,10 +79,10 @@ AND COLUMN_NAME = 'chattype'");
 		global $wpdb;			
 		
 		$table_name = self::get_log_tablename();
+		$charset_collate = $wpdb->get_charset_collate();
+		
 		if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
 		
-			$charset_collate = $wpdb->get_charset_collate();
-	
 			$sql = "CREATE TABLE $table_name (
 				id bigint(20) NOT NULL AUTO_INCREMENT,
 				time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
@@ -103,10 +103,24 @@ AND COLUMN_NAME = 'chattype'");
 				count bigint(20) DEFAULT 0,
 				UNIQUE KEY id (id)
 			) $charset_collate;";		
-
+			
 			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 			dbDelta( $sql );
 		}
+		
+		$table_name = self::get_chat_subscriptions_tablename();
+		$sql = "CREATE TABLE IF NOT EXISTS $table_name ( 
+			`id` INT NOT NULL AUTO_INCREMENT , 
+			`chat_id` BIGINT NOT NULL , 
+			`name` VARCHAR(16) NOT NULL , 
+			`moment` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+			PRIMARY KEY (`id`),
+			INDEX(`name`)
+		) $charset_collate;";
+		
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		dbDelta( $sql );
+		
 	}
 	
 	static function get_log_tablename(){
@@ -115,6 +129,12 @@ AND COLUMN_NAME = 'chattype'");
 		return $wpdb->prefix . 'gwptb_log';
 	}
 	
+	static function get_chat_subscriptions_tablename() {
+		global $wpdb;
+		
+		return $wpdb->prefix . 'gwptb_chat_subscription';
+	}
+		
 	
 	
 		
