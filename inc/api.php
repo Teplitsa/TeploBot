@@ -24,7 +24,7 @@ function gwptb_notify_subscribers($subscription_name, $message) {
 
     $table_name = Gwptb_Core::get_chat_subscriptions_tablename();
     $subscribed_chat_list = $wpdb->get_results($wpdb->prepare( "SELECT * FROM {$table_name} WHERE name = %s ", $subscription_name));
-
+    
     $telebot = Gwptb_Self::get_instance();
     foreach($subscribed_chat_list as $chat) {
         $telebot->send_notification(array('chat_id' => $chat->chat_id, 'text' => $message, 'parse_mode' => 'HTML'));

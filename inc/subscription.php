@@ -24,7 +24,7 @@ function gwptb_subscribe_command_response($upd_data){
 	    }
 	    else {
 	        $data = array('chat_id' => $chat_id, 'name' => $subscription_name, 'moment' => current_time( 'mysql' ));
-	        $wpdb->insert($table_name, $data, array('%d', '%s',));
+	        $wpdb->insert($table_name, $data, array('%d', '%s', '%s',));
 	        $new_rec_id = $wpdb->insert_id;
 	        
 	        if($new_rec_id){
@@ -110,7 +110,7 @@ function gwptb_unsubscribe_command_response($upd_data) {
     return $result;
 }
 
-function post_published_notification( $ID, $post ) {
+function gwptb_post_published_notification( $ID, $post ) {
     $title = $post->post_title;
     $permalink = get_permalink( $ID );
     $link = "<a href='".$permalink."'>".$title."</a>";
@@ -119,7 +119,6 @@ function post_published_notification( $ID, $post ) {
     $message = sprintf(__("%s\n%s", 'gwptb'), $link, $short).chr(10);
     gwptb_notify_subscribers($post->post_type, $message);
 }
-add_action( 'publish_post', 'post_published_notification', 10, 2 );
 
 function gwptb_get_available_post_types() {
     $post_types = get_post_types(array('public' => true, 'capability_type' => 'post'));

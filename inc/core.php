@@ -158,6 +158,12 @@ AND COLUMN_NAME = 'chattype'");
             flush_rewrite_rules(false);
             update_option('gwptb_permalinks_flushed', 1);           
         }
+        
+        // publish post_type hooks
+        $post_types = gwptb_get_available_post_types();
+        foreach($post_types as $post_type) {
+            add_action( 'publish_' . $post_type, 'gwptb_post_published_notification', 10, 2 );
+        }
     }
 	
 	public function custom_templates_redirect(){		
