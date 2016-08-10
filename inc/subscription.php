@@ -20,7 +20,7 @@ function gwptb_subscribe_command_response($upd_data){
 	    $row = $wpdb->get_row($wpdb->prepare( "SELECT * FROM {$table_name} WHERE chat_id = %d AND name = %s LIMIT 1", $chat_id, $subscription_name));
 	    
 	    if($row) {
-	        $result['text'] = __('You have already subscribed.', 'gwptb').chr(10);
+	        $result['text'] = sprintf(__('You have already subscribed to %s subscription.', 'gwptb'), $subscription_name).chr(10);
 	    }
 	    else {
 	        $data = array('chat_id' => $chat_id, 'name' => $subscription_name, 'moment' => current_time( 'mysql' ));
@@ -28,7 +28,7 @@ function gwptb_subscribe_command_response($upd_data){
 	        $new_rec_id = $wpdb->insert_id;
 	        
 	        if($new_rec_id){
-	            $result['text'] = __('You are successfully subscribed and will receive updates!', 'gwptb').chr(10);
+	            $result['text'] = sprintf(__('You are successfully subscribed to %s subscription and will receive updates!', 'gwptb'), $subscription_name).chr(10);
 	        }
 	        else {
 	            $result['text'] = __('Subscription failed. Please try again later.', 'gwptb').chr(10);
@@ -85,14 +85,14 @@ function gwptb_unsubscribe_command_response($upd_data) {
             if($row) {
                 $qres = $wpdb->query($wpdb->prepare( "DELETE FROM {$table_name} WHERE chat_id = %d AND name = %s", $chat_id, $subscription_name));
                 if($qres !== false) {
-                    $result['text'] = __('You have successfully unsubscribed from %s.', 'gwptb').chr(10);
+                    $result['text'] = sprintf(__('You have successfully unsubscribed from %s subscription.', 'gwptb'), $subscription_name).chr(10);
                 }
                 else {
                     $result['text'] = __('Unsubscription failed. Please try again later.', 'gwptb').chr(10);
                 }
             }
             else {
-                $result['text'] = sprintf(__('You are not subscribed to %s.', 'gwptb'), $subscription_name).chr(10);
+                $result['text'] = sprintf(__('You are not subscribed to %s subscription.', 'gwptb'), $subscription_name).chr(10);
             }
         }
     }

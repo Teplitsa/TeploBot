@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Green WP Telegram Bot\n"
-"POT-Creation-Date: 2016-08-10 16:43+0300\n"
-"PO-Revision-Date: 2016-08-10 16:48+0300\n"
+"POT-Creation-Date: 2016-08-10 23:28+0200\n"
+"PO-Revision-Date: 2016-08-10 23:28+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language: ru_RU\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 1.8.4\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: gwptb.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -127,35 +127,43 @@ msgstr "Ваш ключ (токен) связан с ботом: %s (@%s)."
 msgid "Your token is invalid. Error message: %s."
 msgstr "Некорректный ключ (токен). Ошибка: %s."
 
-#: inc/admin.php:386
+#: inc/admin.php:388
 msgid "Bot settings"
 msgstr "Настройки бота"
 
-#: inc/admin.php:394
+#: inc/admin.php:396
 msgid "Bot Token"
 msgstr "Ключ (токен)"
 
-#: inc/admin.php:402
+#: inc/admin.php:404
 msgid "Start text for bot"
 msgstr "Текст приветствия"
 
-#: inc/admin.php:410
+#: inc/admin.php:412
 msgid "Help text for bot"
 msgstr "Текст подсказки"
 
-#: inc/admin.php:418
+#: inc/admin.php:420
 msgid "Public key / certificate"
 msgstr "Публичный ключ / сертификат"
 
-#: inc/admin.php:426
+#: inc/admin.php:428
+msgid "Active subscriptions"
+msgstr "Активные подписки"
+
+#: inc/admin.php:436
 msgid "Custom commands"
 msgstr "Конструктор команд"
 
-#: inc/admin.php:441
+#: inc/admin.php:444
+msgid "Target post type for user messages"
+msgstr "Целевой post_type для сообщений пользователя."
+
+#: inc/admin.php:459
 msgid "Anonymous"
 msgstr "Анонимный"
 
-#: inc/admin.php:447
+#: inc/admin.php:465
 #, php-format
 msgid ""
 "Your bot - %s - connected to Telegram. Remove connection to update token."
@@ -163,11 +171,11 @@ msgstr ""
 "Бот - %s - соединен с Телеграм. Удалите соединение перед тем, как обновить "
 "ключ (токен)"
 
-#: inc/admin.php:459
+#: inc/admin.php:477
 msgid "Test token"
 msgstr "Проверить ключ (токен)"
 
-#: inc/admin.php:467
+#: inc/admin.php:485
 #, php-format
 msgid ""
 "Hello, %%username%%. Let's find something useful. Send me %s to perform a "
@@ -176,11 +184,11 @@ msgstr ""
 "Привет, %%username%%. Давай найдем что-нибудь полезное. Отправь мне %s для "
 "осуществления поиска, или напиши /help для получения подсказки."
 
-#: inc/admin.php:467 inc/admin.php:477
+#: inc/admin.php:485 inc/admin.php:495
 msgid "your term"
 msgstr "запрос"
 
-#: inc/admin.php:471
+#: inc/admin.php:489
 #, php-format
 msgid ""
 "Text showing as a response to /start command. %%username%% will be replaced "
@@ -188,11 +196,11 @@ msgid ""
 msgstr ""
 "Текст ответа на команду /start. %%uername%% заменяется именем пользователя."
 
-#: inc/admin.php:472 inc/admin.php:482
+#: inc/admin.php:490 inc/admin.php:500
 msgid "Command should be added in dialog with @BotFather"
 msgstr "Команда должна быть добавлена в диалоге с @BotFather"
 
-#: inc/admin.php:477
+#: inc/admin.php:495
 #, php-format
 msgid ""
 "I can help you to find something useful at %%home%%. Send me %s to perform a "
@@ -201,18 +209,18 @@ msgstr ""
 "Я могу найти что-то полезное на сайте %%home%%. Отправь мне %s для "
 "осуществления поиска."
 
-#: inc/admin.php:481
+#: inc/admin.php:499
 #, php-format
 msgid ""
 "Text showing as a response to /help command. %%home%% will be replaced with "
 "link to homepage."
 msgstr "Текст ответа на команду /help. "
 
-#: inc/admin.php:489
+#: inc/admin.php:507
 msgid "Telegram instructions"
 msgstr "Инструкции Телеграм"
 
-#: inc/admin.php:492
+#: inc/admin.php:510
 #, php-format
 msgid ""
 "For self-signed certificates: copy the content of public key / certificate. "
@@ -220,21 +228,51 @@ msgid ""
 msgstr ""
 "Для самоподписанных сертификатов: скопируйте публичный ключ / сертификат. %s"
 
-#: inc/admin.php:503
+#: inc/admin.php:519
+#, php-format
+msgid ""
+"Post types based subscriptions are available by default. They are: <b>%s</"
+"b>. Just put it into the field, separated by \",\". Also you can add your "
+"own subscriptions and send messages using <b>gwptb_notify_subscribers</"
+"b>($subscription_name, $message) function."
+msgstr ""
+"Подписки на базе типов записей доступны по умолчанию. Это: <b>%s</b>. Просто "
+"вставьте их в текстовое поле, разделяя запятыми. Также вы можете добавить "
+"свои собственные подписки, и слать сообщения подписчикам, используя функцию "
+"<b>gwptb_notify_subscribers</b>($subscription_name, $message)."
+
+#: inc/admin.php:520
+msgid ""
+"To make subscriptions work <b>sub</b> and <b>unsub</b> commands should be "
+"added in dialog with @BotFather"
+msgstr ""
+"Команды <b>sub</b> and <b>unsub</b> должны быть добавлены через @BotFather."
+
+#: inc/admin.php:531
 msgid "Command word"
 msgstr "Команда"
 
-#: inc/admin.php:504
+#: inc/admin.php:532
 msgid "Post types (comma-separated)"
 msgstr "Типы записей (разделять запятыми)"
 
-#: inc/admin.php:505
+#: inc/admin.php:533
 msgid "Title for results"
 msgstr "Заголовок результатов выдачи"
 
-#: inc/admin.php:525
+#: inc/admin.php:553
 msgid "Add up to 5 commands to send recent posts in chat"
 msgstr "Добавьте до 5 собственных команд для отправки последних записей в чат"
+
+#: inc/admin.php:562
+msgid ""
+"Specify a target post_type to receive messages from Telegram users with /"
+"post command. Command should be added in dialogue with @BotFather. Type "
+"'none' to disable feature completely. "
+msgstr ""
+"Укажите post_type чтобы получать сообщения от пользователей Telegram с "
+"помощью команды /post. Команда должна быть добавлена через @BotFather. "
+"Укажите 'none', чтобы отключить функцию."
 
 #: inc/class-admin-list-table.php:81
 msgid "Date"
@@ -390,29 +428,29 @@ msgstr "Пустой запрос"
 msgid "Unfortunately you've submitted an incorrect request."
 msgstr "К сожалению, вы отправили некорректный запрос."
 
-#: inc/class-gwptb.php:749 inc/class-gwptb.php:756
+#: inc/class-gwptb.php:754 inc/class-gwptb.php:761
 msgid "Set connection for the bot"
 msgstr "Настройте соединение"
 
-#: inc/core.php:182
+#: inc/core.php:185
 msgid "The bot's token is not set up"
 msgstr "Токен бота не указан в настройках"
 
-#: inc/core.php:208
+#: inc/core.php:211
 #, php-format
 msgid "WebHook's URL request failed with error: %s"
 msgstr "Запрос URL для уведомлений завершился ошибкой: %s"
 
-#: inc/core.php:215
+#: inc/core.php:218
 #, php-format
 msgid "WebHook's URL responds with incotrect status: %d"
 msgstr "Запрос URL для уведомлений вернул некорректный статус:  %d"
 
-#: inc/core.php:242
+#: inc/core.php:245
 msgid "Invalid update received by webhook"
 msgstr "Получен некорректный апдейт"
 
-#: inc/core.php:344
+#: inc/core.php:347
 #, php-format
 msgid "%s, your message has been published - %s"
 msgstr "%s, твое сообщение опубликовано - %s"
@@ -452,34 +490,34 @@ msgstr "К сожалению, по такому запросу ничего н�
 msgid "%s. Total %d / displaying %d - %d"
 msgstr "%s. Всего %d / показано %d - %d"
 
-#: inc/posting.php:19
+#: inc/posting.php:24
 msgid "OK! I tell you when your message will be published."
 msgstr "ОК! Я сообщу, когда сообщение будет опубликовано."
 
-#: inc/posting.php:38
+#: inc/posting.php:43
 #, php-format
 msgid "Message from %s at %s"
 msgstr "Сообщение от %s, %s"
 
-#: inc/posting.php:58
+#: inc/posting.php:63
 msgid "Thank you! Your message has been accepted."
 msgstr "Спасибо! Сообщение принято."
 
-#: inc/posting.php:59
+#: inc/posting.php:64
 msgid "Would you like to be notified, when your message is published?"
 msgstr "Хочешь получить уведомление, когда сообщение будет опубликовано?"
 
-#: inc/posting.php:62
+#: inc/posting.php:67
 msgid "Yes, notify me"
 msgstr "Да, сообщить мне"
 
-#: inc/posting.php:67
+#: inc/posting.php:72
 msgid "Our posting service is temporary unavailable. Please try again later"
 msgstr ""
 "Наш сервис приема сообщений временно не доступен. Пожалуйста, попробуйте "
 "позже."
 
-#: inc/posting.php:71
+#: inc/posting.php:76
 msgid ""
 "Unfortunately, you have provided wrong data, please format your message as "
 "following:"
@@ -487,53 +525,78 @@ msgstr ""
 "К сожалению, отправлены неверные данные, пожалуйста, придерживайся "
 "форматирования:"
 
-#: inc/posting.php:72
+#: inc/posting.php:77
 msgid "/post Message text"
 msgstr "/post Текст сообщения"
 
-#: inc/subscription.php:21
-msgid "You have already subscribed."
-msgstr ""
-
-#: inc/subscription.php:29
-msgid "You are successfully subscribed and will receive push notifications!"
-msgstr ""
-
-#: inc/subscription.php:32
-msgid "Subscription failed. Please try again later."
-msgstr ""
-
-#: inc/subscription.php:37
-msgid "Please provide subscription name"
-msgstr ""
-
-#: inc/subscription.php:38 inc/subscription.php:42
+#: inc/subscription.php:13
 #, php-format
-msgid "/subscribe %s"
-msgstr "/subscribe %s"
+msgid "/sub %s"
+msgstr "/sub %s"
 
-#: inc/subscription.php:41 inc/subscription.php:71
+#: inc/subscription.php:23
 #, php-format
-msgid "You have provided unknown subscription %s"
-msgstr ""
+msgid "You have already subscribed to %s subscription."
+msgstr "Вы уже подписаны на  %s."
 
-#: inc/subscription.php:67
-msgid "Please provide subscription name or \"all\" keyword"
-msgstr ""
-
-#: inc/subscription.php:68 inc/subscription.php:74
-#, php-format
-msgid "/unsubscribe %s"
-msgstr "/unsubscribe %s"
-
-#: inc/subscription.php:94
+#: inc/subscription.php:31
 #, php-format
 msgid ""
-"New content: %s\n"
-"Link: %s"
+"You are successfully subscribed to %s subscription and will receive updates!"
+msgstr "Вы успешно подписались на %s и будете получать обновления!"
+
+#: inc/subscription.php:34
+msgid "Subscription failed. Please try again later."
+msgstr "Подписка не удалась. Пожалуйста попробуйте позже."
+
+#: inc/subscription.php:39
+msgid "Sorry, but no subscriptions are available."
+msgstr "Извините, ни одна подписка не доступна."
+
+#: inc/subscription.php:42
+msgid "Please provide subscription name."
+msgstr "Пожалуйста укажите имя подписки."
+
+#: inc/subscription.php:46 inc/subscription.php:104
+#, php-format
+msgid "You have provided unknown subscription %s."
+msgstr "Вы указали неизвестное имя подписки %s."
+
+#: inc/subscription.php:67
+#, php-format
+msgid "/unsub %s"
+msgstr "/unsub %s"
+
+#: inc/subscription.php:77
+msgid "You have successfully unsubscribed from all subscriptions."
+msgstr "Вы успешно отписались от всех рассылок."
+
+#: inc/subscription.php:80 inc/subscription.php:91
+msgid "Unsubscription failed. Please try again later."
+msgstr "Отписаться не удалось. Пожалуйста попробуйте позже."
+
+#: inc/subscription.php:88
+#, php-format
+msgid "You have successfully unsubscribed from %s subscription."
+msgstr "Вы успешно отписались от рассылки %s."
+
+#: inc/subscription.php:95
+#, php-format
+msgid "You are not subscribed to %s subscription."
+msgstr "Вы не подписаны на %s."
+
+#: inc/subscription.php:100
+msgid "Please provide subscription name or \"all\" keyword."
+msgstr "Пожалуйста укажите имя подписки или ключевое слово \"all\"."
+
+#: inc/subscription.php:119
+#, php-format
+msgid ""
+"%s\n"
+"%s"
 msgstr ""
-"Новая публикация: %s\n"
-"Ссылка: %s"
+"%s\n"
+"%s"
 
 #. Description of the plugin/theme
 msgid "Simple Telegram Bot for your site with green effect"
@@ -546,6 +609,25 @@ msgstr "Теплица социальных технологий"
 #. Author URI of the plugin/theme
 msgid "https://te-st.ru/"
 msgstr "https://te-st.ru/"
+
+#~ msgid ""
+#~ "To make subscriptions work <b>sub</> and <b>unsub</b> commands should be "
+#~ "added in dialog with @BotFather"
+#~ msgstr ""
+#~ "Команды <b>sub</> and <b>unsub</b> должны быть добавлены через @BotFather."
+
+#~ msgid "/subscribe %s"
+#~ msgstr "/subscribe %s"
+
+#~ msgid "/unsubscribe %s"
+#~ msgstr "/unsubscribe %s"
+
+#~ msgid ""
+#~ "New content: %s\n"
+#~ "Link: %s"
+#~ msgstr ""
+#~ "Новая публикация: %s\n"
+#~ "Ссылка: %s"
 
 #~ msgid "Public key"
 #~ msgstr "Публичный ключ"
