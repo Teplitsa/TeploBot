@@ -196,8 +196,22 @@ class Gwptb_Admin {
 				<input type="hidden" name="action" value="del_webhook">
 				
 			<?php } else { ?>
-				<input type="hidden" name="action" value="set_webhook">
-				<button type="submit" class="button button-primary"><?php _e('Set connection', 'gwptb');?></button>				
+				<!-- is it possible to setup connection? -->
+				<?php
+					$core = Gwptb_Core::get_instance();
+					$test_webhook = $core->test_webhook_url();
+					if(!is_wp_error($test_webhook)) {
+				?>
+					<p><input type="hidden" name="action" value="set_webhook">
+					<button type="submit" class="button button-primary"><?php _e('Set connection', 'gwptb');?></button>
+					</p>
+				<?php } else {  ?>
+					<div class="gwptb-connection-error-message">
+						<p><?php _e('Bot cann\'t be connected to Telegram due to following error on service URL:', 'gwptb');?></p>
+						<p><code><?php echo $test_webhook->get_error_message();?></code></p>
+						<p><?php _e('Please check the bot\'s settings and be sure that you have correct HTTPS support on your site.', 'gwptb');?></p>
+					</div>
+				<?php } ?>
 			<?php }?>
 			</div>
 			
@@ -364,7 +378,9 @@ class Gwptb_Admin {
 		register_setting( 'gwptb_settings', 'gwptb_cert_key',   array('GWPTB_Filters', 'sanitize_string'));
 		register_setting( 'gwptb_settings', 'gwptb_start_text', array('GWPTB_Filters', 'sanitize_html'));
 		register_setting( 'gwptb_settings', 'gwptb_help_text',  array('GWPTB_Filters', 'sanitize_html'));
+		register_setting( 'gwptb_settings', 'gwptb_subscriptions',  array('GWPTB_Filters', 'sanitize_string'));
 		register_setting( 'gwptb_settings', 'gwptb_custom_commands', array($this, 'custom_commands_prepare_filter'));
+		register_setting( 'gwptb_settings', 'gwptb_post_target_posttype', array('GWPTB_Filters', 'sanitize_string'));
 		
 		//sections
 		add_settings_section(
@@ -401,8 +417,16 @@ class Gwptb_Admin {
 		
 		add_settings_field( 
 			'gwptb_cert_key', 
-			__( 'Public key', 'gwptb' ), 
+			__( 'Public key / certificate', 'gwptb' ), 
 			array($this, 'cert_key_render'), 
+			'gwptb_settings', 
+			'gwptb_bot_section' 
+		);		
+		
+		add_settings_field( 
+			'gwptb_subscriptions', 
+			__( 'Active subscriptions', 'gwptb' ), 
+			array($this, 'subscriptions_render'), 
 			'gwptb_settings', 
 			'gwptb_bot_section' 
 		);		
@@ -413,7 +437,15 @@ class Gwptb_Admin {
 			array($this, 'custom_commands_render'), 
 			'gwptb_settings', 
 			'gwptb_bot_section' 
-		);		
+		);
+		
+		add_settings_field( 
+			'gwptb_post_target_posttype', 
+			__( 'Target post type for user messages', 'gwptb' ), 
+			array($this, 'post_target_posttype_render'), 
+			'gwptb_settings', 
+			'gwptb_bot_section' 
+		);
 	}
 
 
@@ -460,7 +492,7 @@ class Gwptb_Admin {
 	}
 	
 	public function help_text_render(){
-		$default = sprintf(__('I can help you to find something useful at %%home%%. Send me %s to perform a search.', 'gwptb'), "<i>".__('your term', 'gwptb')."</i>");
+		$default = sprintf(__('I can help you to find something useful at %%home%%. Send me %s to perform a search, /post to make a post, /sub to subscrube to site updates or /unsub to stop updates subscription.', 'gwptb'), "<i>".__('your term', 'gwptb')."</i>");
 		$value = apply_filters('gwptb_output_html', get_option('gwptb_help_text', $default)); 
 	?>
 		<textarea name='gwptb_help_text' class="large-text" rows="3"><?php echo $value; ?></textarea>
@@ -475,10 +507,20 @@ class Gwptb_Admin {
 		$help_link = "<a href='https://core.telegram.org/bots/self-signed' target='_blank'>".__('Telegram instructions', 'gwptb')."</a>";
 	?>
 		<textarea name='gwptb_cert_key' class="large-text" rows="3"><?php echo $value; ?></textarea>
-		<p class="description"><?php printf(__('For self-signed certificates: copy the content of public key. %s', 'gwptb'), $help_link);?></p>
+		<p class="description"><?php printf(__('For self-signed certificates: copy the content of public key / certificate. %s', 'gwptb'), $help_link);?></p>
 	<?php
 	}
 	
+	public function subscriptions_render() {
+	
+	    $value = get_option('gwptb_subscriptions');
+	    ?>
+			<textarea name='gwptb_subscriptions' class="large-text" rows="3"><?php echo $value; ?></textarea>
+			<p class="description"><?php printf(__('Post types based subscriptions are available by default. They are: <b>%s</b>. Just put it into the field, separated by ",". Also you can add your own subscriptions and send messages using <b>gwptb_notify_subscribers</b>($subscription_name, $message) function.', 'gwptb'), implode(',', gwptb_get_available_post_types()));?></p>
+			<p class="description"><?php _e('To make subscriptions work /sub and /unsub commands should be added in dialog with @BotFather', 'gwptb');?></p>
+		<?php
+	}
+		
 	public function custom_commands_render(){
 		
 		$value = get_option('gwptb_custom_commands'); 
@@ -509,6 +551,15 @@ class Gwptb_Admin {
 			</tbody>
 		</table>
 		<p class="description"><?php _e('Add up to 5 commands to send recent posts in chat', 'gwptb');?></p>
+	<?php
+	}
+	
+	public function post_target_posttype_render() {
+		
+		$value = get_option('gwptb_post_target_posttype');
+	?>
+		<input type="text" name='gwptb_post_target_posttype' class="large-text" value="<?php echo esc_attr($value);?>">
+		<p class="description"><?php _e('Specify a target post_type to receive messages from Telegram users with /post command. Command should be added in dialogue with @BotFather. Type \'none\' to disable feature completely. ', 'gwptb');?></p>
 	<?php
 	}
 	

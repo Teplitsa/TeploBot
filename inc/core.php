@@ -12,6 +12,11 @@ class Gwptb_Core {
 		add_action('gwptb_service',  array($this, 'service_process'));
 		add_action('gwptb_update',  array($this, 'webhook_update_process'));
 		
+		//notification
+		$target_pt = get_option('gwptb_post_target_posttype');
+		if($target_pt && $target_pt != 'none'){
+			add_action("publish_{$target_pt}",  array($this, 'on_publish_notification'), 10, 2 );
+		}
 	}
 	
 	
@@ -79,10 +84,10 @@ AND COLUMN_NAME = 'chattype'");
 		global $wpdb;			
 		
 		$table_name = self::get_log_tablename();
+		$charset_collate = $wpdb->get_charset_collate();
+		
 		if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
 		
-			$charset_collate = $wpdb->get_charset_collate();
-	
 			$sql = "CREATE TABLE $table_name (
 				id bigint(20) NOT NULL AUTO_INCREMENT,
 				time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
@@ -103,10 +108,24 @@ AND COLUMN_NAME = 'chattype'");
 				count bigint(20) DEFAULT 0,
 				UNIQUE KEY id (id)
 			) $charset_collate;";		
-
+			
 			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 			dbDelta( $sql );
 		}
+		
+		$table_name = self::get_chat_subscriptions_tablename();
+		$sql = "CREATE TABLE IF NOT EXISTS $table_name ( 
+			`id` INT NOT NULL AUTO_INCREMENT , 
+			`chat_id` BIGINT NOT NULL , 
+			`name` VARCHAR(16) NOT NULL , 
+			`moment` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00', 
+			PRIMARY KEY (`id`),
+			INDEX(`name`)
+		) $charset_collate;";
+		
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		dbDelta( $sql );
+		
 	}
 	
 	static function get_log_tablename(){
@@ -115,6 +134,12 @@ AND COLUMN_NAME = 'chattype'");
 		return $wpdb->prefix . 'gwptb_log';
 	}
 	
+	static function get_chat_subscriptions_tablename() {
+		global $wpdb;
+		
+		return $wpdb->prefix . 'gwptb_chat_subscription';
+	}
+		
 	
 	
 		
@@ -133,6 +158,12 @@ AND COLUMN_NAME = 'chattype'");
             flush_rewrite_rules(false);
             update_option('gwptb_permalinks_flushed', 1);           
         }
+        
+        // publish post_type hooks
+        $post_types = gwptb_get_available_post_types();
+        foreach($post_types as $post_type) {
+            add_action( 'publish_' . $post_type, 'gwptb_post_published_notification', 10, 2 );
+        }
     }
 	
 	public function custom_templates_redirect(){		
@@ -150,6 +181,61 @@ AND COLUMN_NAME = 'chattype'");
 				die();
 			}			
 		}
+	}
+	
+	/** test for webhook URL support **/
+	public function test_webhook_url() {
+		
+		$token = get_option('gwptb_bot_token', '');		
+		if(!$token)
+			return new WP_Error('no_bot_token', __('The bot\'s token is not set up', 'gwptb'));
+		
+		$test_url = home_url('gwptb/'.$token.'/', 'https');
+		$result = self::test_local_url($test_url); //test with ssl verification first
+			
+		if(is_wp_error($result) && 'http_request_failed' ==  $result->get_error_code()){ //test for self-signed cert
+			
+			$cert = get_option('gwptb_cert_key', '');
+			if(!empty($cert)){
+				$result = self::test_local_url($test_url, false);
+			}
+		}
+
+		return $result;
+	}
+	
+	static public function test_local_url($url, $sslverify = true) {
+		
+		$result = '';
+		
+		set_error_handler('gwptb_exception_error_handler');
+		
+		try {
+			$response = wp_remote_post($url, array('local' => true, 'sslverify' => $sslverify, 'timeout' => 20));
+				
+			if(is_wp_error($response)){
+				$result = new WP_Error('http_request_failed', sprintf(__('WebHook\'s URL request failed with error: %s', 'gwptb'), $response->get_error_message()));
+			}
+			elseif(isset($response['response']['code']) && $response['response']['code'] == 200){
+				$result = true;
+			}
+			else {
+				$code = isset($response['response']['code']) ? $response['response']['code'] : 0;
+				$result = new WP_Error('incorrect_header_status', sprintf(__('WebHook\'s URL responds with incotrect status: %d', 'gwptb'), $code));
+			}
+		}
+		catch (Exception $e){		
+			if(WP_DEBUG_DISPLAY)
+				echo $e->error_message();
+				
+			error_log($e->error_message());
+			$result = new WP_Error('http_request_failed', $e->error_message());
+		}
+		finally {
+			restore_error_handler();
+			return $result;
+		}
+			
 	}
 	
 	/**
@@ -233,9 +319,46 @@ AND COLUMN_NAME = 'chattype'");
 			print_r($upd);
 			echo "</pre>";
 		}
+		elseif($action == 'test_url'){
+			$token = get_option('gwptb_bot_token', '');
+			$test_url = home_url('gwptb/'.$token.'/', 'https');
+			
+			echo $test_url."<br>";
+			$response = wp_remote_post($test_url, array('local' => true, 'sslverify' => true, 'timeout' => 20));
+			
+			echo "<pre>";
+			print_r($response);			
+			echo "</pre>";
+		}
 	}
 	
 	
+	/**
+	 * method to hook notification
+	 * when post, submitted by user, is published
+	 **/
+	public function on_publish_notification( $ID, $post ) {
 	
+		$notify = (bool)get_post_meta($ID, '_gwptb_notify', true);
+		$notification_send = (bool)get_post_meta($ID, '_gwptb_notification_send', true);
+		
+		if($notify && !$notification_send){
+			
+			$notification = array();
+			$notification['chat_id'] = (int)get_post_meta($ID, '_gwptb_chat_id', true);
+			
+			$link = "<a href='".get_permalink($ID)."'>".get_permalink($ID)."</a>";
+			$name = apply_filters('gwptb_print_string', get_post_meta($ID, '_gwptb_user_fname', true));
+			
+			$notification['text'] = apply_filters('gwptb_post_publish_notofication_text', sprintf(__('%s, your message has been published - %s', 'gwptb'), $name, $link));		
+			$notification['parse_mode'] = 'HTML';
+			
+			$self = Gwptb_Self::get_instance();
+			$self->send_notification($notification);
+			
+			update_post_meta($ID, '_gwptb_notification_send', 1);
+		}
+		
+	}
 	
 } //class

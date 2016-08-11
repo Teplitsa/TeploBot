@@ -2,7 +2,7 @@
 /*
 Plugin Name: TeploBot - Telegram Bot for WP
 Description: Simple Telegram Bot for your site with green effect
-Version: 1.1
+Version: 1.2
 Author: Teplitsa
 Author URI: https://te-st.ru/
 Text Domain: gwptb
@@ -10,6 +10,7 @@ Domain Path: /lang
 Contributors:
 	Gleb Suvorov aka gsuvorov (suvorov.gleb@gmail.com) - Idea, UX
 	Anna Ladoshkina aka foralien (webdev@foralien.com) - Development
+	Denis Cherniatev aka denischerniatev (denis.cherniatev@gmail.com) - Development
 	
 
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -37,7 +38,7 @@ if(!defined('ABSPATH')) die; // Die if accessed directly
 
 // Plugin version:
 if( !defined('GWPTB_VERSION') )
-    define('GWPTB_VERSION', '1.1');
+    define('GWPTB_VERSION', '1.2');
 	
 // Plugin DIR, with trailing slash:
 if( !defined('GWPTB_PLUGIN_DIR') )
@@ -70,6 +71,9 @@ require_once(plugin_dir_path(__FILE__).'inc/class-gwptb.php');
 require_once(plugin_dir_path(__FILE__).'inc/class-cssjs.php');
 require_once(plugin_dir_path(__FILE__).'inc/class-stat.php');
 require_once(plugin_dir_path(__FILE__).'inc/class-filters.php');
+require_once(plugin_dir_path(__FILE__).'inc/api.php');
+require_once(plugin_dir_path(__FILE__).'inc/subscription.php');
+require_once(plugin_dir_path(__FILE__).'inc/posting.php');
 $tplb = Gwptb_Core::get_instance();
 
 if(is_admin()){
