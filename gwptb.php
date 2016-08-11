@@ -2,7 +2,7 @@
 /*
 Plugin Name: TeploBot - Telegram Bot for WP
 Description: Simple Telegram Bot for your site with green effect
-Version: 1.1
+Version: 1.2
 Author: Teplitsa
 Author URI: https://te-st.ru/
 Text Domain: gwptb
@@ -38,7 +38,7 @@ if(!defined('ABSPATH')) die; // Die if accessed directly
 
 // Plugin version:
 if( !defined('GWPTB_VERSION') )
-    define('GWPTB_VERSION', '1.1');
+    define('GWPTB_VERSION', '1.2');
 	
 // Plugin DIR, with trailing slash:
 if( !defined('GWPTB_PLUGIN_DIR') )

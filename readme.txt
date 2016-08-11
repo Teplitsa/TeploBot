@@ -25,7 +25,10 @@ Plugin features:
 * support up to 5 custom commands with lists or recent posts or custom post types
 * in private chats: messages without command processed as search requests 
 * log of messages and responses
+* posting from Telegram 
+* subscription to notifications about new posts
 * for developers: commands with custom logic could be defined
+* for developers: API for sending notifications to subscribers
 
 **Limitation**. In mean time the plugin doesn't support inline mode. Follow the development progress or send as pull-requests for improvements.
 
@@ -38,8 +41,13 @@ Follow the progress at [GitHub](https://github.com/Teplitsa/TeploBot)
 * `/start` Greeting on the dialogue start
 * `/help` Provide the help text for user
 * `/s` Provide search results as list of posts' link
+* `/post` Submit article to WP site
+* `/sub` Subscribe to notifications about new posts (or any other content types)
+* `/unsub` Unsubscribe from notifications about new posts (or any other content types)
 
 Admins could add up to 5 custom commands that send list or posts or CPTs to chats. Developers could alter the commands logic through `gwptb_supported_commnds_list` filter (details published at [GitHub wiki](https://github.com/Teplitsa/TeploBot)).
+
+Set "Active subscriptions" option to activate subscriptions to notifications.
 
 Commands should be defined in chat with [@BotFather](https://telegram.me/botfather) to be accepted by plugin: use `/setcommands` command and follow the instructions. 
 
@@ -64,7 +72,10 @@ We will be very grateful if you help us to make TeploBot better.
 * поддержка до 5 собственный команд, отправляющих список последних записей или пользовательских типов записей
 * в индивидуальных чатах сообщения, не содержащие команд, трактуются как поисковый запрос 
 * лог сообщений
+* написание постов из Telegram 
+* подписка на уведомления о новых публикациях
 * для разработчиков - возможность добавлять собственные команды или менять логику существующих
+* для разработчиков - API для рассылки уведомлений подписчикам
 
 **Ограничение**. В настоящее время инлайновый режим не поддерживается плагином. Следите за обновлениями и присылайте пулл-реквесты.
 
@@ -78,8 +89,13 @@ We will be very grateful if you help us to make TeploBot better.
 * `/start` Начало диалога
 * `/help`  Подсказка и описание команд
 * `/s`  Результаты поиска
+* `/post` Отправка публикации на сайт
+* `/sub` Подписка на уведомления о новых публикациях
+* `/unsub` Отписка от уведомлений о новых публикациях
 
 Администраторы сайта могут добавить до 5 собственных команд, отправляющих список последних публикаций в чат. Разработчики могут определять собственные команды или менять логику существующих, используя фильтр `gwptb_supported_commnds_list` (подробнее в wiki на [GitHub](https://github.com/Teplitsa/TeploBot)).
+
+Заполните поле "Активные подписки" в настройках, чтобы активировать возможность подписки на уведомления.
 
 Чтобы бот распознавал команды, они должны быть установлены в диалоге с [@BotFather](https://telegram.me/botfather): отправьте ему команду `/setcommands` и следуйте инструкциям. 
 
@@ -134,6 +150,11 @@ To set the plugin into work you need to create a Telegram bot in the dialogue wi
 
 
 == Changelog ==
+= 1.2 =
+* New: Submit posts to WP site rigth from Telegram
+* New: Subscribe to notifications about new posts
+* New: API for sending notifications to subscribers
+
 = 1.1 =
 * New: Support for group chats
 * New: Support for custom commands
