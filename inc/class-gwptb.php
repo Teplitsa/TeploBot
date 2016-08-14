@@ -576,7 +576,8 @@ class Gwptb_Self {
 		}
 		elseif($upd_data['chattype'] == 'private') {			
 			//no commands - return search results
-			$result = gwptb_search_command_response($upd_data);
+			 $result = call_user_func(apply_filters('gwptb_default_command_response', 'gwptb_search_command_response', $upd_data), $upd_data);
+
 		}
 		else {
 			//rections to group aux messages
