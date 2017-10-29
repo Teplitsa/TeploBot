@@ -120,6 +120,16 @@ function gwptb_post_published_notification( $ID, $post ) {
     gwptb_notify_subscribers($post->post_type, $message);
 }
 
+function gwptb_post_new_to_publish_notification( $post ) {
+    $title = $post->post_title;
+    $permalink = get_permalink( $post->ID );
+    $link = "<a href='".$permalink."'>".$title."</a>";
+    $short = gwptb_get_post_teaser($post);
+    
+    $message = sprintf(__("%s\n%s", 'gwptb'), $link, $short).chr(10);
+    gwptb_notify_subscribers($post->post_type, $message);
+}
+
 function gwptb_get_available_post_types() {
     $post_types = get_post_types(array('public' => true, 'capability_type' => 'post'));
     

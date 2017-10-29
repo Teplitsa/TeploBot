@@ -1,5 +1,5 @@
 === TeploBot - Telegram Bot for WP ===
-Contributors: gsuvorov, foralien
+Contributors: gsuvorov, foralien, denis.cherniatev
 Author URI: https://te-st.ru
 Plugin URI: https://teplobot.te-st.ru
 Tags: Telegram, telegram, bot, chatbot, messenger, robot
