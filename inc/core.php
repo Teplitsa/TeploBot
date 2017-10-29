@@ -166,7 +166,8 @@ AND COLUMN_NAME = 'chattype'");
             add_action( 'publish_' . $post_type, 'gwptb_post_published_notification', 10, 2 );
         }
         */
-        add_action( 'new_to_publish', 'gwptb_post_new_to_publish_notification', 10, 1 );
+        add_action( 'new_to_publish', 'gwptb_post_new_to_publish_notification' );
+        add_action( 'draft_to_publish', 'gwptb_post_new_to_publish_notification' );
     }
 	
 	public function custom_templates_redirect(){		
