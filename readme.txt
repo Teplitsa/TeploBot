@@ -151,7 +151,7 @@ To set the plugin into work you need to create a Telegram bot in the dialogue wi
 
 == Changelog ==
 = 1.3 =
-* New: Notifications about new posts fixed
+* Fix: Notifications about new posts fixed
 
 = 1.2 =
 * New: Submit posts to WP site rigth from Telegram
