@@ -120,7 +120,16 @@ function gwptb_post_published_notification( $ID, $post ) {
     gwptb_notify_subscribers($post->post_type, $message);
 }
 
-function gwptb_post_new_to_publish_notification( $post ) {
+function gwptb_post_first_published_notification( $new_status, $old_status, $post ) {
+    
+    if( $new_status !== 'publish' ) {
+        return;
+    }
+    
+    if( !in_array($old_status, array('new', 'pending', 'draft', 'auto-draft')) ) {
+        return;
+    }
+    
     $title = $post->post_title;
     $permalink = get_permalink( $post->ID );
     $link = "<a href='".$permalink."'>".$title."</a>";
